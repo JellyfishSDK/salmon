@@ -17,7 +17,7 @@
     "standard": "ts-standard --fix",
     "test": "jest",
     "test:ci": "jest --ci --coverage --forceExit",
-    "all": "npm run build && npm run standard && npm run test"  
+    "all": "npm run build && npm run standard && npm run test"
   },
   "dependencies": {
     "@defichain/jellyfish-address": "next",
