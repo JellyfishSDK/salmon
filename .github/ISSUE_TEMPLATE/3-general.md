@@ -1,6 +1,6 @@
 ---
 name: General question
-about: General question about using DeFi salmon
+about: General question about using DeFi Salmon
 labels: kind/question
 ---
 
