@@ -1,15 +1,13 @@
 {
-  "extends": "./tsconfig.json",
-  "exclude": [
-    "node_modules",
-    "test",
-    "dist",
-    "packages/**/__tests__",
-    "packages/**/src/error",
-    "packages/**/src/**.ts",
-    "**/*.e2e.ts",
-    "**/e2e.*.ts",
-    "**/*.spec.ts",
-    "**/*.spec/"
-  ]
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+  },
+  "files": [],
+  "references": [
+    {"path": "./packages/salmon-oracles-functions/tsconfig.build.json"},
+ ]
 }
