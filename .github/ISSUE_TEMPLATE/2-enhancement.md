@@ -1,6 +1,6 @@
 ---
 name: Enhancement request
-about: Suggest an enhancement for DeFi salmon
+about: Suggest an enhancement for DeFi Salmon
 labels: kind/feature
 ---
 
