@@ -16,31 +16,19 @@
     "publish:latest": "lerna exec -- npm publish --tag latest --access public",
     "standard": "ts-standard --fix",
     "test": "jest",
-    "test:ci": "jest --ci --coverage --forceExit",
+    "test:ci": "jest --ci --coverage --forceExit  --maxWorkers=4",
     "all": "npm run build && npm run standard && npm run test"
   },
   "dependencies": {
     "@defichain/jellyfish-address": "next",
     "@defichain/jellyfish-api-core": "next",
     "@defichain/jellyfish-api-jsonrpc": "next",
-    "@defichain/jellyfish-json": "next",
     "@defichain/jellyfish-network": "next",
     "@defichain/jellyfish-transaction": "next",
     "@defichain/jellyfish-transaction-builder": "next",
-    "bignumber.js": "^9.0.1",
-    "cache-manager": "^3.4.3",
-    "class-transformer": "^0.4.0",
-    "class-validator": "^0.13.1",
-    "level": "^7.0.0",
-    "lexicographic-integer-encoding": "^1.0.1",
-    "memdown": "^6.0.0",
-    "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.2",
-    "rxjs": "^6.6.6",
-    "subleveldown": "^5.0.1"
+    "bignumber.js": "^9.0.1"
   },
   "devDependencies": {
-    "@defichain/jellyfish-crypto": "next",
     "@defichain/testcontainers": "next",
     "@defichain/testing": "next",
     "@types/cache-manager": "^3.4.0",
