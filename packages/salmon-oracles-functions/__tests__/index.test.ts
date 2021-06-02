@@ -20,9 +20,9 @@ afterAll(async () => {
 describe('basic setup test', () => {
   it('should get address', async () => {
     console.log(await providers.getAddress())
-  });
+  })
 
   it('should get block count', async () => {
     console.log(await container.getBlockCount())
-  });
-});
+  })
+})

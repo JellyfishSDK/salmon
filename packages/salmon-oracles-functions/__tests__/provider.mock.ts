@@ -1,8 +1,8 @@
-import { Bech32, Elliptic, EllipticPair, HASH160, WIF } from "@defichain/jellyfish-crypto";
-import { FeeRateProvider, Prevout, PrevoutProvider } from "@defichain/jellyfish-transaction-builder"
-import { OP_CODES } from "@defichain/jellyfish-transaction"
-import { MasterNodeRegTestContainer } from "@defichain/testcontainers";
-import BigNumber from "bignumber.js";
+import { Bech32, Elliptic, EllipticPair, HASH160, WIF } from '@defichain/jellyfish-crypto'
+import { FeeRateProvider, Prevout, PrevoutProvider } from '@defichain/jellyfish-transaction-builder'
+import { OP_CODES } from '@defichain/jellyfish-transaction'
+import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
+import BigNumber from 'bignumber.js'
 
 // TODO(fuxingloh): All these mock can be replaced with whale.
 //  But whale is harder to setup than @defichain/testcontainers.
@@ -76,7 +76,6 @@ export class MockPrevoutProvider implements PrevoutProvider {
 export async function getProviders (container: MasterNodeRegTestContainer): Promise<MockProviders> {
   return new MockProviders(container)
 }
-
 
 /**
  * For test mocking only, obviously not secured.

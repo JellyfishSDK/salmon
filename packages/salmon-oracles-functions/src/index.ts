@@ -1,7 +1,7 @@
 import {
   FeeRateProvider,
   P2WPKHTransactionBuilder,
-  PrevoutProvider,
+  PrevoutProvider
 } from '@defichain/jellyfish-transaction-builder'
 import { SmartBuffer } from 'smart-buffer'
 import { EllipticPair } from '@defichain/jellyfish-crypto'
@@ -11,13 +11,13 @@ import BigNumber from 'bignumber.js'
 import { HASH160 } from '@defichain/jellyfish-crypto/dist/hash'
 
 export class OraclesManager {
-  private builder: P2WPKHTransactionBuilder
+  private readonly builder: P2WPKHTransactionBuilder
 
   constructor (
     private readonly broadcastHex: (hex: string) => Promise<void>,
     private readonly ellipticPair: EllipticPair,
     feeRate: FeeRateProvider,
-    prevout: PrevoutProvider,
+    prevout: PrevoutProvider
   ) {
     this.builder = new P2WPKHTransactionBuilder(feeRate, prevout, {
       get: (_) => ellipticPair
