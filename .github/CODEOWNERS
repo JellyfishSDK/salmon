@@ -1,34 +1,18 @@
 # Define individuals that are responsible for code in a repository.
 # More details are here: https://help.github.com/articles/about-codeowners/
 
-/.github/                                       @fuxingloh
+/.github/                                       @fuxingloh @monstrobishi
 /.husky/                                        @fuxingloh
 /.idea/                                         @fuxingloh
-/.github/workflows/oss-governance-bot.yml       @fuxingloh
-/.github/governance.yml                         @fuxingloh
 
-/website/                                       @fuxingloh
+/packages/                                      @fuxingloh @monstrobishi
 
-/packages/                                      @fuxingloh
-/packages/salmon-api-client/                     @fuxingloh @canonbrother @jingyi2811
-/packages/salmon-api-wallet/                     @fuxingloh
-
-/src/                                           @fuxingloh
-/src/module.api/                                @fuxingloh @canonbrother @jingyi2811
-/src/module.database/                           @fuxingloh
-/src/module.database/provider.level             @fuxingloh
-/src/module.database/provider.memory            @fuxingloh
-/src/module.defid/                              @fuxingloh
-/src/module.health/                             @fuxingloh
-/src/module.indexer/                            @fuxingloh
-/src/module.model/                              @fuxingloh
-
-lerna.json                                      @fuxingloh
-tsconfig.json                                   @fuxingloh
-jest.config.js                                  @fuxingloh
-package.json                                    @fuxingloh
-package-lock.json                               @fuxingloh
+lerna.json                                      @fuxingloh @monstrobishi
+tsconfig.json                                   @fuxingloh @monstrobishi
+jest.config.js                                  @fuxingloh @monstrobishi
+package.json                                    @fuxingloh @monstrobishi
+package-lock.json                               @fuxingloh @monstrobishi
 
 CONTRIBUTING.md                                 @fuxingloh
-README.md                                       @fuxingloh
+README.md                                       @fuxingloh @monstrobishi
 LICENSE                                         @fuxingloh

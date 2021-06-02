@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a bug encountered with using DeFi salmon
+about: Report a bug encountered with using DeFi Salmon
 labels: kind/bug
 ---
 
