@@ -5,24 +5,24 @@ import fetch from 'cross-fetch'
 import BigNumber from 'bignumber.js'
 
 export interface AssetConfig {
-  symbol: string,
-  url: string,
+  symbol: string
+  url: string
   jsonPath: string
 }
 
 export interface PriceSourceConfig {
-  assets: AssetConfig[],
+  assets: AssetConfig[]
   apiToken: string
 }
 
 export interface AssetPrice {
-  asset: string,
+  asset: string
   price: BigNumber
 }
 
 export class PriceManager {
   async fetchValueFromSource (url: string, jsonPath: string, apiToken?: string): Promise<BigNumber> {
-    const response = await fetch(`${url}&token=${apiToken || ''}`, {
+    const response = await fetch(`${url}&token=${apiToken ?? ''}`, {
       method: 'GET',
       cache: 'no-cache'
     })
@@ -40,10 +40,10 @@ export class PriceManager {
     return new BigNumber(deepValue(Array.isArray(json) ? json[0] : json, jsonPath))
   }
 
-  async fetchAssetPrices(config: PriceSourceConfig): Promise<AssetPrice[]> {
+  async fetchAssetPrices (config: PriceSourceConfig): Promise<AssetPrice[]> {
     return await Promise.all(config.assets.map(async asset => {
-      const price = await this.fetchValueFromSource(asset.url, asset.jsonPath, config.apiToken);
+      const price = await this.fetchValueFromSource(asset.url, asset.jsonPath, config.apiToken)
       return { asset: asset.symbol, price }
-    }));
+    }))
   }
 }
