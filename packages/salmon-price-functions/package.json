@@ -1,8 +1,8 @@
 {
   "private": false,
-  "name": "@defichain/salmon-daemon-client",
+  "name": "@defichain/salmon-price-functions",
   "version": "0.0.0",
-  "description": "A package for the price oracle daemon",
+  "description": "A set of functions for fetching price data",
   "keywords": [
     "DeFiChain",
     "DeFi",
