@@ -52,7 +52,7 @@ const finnhubbResponse = `{
 }`
 
 describe('JSON-RPC 1.0 specification', () => {
-  beforeEach(()=> {
+  beforeEach(() => {
     nock('https://api.tiingo.com/iex')
       .get('/?tickers=tsla&token=API_TOKEN')
       .reply(200, function (_) {

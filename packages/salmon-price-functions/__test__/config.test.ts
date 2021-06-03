@@ -110,7 +110,7 @@ const finnhubbConfigAAPLTSLA: PriceSourceConfig = {
 }
 
 describe('JSON-RPC 1.0 specification', () => {
-  beforeEach(()=> {
+  beforeEach(() => {
     nock('https://api.tiingo.com/iex')
       .get('/?tickers=tsla&token=API_TOKEN')
       .reply(200, function (_) {
@@ -143,7 +143,7 @@ describe('JSON-RPC 1.0 specification', () => {
 
   it('should fatch price from tiingo using config', async () => {
     const priceManager = new PriceManager()
-    const prices = await priceManager.fetchAssetPrices(tiingoConfig);
+    const prices = await priceManager.fetchAssetPrices(tiingoConfig)
     expect(prices[0].asset).toStrictEqual('TSLA')
     expect(prices[0].price).toStrictEqual(new BigNumber(625.22))
   })
