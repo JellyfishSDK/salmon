@@ -2,9 +2,10 @@ import {
   JellyfishJSON
 } from '@defichain/jellyfish-api-core'
 import fetch from 'cross-fetch'
+import BigNumber from 'bignumber.js'
 
 export class PriceManager {
-  async fetchValueFromSource (url: string, jsonPath: string, apiKey?: string): Promise<string> {
+  async fetchValueFromSource (url: string, jsonPath: string, apiKey?: string): Promise<BigNumber> {
     const response = await fetch(url, {
       method: 'GET',
       cache: 'no-cache'
@@ -20,6 +21,6 @@ export class PriceManager {
       return obj
     }
 
-    return deepValue(Array.isArray(json) ? json[0] : json, jsonPath)
+    return new BigNumber(deepValue(Array.isArray(json) ? json[0] : json, jsonPath))
   }
 }
