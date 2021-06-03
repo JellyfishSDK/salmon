@@ -4,6 +4,7 @@
     "baseUrl": "./packages",
     "paths": {
       "@defichain/salmon-oracles-functions": ["salmon-oracles-functions/src"],
+      "@defichain/salmon-price-functions": ["salmon-price-functions/src"]
     }
   }
 }
