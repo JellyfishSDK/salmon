@@ -60,39 +60,39 @@ describe('JSON-RPC 1.0 specification', () => {
   // Here we use the 'last' price attribute
   it('should fatch price from tiingo', async () => {
     nock('https://api.tiingo.com/iex')
-      .get('/?tickers=tsla&token=7ebb15ca438c0fe40b2490e96367f3d9c13b9449')
+      .get('/?tickers=tsla&token=API_TOKEN')
       .reply(200, function (_) {
         return tiingoResponse
       })
 
     const priceManager = new PriceManager()
-    const price = await priceManager.fetchValueFromSource('https://api.tiingo.com/iex/?tickers=tsla', 'last', '7ebb15ca438c0fe40b2490e96367f3d9c13b9449')
+    const price = await priceManager.fetchValueFromSource('https://api.tiingo.com/iex/?tickers=tsla', 'last', 'API_TOKEN')
     expect(price).toStrictEqual(new BigNumber(625.22))
   })
 
   // Here we use the 'lastSalePrice' price attribute
   it('should fatch price from iexcloud', async () => {
     nock('https://cloud.iexapis.com/stable/tops')
-      .get('?symbols=fb&token=YOUR_TOKEN_HERE')
+      .get('?symbols=fb&token=API_TOKEN')
       .reply(200, function (_) {
         return iexResponse
       })
 
     const priceManager = new PriceManager()
-    const price = await priceManager.fetchValueFromSource('https://cloud.iexapis.com/stable/tops?symbols=fb', 'lastSalePrice', 'YOUR_TOKEN_HERE')
+    const price = await priceManager.fetchValueFromSource('https://cloud.iexapis.com/stable/tops?symbols=fb', 'lastSalePrice', 'API_TOKEN')
     expect(price).toStrictEqual(new BigNumber(121.41))
   })
 
   // Here we use the 'c' (current) price attribute
   it('should fatch price from finnhubb', async () => {
     nock('https://finnhub.io/api/v1/quote')
-      .get('?symbol=AAPL&token=c2lplrqad3ice2ne3ug0')
+      .get('?symbol=AAPL&token=API_TOKEN')
       .reply(200, function (_) {
         return finnhubbResponse
       })
 
     const priceManager = new PriceManager()
-    const price = await priceManager.fetchValueFromSource('https://finnhub.io/api/v1/quote?symbol=AAPL', 'c', 'c2lplrqad3ice2ne3ug0')
+    const price = await priceManager.fetchValueFromSource('https://finnhub.io/api/v1/quote?symbol=AAPL', 'c', 'API_TOKEN')
     expect(price).toStrictEqual(new BigNumber(261.74))
   })
 })
