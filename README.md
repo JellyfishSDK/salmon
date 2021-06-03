@@ -1,3 +1,8 @@
+[![CI](https://github.com/DeFiCh/salmon/actions/workflows/ci.yml/badge.svg)](https://github.com/DeFiCh/salmon/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/DeFiCh/salmon/branch/main/graph/badge.svg?token=IYL9K0WROA)](https://codecov.io/gh/DeFiCh/salmon)
+[![Maintainability](https://api.codeclimate.com/v1/badges/924a1c05249f72cf88e3/maintainability)](https://codeclimate.com/github/DeFiCh/salmon/maintainability)
+[![npm](https://img.shields.io/npm/v/@defichain/salmon)](https://www.npmjs.com/package/@defichain/salmon)
+
 # @defichain/salmon
 
 Mono-repo for DeFi Blockchain price oracle service with e2e setup. Includes infrastructure, scripts and serverless
@@ -28,5 +33,3 @@ If you discover a security vulnerability in
 ## License & Disclaimer
 
 By using `@defichain/salmon` (this repo), you (the user) agree to be bound by [the terms of this license](LICENSE).
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FDeFiCh%2Fsalmon.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FDeFiCh%2Fsalmon?ref=badge_large)
