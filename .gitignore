@@ -28,7 +28,7 @@ node_modules
 
 # dist & pack
 dist
-# *.tsbuildinfo
+*.tsbuildinfo
 *.tgz
 
 # Tests
