@@ -9,5 +9,6 @@
   "files": [],
   "references": [
     {"path": "./packages/salmon-oracles-functions/tsconfig.build.json"},
+    {"path": "./packages/salmon-price-functions/tsconfig.build.json"}
  ]
 }

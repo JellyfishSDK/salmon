@@ -1,0 +1,50 @@
+{
+  "private": false,
+  "name": "@defichain/salmon-lambda-functions",
+  "version": "0.0.0",
+  "description": "A package for the price oracle lambda functions",
+  "keywords": [
+    "DeFiChain",
+    "DeFi",
+    "Blockchain",
+    "API",
+    "Bitcoin"
+  ],
+  "repository": "DeFiCh/salmon",
+  "bugs": "https://github.com/DeFiCh/salmon/issues",
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "DeFiChain Foundation",
+      "email": "engineering@defichain.com",
+      "url": "https://defichain.com/"
+    },
+    {
+      "name": "DeFi Blockchain Contributors"
+    },
+    {
+      "name": "DeFi Salmon Contributors"
+    }
+  ],
+  "main": "dist",
+  "types": "dist",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "bignumber.js": "^9.0.1"
+  },
+  "dependencies": {
+    "@defichain/jellyfish-crypto": "next",
+    "@defichain/jellyfish-transaction": "next",
+    "@defichain/jellyfish-transaction-builder": "next"
+  },
+  "devDependencies": {
+    "@defichain/jellyfish-api-jsonrpc": "next",
+    "@defichain/testcontainers": "next",
+    "@defichain/testing": "next"
+  }
+}
