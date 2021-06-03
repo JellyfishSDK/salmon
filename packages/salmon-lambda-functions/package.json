@@ -38,13 +38,13 @@
     "bignumber.js": "^9.0.1"
   },
   "dependencies": {
-    "@defichain/jellyfish-crypto": "0.0.0",
-    "@defichain/jellyfish-transaction": "0.0.0",
-    "@defichain/jellyfish-transaction-builder": "0.0.0"
+    "@defichain/jellyfish-crypto": "next",
+    "@defichain/jellyfish-transaction": "next",
+    "@defichain/jellyfish-transaction-builder": "next"
   },
   "devDependencies": {
-    "@defichain/jellyfish-api-jsonrpc": "0.0.0",
-    "@defichain/testcontainers": "0.0.0",
-    "@defichain/testing": "0.0.0"
+    "@defichain/jellyfish-api-jsonrpc": "next",
+    "@defichain/testcontainers": "next",
+    "@defichain/testing": "next"
   }
 }
