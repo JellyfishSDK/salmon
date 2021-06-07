@@ -5,14 +5,14 @@
 /.husky/                                        @fuxingloh
 /.idea/                                         @fuxingloh
 
-/packages/                                      @fuxingloh @monstrobishi
+/packages/                                      @fuxingloh @monstrobishi @canonbrother @jingyi2811
 
-lerna.json                                      @fuxingloh @monstrobishi
-tsconfig.json                                   @fuxingloh @monstrobishi
-jest.config.js                                  @fuxingloh @monstrobishi
-package.json                                    @fuxingloh @monstrobishi
+lerna.json                                      @fuxingloh @monstrobishi @canonbrother
+tsconfig.json                                   @fuxingloh @monstrobishi @canonbrother
+jest.config.js                                  @fuxingloh @monstrobishi @canonbrother
+package.json                                    @fuxingloh @monstrobishi @canonbrother
 package-lock.json                               @fuxingloh @monstrobishi
 
-CONTRIBUTING.md                                 @fuxingloh
+CONTRIBUTING.md                                 @fuxingloh @canonbrother @jingyi2811
 README.md                                       @fuxingloh @monstrobishi
 LICENSE                                         @fuxingloh
