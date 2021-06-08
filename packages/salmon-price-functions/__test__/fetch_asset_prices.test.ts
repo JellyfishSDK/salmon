@@ -1,6 +1,6 @@
 
 import nock from 'nock'
-import { PriceManager } from '../src'
+import { PriceManager, PriceSourceConfig } from '../src'
 import BigNumber from 'bignumber.js'
 
 const tiingoResponse = `[
@@ -51,16 +51,42 @@ const finnhubbResponse = `{
   "t": 1582641000 
 }`
 
+const tiingoConfig: PriceSourceConfig = {
+  apiToken: 'API_TOKEN',
+  symbols: ['TSLA'],
+  symbolPath: 'ticker',
+  symbolQuery: 'tickers',
+  baseUrl: 'https://api.tiingo.com/iex/',
+  pricePath: 'last'
+}
+
+const iexConfig: PriceSourceConfig = {
+  apiToken: 'API_TOKEN',
+  symbols: ['FB'],
+  symbolPath: 'symbol',
+  symbolQuery: 'symbols',
+  baseUrl: 'https://cloud.iexapis.com/stable/tops',
+  pricePath: 'lastSalePrice'
+}
+
+const finnhubbConfig: PriceSourceConfig = {
+  apiToken: 'API_TOKEN',
+  symbols: ['AAPL'],
+  symbolQuery: 'symbol',
+  baseUrl: 'https://finnhub.io/api/v1/quote',
+  pricePath: 'c'
+}
+
 describe('JSON-RPC 1.0 specification', () => {
   beforeEach(() => {
     nock('https://api.tiingo.com/iex')
-      .get('/?tickers=tsla&token=API_TOKEN')
+      .get('/?tickers=TSLA&token=API_TOKEN')
       .reply(200, function (_) {
         return tiingoResponse
       })
 
     nock('https://cloud.iexapis.com/stable/tops')
-      .get('?symbols=fb&token=API_TOKEN')
+      .get('?symbols=FB&token=API_TOKEN')
       .reply(200, function (_) {
         return iexResponse
       })
@@ -77,24 +103,24 @@ describe('JSON-RPC 1.0 specification', () => {
     nock.cleanAll()
   })
 
-  // Here we use the 'last' price attribute
-  it('should fatch price from tiingo', async () => {
+  it('should fatch price from tiingo using config', async () => {
     const priceManager = new PriceManager()
-    const price = await priceManager.fetchValueFromSource('https://api.tiingo.com/iex/?tickers=tsla', 'last', 'API_TOKEN')
-    expect(price).toStrictEqual(new BigNumber(625.22))
+    const prices = await priceManager.fetchAssetPrices(tiingoConfig)
+    expect(prices[0].asset).toStrictEqual('TSLA')
+    expect(prices[0].price).toStrictEqual(new BigNumber(625.22))
   })
 
-  // Here we use the 'lastSalePrice' price attribute
-  it('should fatch price from iexcloud', async () => {
+  it('should fatch price from iexcloud using config', async () => {
     const priceManager = new PriceManager()
-    const price = await priceManager.fetchValueFromSource('https://cloud.iexapis.com/stable/tops?symbols=fb', 'lastSalePrice', 'API_TOKEN')
-    expect(price).toStrictEqual(new BigNumber(121.41))
+    const prices = await priceManager.fetchAssetPrices(iexConfig)
+    expect(prices[0].asset).toStrictEqual('FB')
+    expect(prices[0].price).toStrictEqual(new BigNumber(121.41))
   })
 
-  // Here we use the 'c' (current) price attribute
-  it('should fatch price from finnhubb', async () => {
+  it('should fatch price from finnhubb using config', async () => {
     const priceManager = new PriceManager()
-    const price = await priceManager.fetchValueFromSource('https://finnhub.io/api/v1/quote?symbol=AAPL', 'c', 'API_TOKEN')
-    expect(price).toStrictEqual(new BigNumber(261.74))
+    const prices = await priceManager.fetchAssetPrices(finnhubbConfig)
+    expect(prices[0].asset).toStrictEqual('AAPL')
+    expect(prices[0].price).toStrictEqual(new BigNumber(261.74))
   })
 })

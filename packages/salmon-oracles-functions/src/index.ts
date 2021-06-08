@@ -14,7 +14,7 @@ export class OraclesManager {
   private readonly builder: P2WPKHTransactionBuilder
 
   constructor (
-    private readonly broadcastHex: (hex: string) => Promise<void>,
+    private readonly broadcastHex: (hex: string) => Promise<string>,
     private readonly ellipticPair: EllipticPair,
     feeRate: FeeRateProvider,
     prevout: PrevoutProvider
@@ -25,27 +25,29 @@ export class OraclesManager {
   }
 
   async updatePrices (oracleId: string, token: string, prices: TokenAmount[]): Promise<void> {
-    const transaction: TransactionSegWit = await this.builder.oracles.setOracleData({
+    const txnData = {
       oracleId: oracleId,
-      timestamp: new BigNumber(Date.now()),
+      timestamp: new BigNumber(Math.floor(Date.now() / 1000)),
       tokens: [
         {
           token: token,
           prices: prices
         }
       ]
-    }, await this.getChangeScript())
+    }
+
+    const transaction: TransactionSegWit = await this.builder.oracles.setOracleData(txnData, await this.getChangeScript())
     await this.broadcast(transaction)
   }
 
-  private async broadcast (transaction: TransactionSegWit): Promise<void> {
+  private async broadcast (transaction: TransactionSegWit): Promise<string> {
     const buffer = new SmartBuffer()
     new CTransactionSegWit(transaction).toBuffer(buffer)
     const hex = buffer.toBuffer().toString('hex')
-    await this.broadcastHex(hex)
+    return await this.broadcastHex(hex)
   }
 
-  private async getChangeScript (): Promise<Script> {
+  public async getChangeScript (): Promise<Script> {
     return {
       stack: [
         OP_CODES.OP_0,

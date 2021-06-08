@@ -47,6 +47,7 @@
     "@defichain/jellyfish-api-jsonrpc": "next",
     "@defichain/testcontainers": "next",
     "@defichain/testing": "next",
+    "@types/lossless-json": "^1.0.0",
     "nock": "^13.0.11"
   }
 }
