@@ -8,9 +8,5 @@ module.exports = {
   },
   verbose: true,
   clearMocks: true,
-  testTimeout: 120000,
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '.*/__tests__/.*'
-  ]
+  testTimeout: 120000
 }
