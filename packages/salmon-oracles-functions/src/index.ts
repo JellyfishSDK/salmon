@@ -28,7 +28,7 @@ export class OraclesManager {
    * Pushes prices to the price oracle on the blockchain.
    *
    * @param {string} oracleId
-   * @param {string} string
+   * @param {string} token
    * @param {TokenAmount[]} prices
    * @return {Promise<void>}
    */
