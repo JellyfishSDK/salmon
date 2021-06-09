@@ -24,6 +24,14 @@ export class OraclesManager {
     })
   }
 
+  /**
+   * Pushes prices to the price oracle on the blockchain.
+   *
+   * @param {string} oracleId
+   * @param {string} string
+   * @param {TokenAmount[]} prices
+   * @return {Promise<void>}
+   */
   async updatePrices (oracleId: string, token: string, prices: TokenAmount[]): Promise<void> {
     const txnData = {
       oracleId: oracleId,
@@ -47,6 +55,11 @@ export class OraclesManager {
     return await this.broadcastHex(hex)
   }
 
+  /**
+   * Returns the script for the price oracle owner.
+   *
+   * @return {Promise<Script>}
+   */
   public async getChangeScript (): Promise<Script> {
     return {
       stack: [
