@@ -1,6 +1,6 @@
 
 import nock from 'nock'
-import { PriceManager, PriceSourceConfig } from '../src'
+import { FinnhubbPriceProvider, IexPriceProvider, PriceManager, PriceSourceConfig, TiingoPriceProvider } from '../src'
 import BigNumber from 'bignumber.js'
 
 const tiingoResponse = `[
@@ -52,32 +52,18 @@ const finnhubbResponse = `{
 }`
 
 const tiingoConfig: PriceSourceConfig = {
-  apiToken: 'API_TOKEN',
-  symbols: ['TSLA'],
-  symbolPath: 'ticker',
-  symbolQuery: 'tickers',
-  baseUrl: 'https://api.tiingo.com/iex/',
-  pricePath: 'last'
+  symbols: ['TSLA']
 }
 
 const iexConfig: PriceSourceConfig = {
-  apiToken: 'API_TOKEN',
-  symbols: ['FB'],
-  symbolPath: 'symbol',
-  symbolQuery: 'symbols',
-  baseUrl: 'https://cloud.iexapis.com/stable/tops',
-  pricePath: 'lastSalePrice'
+  symbols: ['FB']
 }
 
 const finnhubbConfig: PriceSourceConfig = {
-  apiToken: 'API_TOKEN',
-  symbols: ['AAPL'],
-  symbolQuery: 'symbol',
-  baseUrl: 'https://finnhub.io/api/v1/quote',
-  pricePath: 'c'
+  symbols: ['AAPL']
 }
 
-describe('JSON-RPC 1.0 specification', () => {
+describe('single price fetch', () => {
   beforeEach(() => {
     nock('https://api.tiingo.com/iex')
       .get('/?tickers=TSLA&token=API_TOKEN')
@@ -104,22 +90,22 @@ describe('JSON-RPC 1.0 specification', () => {
   })
 
   it('should fatch price from tiingo using config', async () => {
-    const priceManager = new PriceManager()
-    const prices = await priceManager.fetchAssetPrices(tiingoConfig)
+    const priceManager = new PriceManager(tiingoConfig, new TiingoPriceProvider('API_TOKEN'))
+    const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('TSLA')
     expect(prices[0].price).toStrictEqual(new BigNumber(625.22))
   })
 
   it('should fatch price from iexcloud using config', async () => {
-    const priceManager = new PriceManager()
-    const prices = await priceManager.fetchAssetPrices(iexConfig)
+    const priceManager = new PriceManager(iexConfig, new IexPriceProvider('API_TOKEN'))
+    const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('FB')
     expect(prices[0].price).toStrictEqual(new BigNumber(121.41))
   })
 
   it('should fatch price from finnhubb using config', async () => {
-    const priceManager = new PriceManager()
-    const prices = await priceManager.fetchAssetPrices(finnhubbConfig)
+    const priceManager = new PriceManager(finnhubbConfig, new FinnhubbPriceProvider('API_TOKEN'))
+    const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('AAPL')
     expect(prices[0].price).toStrictEqual(new BigNumber(261.74))
   })
