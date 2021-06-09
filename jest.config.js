@@ -6,5 +6,10 @@ module.exports = {
     '@defichain/salmon-price-functions': '<rootDir>/packages/salmon-price-functions/src',
     '@defichain/salmon-lambda-functions': '<rootDir>/packages/salmon-lambda-functions/src'
   },
-  testTimeout: 240000
+  testTimeout: 240000,
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '.*/.*.spec/.*',
+    '.*/__tests__/.*'
+  ]
 }
