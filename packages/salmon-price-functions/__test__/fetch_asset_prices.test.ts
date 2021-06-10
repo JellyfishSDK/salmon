@@ -3,93 +3,45 @@ import nock from 'nock'
 import { FinnhubbPriceProvider, IexPriceProvider, PriceManager, PriceSourceConfig, TiingoPriceProvider } from '../src'
 import BigNumber from 'bignumber.js'
 
-const tiingoResponse = `[
-  {
-    "lastSaleTimestamp":"2021-05-28T20:00:00+00:00",
-    "askSize":null,
-    "high":635.59,
-    "open":628.5,
-    "low":622.38,
-    "bidPrice":null,
-    "askPrice":null,
-    "timestamp":"2021-05-28T20:00:00+00:00",
-    "lastSize":null,
-    "last":625.22,
-    "quoteTimestamp":"2021-05-28T20:00:00+00:00",
-    "ticker":"TSLA",
-    "mid":null,
-    "bidSize":null,
-    "volume":22737038,
-    "tngoLast":625.22,
-    "prevClose":630.85
-  }
-]`
-
-const iexResponse = `[
-  {
-    "symbol": "FB",
-    "bidSize": 200,
-    "bidPrice": 120.8,
-    "askSize": 100,
-    "askPrice": 122.5,
-    "volume": 205208,
-    "lastSalePrice": 121.41,
-    "lastSaleSize": 100,
-    "lastSaleTime": 1480446908666,
-    "lastUpdated": 1480446923942,
-    "sector": "softwareservices",
-    "securityType": "commonstock"
-  }
-]`
-
-const finnhubbResponse = `{
-  "c": 261.74,
-  "h": 263.31,
-  "l": 260.68,
-  "o": 261.07,
-  "pc": 259.45,
-  "t": 1582641000 
-}`
-
-const tiingoConfig: PriceSourceConfig = {
-  symbols: ['TSLA']
-}
-
-const iexConfig: PriceSourceConfig = {
-  symbols: ['FB']
-}
-
-const finnhubbConfig: PriceSourceConfig = {
-  symbols: ['AAPL']
-}
-
 describe('single price fetch', () => {
-  beforeEach(() => {
-    nock('https://api.tiingo.com/iex')
-      .get('/?tickers=TSLA&token=API_TOKEN')
-      .reply(200, function (_) {
-        return tiingoResponse
-      })
-
-    nock('https://cloud.iexapis.com/stable/tops')
-      .get('?symbols=FB&token=API_TOKEN')
-      .reply(200, function (_) {
-        return iexResponse
-      })
-
-    nock('https://finnhub.io/api/v1/quote')
-      .get('?symbol=AAPL&token=API_TOKEN')
-      .reply(200, function (_) {
-        return finnhubbResponse
-      })
-  })
-
   afterEach(() => {
     jest.clearAllMocks()
     nock.cleanAll()
   })
 
   it('should fatch price from tiingo using config', async () => {
+    const tiingoResponse = `[
+      {
+        "lastSaleTimestamp":"2021-05-28T20:00:00+00:00",
+        "askSize":null,
+        "high":635.59,
+        "open":628.5,
+        "low":622.38,
+        "bidPrice":null,
+        "askPrice":null,
+        "timestamp":"2021-05-28T20:00:00+00:00",
+        "lastSize":null,
+        "last":625.22,
+        "quoteTimestamp":"2021-05-28T20:00:00+00:00",
+        "ticker":"TSLA",
+        "mid":null,
+        "bidSize":null,
+        "volume":22737038,
+        "tngoLast":625.22,
+        "prevClose":630.85
+      }
+    ]`
+
+    nock('https://api.tiingo.com/iex')
+      .get('/?tickers=TSLA&token=API_TOKEN')
+      .reply(200, function (_) {
+        return tiingoResponse
+      })
+
+    const tiingoConfig: PriceSourceConfig = {
+      symbols: ['TSLA']
+    }
+    
     const priceManager = new PriceManager(tiingoConfig, new TiingoPriceProvider('API_TOKEN'))
     const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('TSLA')
@@ -98,6 +50,33 @@ describe('single price fetch', () => {
   })
 
   it('should fatch price from iexcloud using config', async () => {
+    const iexResponse = `[
+      {
+        "symbol": "FB",
+        "bidSize": 200,
+        "bidPrice": 120.8,
+        "askSize": 100,
+        "askPrice": 122.5,
+        "volume": 205208,
+        "lastSalePrice": 121.41,
+        "lastSaleSize": 100,
+        "lastSaleTime": 1480446908666,
+        "lastUpdated": 1480446923942,
+        "sector": "softwareservices",
+        "securityType": "commonstock"
+      }
+    ]`
+
+    nock('https://cloud.iexapis.com/stable/tops')
+      .get('?symbols=FB&token=API_TOKEN')
+      .reply(200, function (_) {
+        return iexResponse
+      })
+
+    const iexConfig: PriceSourceConfig = {
+      symbols: ['FB']
+    }
+
     const priceManager = new PriceManager(iexConfig, new IexPriceProvider('API_TOKEN'))
     const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('FB')
@@ -106,6 +85,25 @@ describe('single price fetch', () => {
   })
 
   it('should fatch price from finnhubb using config', async () => {
+    const finnhubbResponse = `{
+      "c": 261.74,
+      "h": 263.31,
+      "l": 260.68,
+      "o": 261.07,
+      "pc": 259.45,
+      "t": 1582641000 
+    }`
+
+    const finnhubbConfig: PriceSourceConfig = {
+      symbols: ['AAPL']
+    }
+
+    nock('https://finnhub.io/api/v1/quote')
+      .get('?symbol=AAPL&token=API_TOKEN')
+      .reply(200, function (_) {
+        return finnhubbResponse
+      })
+
     const priceManager = new PriceManager(finnhubbConfig, new FinnhubbPriceProvider('API_TOKEN'))
     const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('AAPL')
