@@ -32,14 +32,19 @@ export class OraclesManager {
    * @param {TokenAmount[]} prices
    * @return {Promise<void>}
    */
-  async updatePrices (oracleId: string, token: string, prices: TokenAmount[]): Promise<void> {
+  async updatePrices (
+    oracleId: string,
+    token: string,
+    prices: TokenAmount[],
+    timestamp: BigNumber = new BigNumber(Math.floor(Date.now() / 1000))
+  ): Promise<void> {
     const txnData = {
-      oracleId: oracleId,
-      timestamp: new BigNumber(Math.floor(Date.now() / 1000)),
+      oracleId,
+      timestamp,
       tokens: [
         {
-          token: token,
-          prices: prices
+          token,
+          prices
         }
       ]
     }
