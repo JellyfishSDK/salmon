@@ -94,6 +94,7 @@ describe('single price fetch', () => {
     const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('TSLA')
     expect(prices[0].price).toStrictEqual(new BigNumber(625.22))
+    expect(prices[0].timestamp).toStrictEqual(new BigNumber(1622232000000))
   })
 
   it('should fatch price from iexcloud using config', async () => {
@@ -101,6 +102,7 @@ describe('single price fetch', () => {
     const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('FB')
     expect(prices[0].price).toStrictEqual(new BigNumber(121.41))
+    expect(prices[0].timestamp).toStrictEqual(new BigNumber(1480446908666))
   })
 
   it('should fatch price from finnhubb using config', async () => {
@@ -108,5 +110,6 @@ describe('single price fetch', () => {
     const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('AAPL')
     expect(prices[0].price).toStrictEqual(new BigNumber(261.74))
+    expect(prices[0].timestamp).toStrictEqual(new BigNumber(1582641000000))
   })
 })
