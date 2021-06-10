@@ -14,10 +14,10 @@ export interface AssetPrice {
  */
 export interface PriceProvider {
   /**
-    * Returns prices for given symbols
-    *
-    * @param {string[]} symbols
-    * @return {AssetPrice[]} symbol prices
-    */
+   * Returns prices for given symbols
+   *
+   * @param {string[]} symbols
+   * @return {Promise<AssetPrice[]>} symbol prices
+   */
   prices: (symbols: string[]) => Promise<AssetPrice[]>
 }
