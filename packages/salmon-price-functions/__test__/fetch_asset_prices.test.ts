@@ -110,4 +110,15 @@ describe('single price fetch', () => {
     expect(prices[0].price).toStrictEqual(new BigNumber(261.74))
     expect(prices[0].timestamp).toStrictEqual(new BigNumber(1582641000000))
   })
+
+  it('complain if symbol list is empty', async () => {
+    const badConfig: PriceSourceConfig = {
+      symbols: []
+    }
+
+    await expect(async () => {
+      const priceManager = new PriceManager(badConfig, new FinnhubbPriceProvider('API_TOKEN'))
+      await priceManager.fetchAssetPrices()
+    }).rejects.toThrow('Symbol list cannot be empty')
+  })
 })

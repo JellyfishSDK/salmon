@@ -1,6 +1,11 @@
 import { PriceProvider, AssetPrice } from './price_provider'
 
 /**
+ * Error while working with PriceManager.
+ */
+export class PriceManagerError extends Error {}
+
+/**
  * Config for a price source, takes a list of symbols to fetch
  */
 export interface PriceSourceConfig {
@@ -15,6 +20,9 @@ export class PriceManager {
     private readonly config: PriceSourceConfig,
     private readonly priceProvider: PriceProvider
   ) {
+    if (config.symbols.length === 0) {
+      throw new PriceManagerError('Symbol list cannot be empty')
+    }
   }
 
   /**
