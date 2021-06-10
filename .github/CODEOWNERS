@@ -5,7 +5,7 @@
 /.husky/                                        @fuxingloh
 /.idea/                                         @fuxingloh
 
-/packages/                                      @fuxingloh @monstrobishi @canonbrother @jingyi2811
+/packages/                                      @fuxingloh @monstrobishi @canonbrother @jingyi2811 @thedoublejay @ivan-zynesis
 
 lerna.json                                      @fuxingloh @monstrobishi @canonbrother
 tsconfig.json                                   @fuxingloh @monstrobishi @canonbrother
