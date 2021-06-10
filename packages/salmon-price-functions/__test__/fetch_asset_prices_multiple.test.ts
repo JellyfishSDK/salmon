@@ -171,7 +171,7 @@ describe('multi price fetch', () => {
       "pc": 259.45,
       "t": 1582641000 
     }`
-    
+
     const finnhubbResponseAAPL = `{
       "c": 126,
       "h": 263.31,
@@ -180,7 +180,7 @@ describe('multi price fetch', () => {
       "pc": 259.45,
       "t": 1582641000 
     }`
-    
+
     const finnhubbResponseFB = `{
       "c": 336.59,
       "h": 263.31,

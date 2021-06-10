@@ -41,7 +41,7 @@ describe('single price fetch', () => {
     const tiingoConfig: PriceSourceConfig = {
       symbols: ['TSLA']
     }
-    
+
     const priceManager = new PriceManager(tiingoConfig, new TiingoPriceProvider('API_TOKEN'))
     const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('TSLA')
@@ -103,7 +103,7 @@ describe('single price fetch', () => {
     const finnhubbConfig: PriceSourceConfig = {
       symbols: ['AAPL']
     }
-  
+
     const priceManager = new PriceManager(finnhubbConfig, new FinnhubbPriceProvider('API_TOKEN'))
     const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('AAPL')
