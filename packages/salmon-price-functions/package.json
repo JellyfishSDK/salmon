@@ -47,6 +47,8 @@
   "devDependencies": {
     "@defichain/testcontainers": "next",
     "@defichain/testing": "next",
+    "@types/lossless-json": "^1.0.0",
+    "@types/node-fetch": "^2.5.10",
     "nock": "^13.0.11"
   }
 }
