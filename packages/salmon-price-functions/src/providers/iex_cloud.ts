@@ -18,8 +18,7 @@ export class IexPriceProvider implements PriceProvider {
   }
 
   public async prices (symbols: string[]): Promise<AssetPrice[]> {
-    const apiToken = this.apiToken
-    const fetchPath = `${IEX_URL}?symbols=${symbols.join(',')}&token=${apiToken}`
+    const fetchPath = `${IEX_URL}?symbols=${symbols.join(',')}&token=${this.apiToken}`
     const response = await fetch(fetchPath, {
       method: 'GET',
       cache: 'no-cache'

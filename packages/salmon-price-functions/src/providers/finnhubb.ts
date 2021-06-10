@@ -18,8 +18,7 @@ export class FinnhubbPriceProvider implements PriceProvider {
   }
 
   private async fetchAsset (symbol: string): Promise<AssetPrice> {
-    const apiToken = this.apiToken
-    const fetchPath = `${FINNHUBB_URL}?symbol=${symbol}&token=${apiToken}`
+    const fetchPath = `${FINNHUBB_URL}?symbol=${symbol}&token=${this.apiToken}`
     const response = await fetch(fetchPath, {
       method: 'GET',
       cache: 'no-cache'
