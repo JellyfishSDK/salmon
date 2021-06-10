@@ -80,5 +80,12 @@ describe('basic price oracles', () => {
     expect(getOracleDataResult.tokenPrices[0].token).toStrictEqual('TEST')
     expect(getOracleDataResult.tokenPrices[0].currency).toStrictEqual('USD')
     expect(getOracleDataResult.tokenPrices[0].amount).toStrictEqual(0.1)
+
+    // Set with explicit timestamp
+    await oraclesManager.updatePrices(oracleId, 'TEST', [{ currency: 'USD', amount: new BigNumber(0.2) }], new BigNumber(1623225892))
+
+    const getOracleDataSecondResult = await container.call('getoracledata', [oracleId])
+    expect(getOracleDataSecondResult.tokenPrices[0].amount).toStrictEqual(0.2)
+    expect(getOracleDataSecondResult.tokenPrices[0].timestamp).toStrictEqual(1623225892)
   })
 })
