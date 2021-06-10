@@ -28,14 +28,15 @@ export class OraclesManager {
    * Pushes prices to the price oracle on the blockchain.
    *
    * @param {string} oracleId
-   * @param {string} string
+   * @param {string} token
+   * @param {BigNumber} timestamp
    * @param {TokenAmount[]} prices
    * @return {Promise<void>}
    */
-  async updatePrices (oracleId: string, token: string, prices: TokenAmount[]): Promise<void> {
+  async updatePrices (oracleId: string, token: string, timestamp: BigNumber, prices: TokenAmount[]): Promise<void> {
     const txnData = {
       oracleId: oracleId,
-      timestamp: new BigNumber(Math.floor(Date.now() / 1000)),
+      timestamp,
       tokens: [
         {
           token: token,
