@@ -86,7 +86,5 @@ describe('basic price oracles', () => {
 
     const getOracleDataSecondResult = await container.call('getoracledata', [oracleId])
     expect(getOracleDataSecondResult.tokenPrices[0].amount).toStrictEqual(0.2)
-
-
   })
 })
