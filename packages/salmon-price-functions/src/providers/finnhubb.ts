@@ -1,5 +1,5 @@
 import { PriceProvider, AssetPrice } from '../price_provider'
-import fetch from 'cross-fetch'
+import fetch from 'node-fetch'
 import BigNumber from 'bignumber.js'
 import {
   JellyfishJSON
@@ -20,8 +20,7 @@ export class FinnhubbPriceProvider implements PriceProvider {
   private async fetchAsset (symbol: string): Promise<AssetPrice> {
     const fetchPath = `${FINNHUBB_URL}?symbol=${symbol}&token=${this.apiToken}`
     const response = await fetch(fetchPath, {
-      method: 'GET',
-      cache: 'no-cache'
+      method: 'GET'
     })
 
     const text = await response.text()

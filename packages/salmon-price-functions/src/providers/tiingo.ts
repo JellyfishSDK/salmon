@@ -1,5 +1,5 @@
 import { PriceProvider, AssetPrice } from '../price_provider'
-import fetch from 'cross-fetch'
+import fetch from 'node-fetch'
 import BigNumber from 'bignumber.js'
 import {
   JellyfishJSON
@@ -20,8 +20,7 @@ export class TiingoPriceProvider implements PriceProvider {
   public async prices (symbols: string[]): Promise<AssetPrice[]> {
     const fetchPath = `${TIINGO_URL}?tickers=${symbols.join(',')}&token=${this.apiToken}`
     const response = await fetch(fetchPath, {
-      method: 'GET',
-      cache: 'no-cache'
+      method: 'GET'
     })
 
     const text = await response.text()
