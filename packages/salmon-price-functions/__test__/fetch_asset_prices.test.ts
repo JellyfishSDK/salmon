@@ -94,16 +94,16 @@ describe('single price fetch', () => {
       "t": 1582641000 
     }`
 
-    const finnhubbConfig: PriceSourceConfig = {
-      symbols: ['AAPL']
-    }
-
     nock('https://finnhub.io/api/v1/quote')
       .get('?symbol=AAPL&token=API_TOKEN')
       .reply(200, function (_) {
         return finnhubbResponse
       })
 
+    const finnhubbConfig: PriceSourceConfig = {
+      symbols: ['AAPL']
+    }
+  
     const priceManager = new PriceManager(finnhubbConfig, new FinnhubbPriceProvider('API_TOKEN'))
     const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('AAPL')
