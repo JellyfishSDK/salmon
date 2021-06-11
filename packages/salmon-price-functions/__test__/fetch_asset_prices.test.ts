@@ -121,4 +121,23 @@ describe('single price fetch', () => {
       await priceManager.fetchAssetPrices()
     }).rejects.toThrow('Symbol list cannot be empty')
   })
+
+  it('should throw when receiving malformed data', async () => {
+    const finnhubbResponse = 'Error'
+
+    nock('https://finnhub.io/api/v1/quote')
+      .get('?symbol=AAPL&token=API_TOKEN')
+      .reply(500, function (_) {
+        return finnhubbResponse
+      })
+
+    const finnhubbConfig: PriceSourceConfig = {
+      symbols: ['AAPL']
+    }
+
+    await expect(async () => {
+      const priceManager = new PriceManager(finnhubbConfig, new FinnhubbPriceProvider('API_TOKEN'))
+      await priceManager.fetchAssetPrices()
+    }).rejects.toThrow(SyntaxError)
+  })
 })
