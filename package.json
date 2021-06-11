@@ -18,11 +18,10 @@
     "standard": "ts-standard --fix",
     "test": "jest",
     "test:ci": "jest --ci --coverage --forceExit --maxWorkers=4",
-    "all": "npm run build && npm run standard && npm run test"
+    "all": "npm ci && npm run build && npm run standard && npm run test"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
-    "@types/lossless-json": "^1.0.0",
     "husky": "^6.0.0",
     "jest": "^26.6.3",
     "lerna": "^4.0.0",
