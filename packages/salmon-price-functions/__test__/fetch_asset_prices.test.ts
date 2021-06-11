@@ -39,7 +39,8 @@ describe('single price fetch', () => {
       })
 
     const tiingoConfig: PriceSourceConfig = {
-      symbols: ['TSLA']
+      symbols: ['TSLA'],
+      pollingPeriod: new Date(300000)
     }
 
     const priceManager = new PriceManager(tiingoConfig, new TiingoPriceProvider('API_TOKEN'))
@@ -74,7 +75,8 @@ describe('single price fetch', () => {
       })
 
     const iexConfig: PriceSourceConfig = {
-      symbols: ['FB']
+      symbols: ['FB'],
+      pollingPeriod: new Date(300000)
     }
 
     const priceManager = new PriceManager(iexConfig, new IexPriceProvider('API_TOKEN'))
@@ -101,7 +103,8 @@ describe('single price fetch', () => {
       })
 
     const finnhubbConfig: PriceSourceConfig = {
-      symbols: ['AAPL']
+      symbols: ['AAPL'],
+      pollingPeriod: new Date(300000)
     }
 
     const priceManager = new PriceManager(finnhubbConfig, new FinnhubbPriceProvider('API_TOKEN'))
@@ -113,7 +116,8 @@ describe('single price fetch', () => {
 
   it('complain if symbol list is empty', async () => {
     const badConfig: PriceSourceConfig = {
-      symbols: []
+      symbols: [],
+      pollingPeriod: new Date(300000)
     }
 
     await expect(async () => {
@@ -132,7 +136,8 @@ describe('single price fetch', () => {
       })
 
     const finnhubbConfig: PriceSourceConfig = {
-      symbols: ['AAPL']
+      symbols: ['AAPL'],
+      pollingPeriod: new Date(300000)
     }
 
     await expect(async () => {

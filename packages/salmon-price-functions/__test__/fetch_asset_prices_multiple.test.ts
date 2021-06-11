@@ -140,7 +140,8 @@ describe('multi price fetch', () => {
     ]`
 
     const iexConfig: PriceSourceConfig = {
-      symbols: ['TSLA', 'AAPL', 'FB']
+      symbols: ['TSLA', 'AAPL', 'FB'],
+      pollingPeriod: new Date(300000)
     }
 
     nock('https://cloud.iexapis.com/stable/tops')
@@ -209,7 +210,8 @@ describe('multi price fetch', () => {
       })
 
     const finnhubbConfig: PriceSourceConfig = {
-      symbols: ['TSLA', 'AAPL', 'FB']
+      symbols: ['TSLA', 'AAPL', 'FB'],
+      pollingPeriod: new Date(300000)
     }
 
     const priceManager = new PriceManager(finnhubbConfig, new FinnhubbPriceProvider('API_TOKEN'))
@@ -272,7 +274,8 @@ describe('multi price fetch', () => {
       })
 
     const finnhubbConfig: PriceSourceConfig = {
-      symbols: ['TSLA', 'AAPL', 'FB']
+      symbols: ['TSLA', 'AAPL', 'FB'],
+      pollingPeriod: new Date(300000)
     }
 
     const priceManager = new PriceManager(finnhubbConfig, new FinnhubbPriceProvider('API_TOKEN'))
