@@ -31,6 +31,11 @@ export class PriceManager {
    * @return {AssetPrice[]}
    */
   async fetchAssetPrices (): Promise<AssetPrice[]> {
-    return await this.priceProvider.prices(this.config.symbols)
+    // Don't throw if there is an issue with one price, instead filter them out
+    // This is so one error doesn't cascade and cause issues with other prices
+    return (await this.priceProvider.prices(this.config.symbols)).filter(
+      asset => asset.asset !== undefined && !asset.price.isNaN() &&
+          !asset.timestamp.isNaN()
+    )
   }
 }
