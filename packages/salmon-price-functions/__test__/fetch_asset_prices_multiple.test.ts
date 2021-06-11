@@ -77,7 +77,8 @@ describe('multi price fetch', () => {
       })
 
     const tiingoConfig: PriceSourceConfig = {
-      symbols: ['TSLA', 'AAPL', 'FB']
+      symbols: ['TSLA', 'AAPL', 'FB'],
+      pollingPeriod: new Date(300000)
     }
 
     const priceManager = new PriceManager(tiingoConfig, new TiingoPriceProvider('API_TOKEN'))
