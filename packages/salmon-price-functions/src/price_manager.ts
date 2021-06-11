@@ -20,9 +20,6 @@ export class PriceManager {
     private readonly config: PriceSourceConfig,
     private readonly priceProvider: PriceProvider
   ) {
-    if (config.symbols.length === 0) {
-      throw new PriceManagerError('Symbol list cannot be empty')
-    }
   }
 
   /**
@@ -31,6 +28,10 @@ export class PriceManager {
    * @return {AssetPrice[]}
    */
   async fetchAssetPrices (): Promise<AssetPrice[]> {
+    if (this.config.symbols.length === 0) {
+      throw new PriceManagerError('Symbol list cannot be empty')
+    }
+
     return await this.priceProvider.prices(this.config.symbols)
   }
 }
