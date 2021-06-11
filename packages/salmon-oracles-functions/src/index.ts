@@ -30,7 +30,7 @@ export class OraclesManager {
    * @param {string} oracleId
    * @param {string} token
    * @param {TokenAmount[]} prices
-   * @param {BigNumber} timestamp (optional)
+   * @param {BigNumber} [timestamp = new BigNumber(Math.floor(Date.now() / 1000))]
    * @return {Promise<void>}
    */
   async updatePrices (
