@@ -17,7 +17,7 @@ export interface PriceSourceConfig {
  */
 export class PriceManager {
   constructor (
-    private readonly config: PriceSourceConfig,
+    readonly config: PriceSourceConfig,
     private readonly priceProvider: PriceProvider
   ) {
   }
