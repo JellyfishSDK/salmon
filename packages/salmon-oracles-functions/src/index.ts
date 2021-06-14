@@ -14,7 +14,7 @@ export class OraclesManager {
   private readonly builder: P2WPKHTransactionBuilder
 
   constructor (
-    private readonly broadcastHex: (hex: string) => Promise<void>,
+    private readonly broadcastHex: (hex: string) => Promise<string>,
     private readonly ellipticPair: EllipticPair,
     feeRate: FeeRateProvider,
     prevout: PrevoutProvider
@@ -24,28 +24,49 @@ export class OraclesManager {
     })
   }
 
-  async updatePrices (oracleId: string, token: string, prices: TokenAmount[]): Promise<void> {
-    const transaction: TransactionSegWit = await this.builder.oracles.setOracleData({
-      oracleId: oracleId,
-      timestamp: new BigNumber(Date.now()),
+  /**
+   * Pushes prices to the price oracle on the blockchain.
+   *
+   * @param {string} oracleId
+   * @param {string} token
+   * @param {TokenAmount[]} prices
+   * @param {BigNumber} [timestamp = new BigNumber(Math.floor(Date.now() / 1000))]
+   * @return {Promise<void>}
+   */
+  async updatePrices (
+    oracleId: string,
+    token: string,
+    prices: TokenAmount[],
+    timestamp: BigNumber = new BigNumber(Math.floor(Date.now() / 1000))
+  ): Promise<void> {
+    const txnData = {
+      oracleId,
+      timestamp,
       tokens: [
         {
-          token: token,
-          prices: prices
+          token,
+          prices
         }
       ]
-    }, await this.getChangeScript())
+    }
+
+    const transaction: TransactionSegWit = await this.builder.oracles.setOracleData(txnData, await this.getChangeScript())
     await this.broadcast(transaction)
   }
 
-  private async broadcast (transaction: TransactionSegWit): Promise<void> {
+  private async broadcast (transaction: TransactionSegWit): Promise<string> {
     const buffer = new SmartBuffer()
     new CTransactionSegWit(transaction).toBuffer(buffer)
     const hex = buffer.toBuffer().toString('hex')
-    await this.broadcastHex(hex)
+    return await this.broadcastHex(hex)
   }
 
-  private async getChangeScript (): Promise<Script> {
+  /**
+   * Returns the script for the price oracle owner.
+   *
+   * @return {Promise<Script>}
+   */
+  public async getChangeScript (): Promise<Script> {
     return {
       stack: [
         OP_CODES.OP_0,
