@@ -11,7 +11,6 @@ export class PriceManagerError extends Error {}
  */
 export interface PriceSourceConfig {
   symbols: string[]
-  pollingPeriod: Date
 }
 
 /**
@@ -33,10 +32,10 @@ export class PriceManager {
    * @param {AssetPrice[]}
    * @return {AssetPrice[]}
    */
-  filterTimestamps (assets: AssetPrice[]): AssetPrice[] {
+  filterTimestamps (assets: AssetPrice[], pollingPeriod: Date): AssetPrice[] {
     const timeDiffCheck = (timestamp: BigNumber): boolean => {
       const timeDiff = (new BigNumber(Date.now()).minus(timestamp)).abs()
-      return timeDiff < new BigNumber((this.config.pollingPeriod).getTime())
+      return timeDiff < new BigNumber(pollingPeriod.getTime())
     }
 
     return assets.filter(asset => timeDiffCheck(asset.timestamp))
