@@ -31,17 +31,17 @@ export class PriceManager {
    *
    * @param {AssetPrice[]} assets assets to be filtered
    * @param {Date} timespan the timestan at which we filter for
-   * @param {Date} [compareDate] default = new Date()
+   * @param {Date} [dateNow] default = new Date()
    * @return {AssetPrice[]}
    */
   public static filterTimestamps (assets: AssetPrice[], timespan: Date,
-    compareDate: Date = new Date()): AssetPrice[] {
-    const timeDiffCheck = (timestamp: BigNumber): boolean => {
-      const timeDiff = (new BigNumber(compareDate.getTime()).minus(timestamp)).abs()
-      return timeDiff.lte(new BigNumber(timespan.getTime()))
-    }
-
-    return assets.filter(asset => timeDiffCheck(asset.timestamp))
+    dateNow: Date = new Date()): AssetPrice[] {
+    return assets.filter((asset: AssetPrice): boolean => {
+      const dateMilliseconds = new BigNumber(dateNow.getTime())
+      const dateSubtracted = dateMilliseconds.minus(asset.timestamp)
+      const absoluteDate = dateSubtracted.abs()
+      return absoluteDate.lte(new BigNumber(timespan.getTime()))
+    })
   }
 
   /**
@@ -51,10 +51,19 @@ export class PriceManager {
    */
   public async fetchAssetPrices (): Promise<AssetPrice[]> {
     const filterAssets = (asset: AssetPrice): boolean => {
-      return asset.asset !== undefined &&
-              !asset.price.isNaN() &&
-              asset.timestamp !== undefined &&
-              !asset.timestamp.isNaN()
+      if (asset.asset === undefined) {
+        return false
+      }
+
+      if (asset.price === undefined || asset.price.isNaN()) {
+        return false
+      }
+
+      if (asset.timestamp === undefined || asset.timestamp.isNaN()) {
+        return false
+      }
+
+      return true
     }
 
     // Don't throw if there is an issue with one price, instead filter them out

@@ -135,8 +135,8 @@ describe('single price fetch', () => {
       symbols: ['AAPL']
     }
 
+    const priceManager = new PriceManager(finnhubbConfig, new FinnhubbPriceProvider('API_TOKEN'))
     await expect(async () => {
-      const priceManager = new PriceManager(finnhubbConfig, new FinnhubbPriceProvider('API_TOKEN'))
       await priceManager.fetchAssetPrices()
     }).rejects.toThrow(SyntaxError)
   })
