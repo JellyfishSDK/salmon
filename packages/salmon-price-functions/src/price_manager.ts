@@ -26,6 +26,22 @@ export class PriceManager {
     }
   }
 
+  private static isAssetValid (asset: AssetPrice): boolean {
+    if (asset.asset === undefined) {
+      return false
+    }
+
+    if (asset.price === undefined || asset.price.isNaN()) {
+      return false
+    }
+
+    if (asset.timestamp === undefined || asset.timestamp.isNaN()) {
+      return false
+    }
+
+    return true
+  }
+
   /**
    * Filters asset prices according to timestamps
    *
@@ -50,24 +66,9 @@ export class PriceManager {
    * @return {AssetPrice[]}
    */
   public async fetchAssetPrices (): Promise<AssetPrice[]> {
-    const filterAssets = (asset: AssetPrice): boolean => {
-      if (asset.asset === undefined) {
-        return false
-      }
-
-      if (asset.price === undefined || asset.price.isNaN()) {
-        return false
-      }
-
-      if (asset.timestamp === undefined || asset.timestamp.isNaN()) {
-        return false
-      }
-
-      return true
-    }
-
     // Don't throw if there is an issue with one price, instead filter them out
     // This is so one error doesn't cascade and cause issues with other prices
-    return (await this.priceProvider.prices(this.config.symbols)).filter(filterAssets)
+    return (await this.priceProvider.prices(this.config.symbols))
+      .filter(PriceManager.isAssetValid)
   }
 }
