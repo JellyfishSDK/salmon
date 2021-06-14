@@ -32,10 +32,11 @@ export class PriceManager {
    * @param {AssetPrice[]}
    * @return {AssetPrice[]}
    */
-  filterTimestamps (assets: AssetPrice[], pollingPeriod: Date): AssetPrice[] {
+  public static filterTimestamps (assets: AssetPrice[], pollingPeriod: Date,
+    compareDate: Date = new Date()): AssetPrice[] {
     const timeDiffCheck = (timestamp: BigNumber): boolean => {
-      const timeDiff = (new BigNumber(Date.now()).minus(timestamp)).abs()
-      return timeDiff < new BigNumber(pollingPeriod.getTime())
+      const timeDiff = (new BigNumber(compareDate.getTime()).minus(timestamp)).abs()
+      return timeDiff.lte(new BigNumber(pollingPeriod.getTime()))
     }
 
     return assets.filter(asset => timeDiffCheck(asset.timestamp))
@@ -43,10 +44,10 @@ export class PriceManager {
 
   /**
    * Fetches prices according to config and provider
-   *
+   *`
    * @return {AssetPrice[]}
    */
-  async fetchAssetPrices (): Promise<AssetPrice[]> {
+  public async fetchAssetPrices (): Promise<AssetPrice[]> {
     const filterAssets = (asset: AssetPrice): boolean => {
       return asset.asset !== undefined &&
               !asset.price.isNaN() &&
