@@ -9,7 +9,7 @@ describe('single price fetch', () => {
     nock.cleanAll()
   })
 
-  it('should fatch price from tiingo using config', async () => {
+  it('should fetch price from tiingo using config', async () => {
     const tiingoResponse = `[
       {
         "lastSaleTimestamp":"2021-05-28T20:00:00+00:00",
@@ -49,7 +49,7 @@ describe('single price fetch', () => {
     expect(prices[0].timestamp).toStrictEqual(new BigNumber(1622232000000))
   })
 
-  it('should fatch price from iexcloud using config', async () => {
+  it('should fetch price from iexcloud using config', async () => {
     const iexResponse = `[
       {
         "symbol": "FB",
@@ -84,7 +84,7 @@ describe('single price fetch', () => {
     expect(prices[0].timestamp).toStrictEqual(new BigNumber(1480446908666))
   })
 
-  it('should fatch price from finnhubb using config', async () => {
+  it('should fetch price from finnhubb using config', async () => {
     const finnhubbResponse = `{
       "c": 261.74,
       "h": 263.31,

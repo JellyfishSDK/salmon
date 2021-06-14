@@ -9,7 +9,7 @@ describe('multi price fetch', () => {
     nock.cleanAll()
   })
 
-  it('should fatch price from tiingo using config', async () => {
+  it('should fetch price from tiingo using config', async () => {
     const tiingoResponse = `[
       {
         "bidPrice":null,
@@ -93,7 +93,7 @@ describe('multi price fetch', () => {
     expect(prices[2].timestamp).toStrictEqual(new BigNumber(1623096000000))
   })
 
-  it('should fatch price from iexcloud using config', async () => {
+  it('should fetch price from iexcloud using config', async () => {
     const iexResponse = `[
       {
         "symbol":"TSLA",
@@ -162,7 +162,7 @@ describe('multi price fetch', () => {
     expect(prices[2].timestamp).toStrictEqual(new BigNumber(1623095999551))
   })
 
-  it('should fatch price from finnhubb using config', async () => {
+  it('should fetch price from finnhubb using config', async () => {
     const finnhubbResponseTSLA = `{
       "c": 605.14,
       "h": 263.31,
