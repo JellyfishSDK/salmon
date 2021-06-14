@@ -28,21 +28,35 @@ export class PriceManager {
   }
 
   /**
-   * Fetches prices according to config and provider
+   * Filters asset prices according to timestamps
    *
+   * @param {AssetPrice[]}
    * @return {AssetPrice[]}
    */
-  async fetchAssetPrices (): Promise<AssetPrice[]> {
+  filterTimestamps (assets: AssetPrice[]): AssetPrice[] {
     const timeDiffCheck = (timestamp: BigNumber): boolean => {
       const timeDiff = (new BigNumber(Date.now()).minus(timestamp)).abs()
       return timeDiff < new BigNumber((this.config.pollingPeriod).getTime())
     }
 
+    return assets.filter(asset => timeDiffCheck(asset.timestamp))
+  }
+
+  /**
+   * Fetches prices according to config and provider
+   *
+   * @return {AssetPrice[]}
+   */
+  async fetchAssetPrices (): Promise<AssetPrice[]> {
+    const filterAssets = (asset: AssetPrice): boolean => {
+      return asset.asset !== undefined &&
+              !asset.price.isNaN() &&
+              asset.timestamp !== undefined &&
+              !asset.timestamp.isNaN()
+    }
+
     // Don't throw if there is an issue with one price, instead filter them out
     // This is so one error doesn't cascade and cause issues with other prices
-    return (await this.priceProvider.prices(this.config.symbols)).filter(
-      asset => asset.asset !== undefined && !asset.price.isNaN() &&
-          !asset.timestamp.isNaN() && timeDiffCheck(asset.timestamp)
-    )
+    return (await this.priceProvider.prices(this.config.symbols)).filter(filterAssets)
   }
 }
