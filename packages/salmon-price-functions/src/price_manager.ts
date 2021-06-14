@@ -1,4 +1,4 @@
-import { BigNumber } from '@defichain/jellyfish-json'
+import { BigNumber } from 'bignumber.js'
 import { PriceProvider, AssetPrice } from './price_provider'
 
 /**
@@ -29,14 +29,16 @@ export class PriceManager {
   /**
    * Filters asset prices according to timestamps
    *
-   * @param {AssetPrice[]}
+   * @param {AssetPrice[]} assets assets to be filtered
+   * @param {Date} timespan the timestan at which we filter for
+   * @param {Date} [compareDate] default = new Date()
    * @return {AssetPrice[]}
    */
-  public static filterTimestamps (assets: AssetPrice[], pollingPeriod: Date,
+  public static filterTimestamps (assets: AssetPrice[], timespan: Date,
     compareDate: Date = new Date()): AssetPrice[] {
     const timeDiffCheck = (timestamp: BigNumber): boolean => {
       const timeDiff = (new BigNumber(compareDate.getTime()).minus(timestamp)).abs()
-      return timeDiff.lte(new BigNumber(pollingPeriod.getTime()))
+      return timeDiff.lte(new BigNumber(timespan.getTime()))
     }
 
     return assets.filter(asset => timeDiffCheck(asset.timestamp))
