@@ -40,10 +40,7 @@
   "dependencies": {
     "@defichain/jellyfish-crypto": "next",
     "@defichain/jellyfish-transaction": "next",
-    "@defichain/jellyfish-transaction-builder": "next",
-    "@defichain/salmon-price-functions": "0.0.0",
-    "@defichain/salmon-oracle-functions": "0.0.0"
-
+    "@defichain/jellyfish-transaction-builder": "next"
   },
   "devDependencies": {
     "@defichain/jellyfish-api-jsonrpc": "next",
