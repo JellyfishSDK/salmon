@@ -1,7 +1,6 @@
-import { AssetPrice, FinnhubbPriceProvider, IexPriceProvider, PriceManager, PriceSourceConfig, TiingoPriceProvider } from '@defichain/salmon-price-functions'
-import BigNumber from 'bignumber.js'
+import { PriceManager, PriceSourceConfig, TiingoPriceProvider } from '@defichain/salmon-price-functions'
 
-export async function handler (event) {
+export async function handler (event: any): Promise<any> {
   const tiingoConfig: PriceSourceConfig = {
     symbols: ['TSLA']
   }
@@ -9,9 +8,8 @@ export async function handler (event) {
   const priceManager = new PriceManager(tiingoConfig, new TiingoPriceProvider('API_TOKEN'))
   const prices = await priceManager.fetchAssetPrices()
 
-  const response = {
+  return {
     statusCode: 200,
-    body: JSON.stringify(prices)
+    body: JSON.stringify({ prices, event })
   }
-  return response
 };
