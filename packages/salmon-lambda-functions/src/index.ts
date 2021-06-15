@@ -15,8 +15,3 @@ export async function handler (event?: any): Promise<any> {
     body: JSON.stringify({ prices, event })
   }
 };
-
-handler().then(
-  () => {},
-  () => {}
-)
