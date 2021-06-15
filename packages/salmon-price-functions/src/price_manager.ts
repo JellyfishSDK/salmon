@@ -1,3 +1,4 @@
+import { BigNumber } from 'bignumber.js'
 import { PriceProvider, AssetPrice } from './price_provider'
 
 /**
@@ -22,16 +23,53 @@ export class PriceManager {
   ) {
   }
 
+  private static isAssetValid (asset: AssetPrice): boolean {
+    if (asset.asset === undefined) {
+      return false
+    }
+
+    if (asset.price === undefined || asset.price.isNaN()) {
+      return false
+    }
+
+    if (asset.timestamp === undefined || asset.timestamp.isNaN()) {
+      return false
+    }
+
+    return true
+  }
+
   /**
-   * Fetches prices according to config and provider
+   * Filters asset prices according to timestamps
    *
+   * @param {AssetPrice[]} assets assets to be filtered
+   * @param {Date} timespan the timestan at which we filter for
+   * @param {Date} [dateNow] default = new Date()
    * @return {AssetPrice[]}
    */
-  async fetchAssetPrices (): Promise<AssetPrice[]> {
+  public static filterTimestamps (assets: AssetPrice[], timespan: Date,
+    dateNow: Date = new Date()): AssetPrice[] {
+    return assets.filter((asset: AssetPrice): boolean => {
+      const dateMilliseconds = new BigNumber(dateNow.getTime())
+      const dateSubtracted = dateMilliseconds.minus(asset.timestamp)
+      const absoluteDate = dateSubtracted.abs()
+      return absoluteDate.lte(new BigNumber(timespan.getTime()))
+    })
+  }
+
+  /**
+   * Fetches prices according to config and provider
+   *`
+   * @return {AssetPrice[]}
+   */
+  public async fetchAssetPrices (): Promise<AssetPrice[]> {
     if (this.config.symbols.length === 0) {
       throw new PriceManagerError('Symbol list cannot be empty')
     }
 
-    return await this.priceProvider.prices(this.config.symbols)
+    // Don't throw if there is an issue with one price, instead filter them out
+    // This is so one error doesn't cascade and cause issues with other prices
+    return (await this.priceProvider.prices(this.config.symbols))
+      .filter(PriceManager.isAssetValid)
   }
 }

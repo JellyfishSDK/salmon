@@ -1,6 +1,6 @@
 
 import nock from 'nock'
-import { FinnhubbPriceProvider, IexPriceProvider, PriceManager, PriceSourceConfig, TiingoPriceProvider } from '../src'
+import { AssetPrice, FinnhubbPriceProvider, IexPriceProvider, PriceManager, PriceProvider, PriceSourceConfig, TiingoPriceProvider } from '../src'
 import BigNumber from 'bignumber.js'
 
 describe('single price fetch', () => {
@@ -105,6 +105,45 @@ describe('single price fetch', () => {
     expect(prices[0].timestamp).toStrictEqual(new BigNumber(1582641000000))
   })
 
+  it('should exclude invalid data', async () => {
+    class MockPriceProvider implements PriceProvider {
+      constructor (
+        private readonly assetData: string
+      ) {
+      }
+
+      public async prices (symbols: string[]): Promise<AssetPrice[]> {
+        return symbols.map(() => {
+          const badAsset = JSON.parse(this.assetData)
+          return {
+            asset: badAsset.asset,
+            price: new BigNumber(badAsset.price),
+            timestamp: badAsset.timestamp
+          }
+        })
+      }
+    }
+
+    const badProviderConfig: PriceSourceConfig = {
+      symbols: ['AAPL']
+    }
+
+    const priceManagerNoAsset = new PriceManager(badProviderConfig,
+      new MockPriceProvider('{}'))
+    const pricesNoAsset = await priceManagerNoAsset.fetchAssetPrices()
+    expect(pricesNoAsset.length).toStrictEqual(0)
+
+    const priceManagerNoPrice = new PriceManager(badProviderConfig,
+      new MockPriceProvider('{"asset":"AAPL"}'))
+    const pricesNoPrice = await priceManagerNoPrice.fetchAssetPrices()
+    expect(pricesNoPrice.length).toStrictEqual(0)
+
+    const priceManagerNoTimestamp = new PriceManager(badProviderConfig,
+      new MockPriceProvider('{"asset":"AAPL", "price": 100.0}'))
+    const pricesNoTimestamp = await priceManagerNoTimestamp.fetchAssetPrices()
+    expect(pricesNoTimestamp.length).toStrictEqual(0)
+  })
+
   it('complain if symbol list is empty', async () => {
     const badConfig: PriceSourceConfig = {
       symbols: []
@@ -114,5 +153,22 @@ describe('single price fetch', () => {
       const priceManager = new PriceManager(badConfig, new FinnhubbPriceProvider('API_TOKEN'))
       await priceManager.fetchAssetPrices()
     }).rejects.toThrow('Symbol list cannot be empty')
+  })
+
+  it('should throw when receiving malformed data', async () => {
+    nock('https://finnhub.io/api/v1/quote')
+      .get('?symbol=AAPL&token=API_TOKEN')
+      .reply(500, function (_) {
+        return 'Error'
+      })
+
+    const finnhubbConfig: PriceSourceConfig = {
+      symbols: ['AAPL']
+    }
+
+    const priceManager = new PriceManager(finnhubbConfig, new FinnhubbPriceProvider('API_TOKEN'))
+    await expect(async () => {
+      await priceManager.fetchAssetPrices()
+    }).rejects.toThrow(SyntaxError)
   })
 })
