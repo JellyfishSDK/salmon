@@ -9,7 +9,7 @@ describe('single price fetch', () => {
     nock.cleanAll()
   })
 
-  it('should fatch price from tiingo using config', async () => {
+  it('should fetch price from tiingo using config', async () => {
     nock('https://api.tiingo.com/iex')
       .get('/?tickers=TSLA&token=API_TOKEN')
       .reply(200, function (_) {
@@ -47,7 +47,7 @@ describe('single price fetch', () => {
     expect(prices[0].timestamp).toStrictEqual(new BigNumber(1622232000000))
   })
 
-  it('should fatch price from iexcloud using config', async () => {
+  it('should fetch price from iexcloud using config', async () => {
     nock('https://cloud.iexapis.com/stable/tops')
       .get('?symbols=FB&token=API_TOKEN')
       .reply(200, function (_) {
@@ -80,7 +80,7 @@ describe('single price fetch', () => {
     expect(prices[0].timestamp).toStrictEqual(new BigNumber(1480446908666))
   })
 
-  it('should fatch price from finnhubb using config', async () => {
+  it('should fetch price from finnhubb using config', async () => {
     nock('https://finnhub.io/api/v1/quote')
       .get('?symbol=AAPL&token=API_TOKEN')
       .reply(200, function (_) {

@@ -9,7 +9,7 @@ describe('multi price fetch', () => {
     nock.cleanAll()
   })
 
-  it('should fatch price from tiingo using config', async () => {
+  it('should fetch price from tiingo using config', async () => {
     nock('https://api.tiingo.com/iex')
       .get('/?tickers=TSLA,AAPL,FB&token=API_TOKEN')
       .reply(200, function (_) {
@@ -91,7 +91,7 @@ describe('multi price fetch', () => {
     expect(prices[2].timestamp).toStrictEqual(new BigNumber(1623096000000))
   })
 
-  it('should fatch price from iexcloud using config', async () => {
+  it('should fetch price from iexcloud using config', async () => {
     const iexConfig: PriceSourceConfig = {
       symbols: ['TSLA', 'AAPL', 'FB']
     }
