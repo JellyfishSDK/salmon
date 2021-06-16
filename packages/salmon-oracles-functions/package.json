@@ -1,6 +1,6 @@
 {
   "private": false,
-  "name": "@defichain/salmon",
+  "name": "@defichain/salmon-oracles-functions",
   "version": "0.0.0",
   "description": "A package for the price oracle lambda functions",
   "keywords": [
