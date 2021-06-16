@@ -18,12 +18,9 @@ export interface PriceSourceConfig {
  */
 export class PriceManager {
   constructor (
-    private readonly config: PriceSourceConfig,
+    readonly config: PriceSourceConfig,
     private readonly priceProvider: PriceProvider
   ) {
-    if (config.symbols.length === 0) {
-      throw new PriceManagerError('Symbol list cannot be empty')
-    }
   }
 
   private static isAssetValid (asset: AssetPrice): boolean {
@@ -66,6 +63,10 @@ export class PriceManager {
    * @return {AssetPrice[]}
    */
   public async fetchAssetPrices (): Promise<AssetPrice[]> {
+    if (this.config.symbols.length === 0) {
+      throw new PriceManagerError('Symbol list cannot be empty')
+    }
+
     // Don't throw if there is an issue with one price, instead filter them out
     // This is so one error doesn't cascade and cause issues with other prices
     return (await this.priceProvider.prices(this.config.symbols))
