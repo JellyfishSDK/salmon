@@ -17,13 +17,15 @@
     "publish:latest": "lerna exec -- npm publish --tag latest --access public",
     "standard": "ts-standard --fix",
     "test": "jest",
+    "zip": "bestzip bundle.zip build/*",
     "test:ci": "jest --ci --coverage --forceExit --maxWorkers=4",
     "all": "npm run build && npm run standard && npm run test",
     "copy-deps": "recursive-copy -w -e ./packages/salmon-lambda-functions ./build && recursive-copy -w -e ./node_modules/@defichain ./build/node_modules/@defichain",
-    "package": "npm run build && lerna bootstrap && mkdir build 2> NUL && npm run copy-deps"
+    "package": "npm run build && lerna bootstrap && npm run copy-deps && cd build && bestzip ../bundle.zip *"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
+    "bestzip": "^2.2.0",
     "husky": "^6.0.0",
     "jest": "^26.6.3",
     "lerna": "^4.0.0",

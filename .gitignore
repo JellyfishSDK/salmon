@@ -48,3 +48,5 @@ lerna-debug.log*
 
 # Build
 build
+bundle.zip
+packages/**/package-lock.json
