@@ -17,7 +17,6 @@
     "publish:latest": "lerna exec -- npm publish --tag latest --access public",
     "standard": "ts-standard --fix",
     "test": "jest",
-    "zip": "bestzip bundle.zip build/*",
     "test:ci": "jest --ci --coverage --forceExit --maxWorkers=4",
     "all": "npm run build && npm run standard && npm run test",
     "copy-deps": "recursive-copy -w -e ./packages/salmon-lambda-functions ./build && recursive-copy -w -e ./node_modules/@defichain ./build/node_modules/@defichain",
