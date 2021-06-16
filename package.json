@@ -19,8 +19,8 @@
     "test": "jest",
     "test:ci": "jest --ci --coverage --forceExit --maxWorkers=4",
     "all": "npm ci && npm run build && npm run standard && npm run test",
-    "copy:deps": "recursive-copy -w -e ./packages/salmon-lambda-functions ./build && recursive-copy -w -e ./node_modules/@defichain ./build/node_modules/@defichain",
-    "package": "npm run build && lerna bootstrap && mkdir build 2> NUL && npm run copy:deps"
+    "copy-deps": "recursive-copy -w -e ./packages/salmon-lambda-functions ./build && recursive-copy -w -e ./node_modules/@defichain ./build/node_modules/@defichain",
+    "package": "npm run build && lerna bootstrap && mkdir build 2> NUL && npm run copy-deps"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
