@@ -33,7 +33,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "pack": "ncc build ./src/index.ts --source-map && cd dist && bestzip ../bundle.zip *"
+    "pack": "ncc build ./src/index.ts --source-map"
   },
   "peerDependencies": {
     "bignumber.js": "^9.0.1"
@@ -49,7 +49,6 @@
     "@defichain/jellyfish-api-jsonrpc": "next",
     "@defichain/testcontainers": "next",
     "@defichain/testing": "next",    
-    "@vercel/ncc": "^0.28.6",
-    "bestzip": "^2.2.0"
+    "@vercel/ncc": "^0.28.6"
   }
 }
