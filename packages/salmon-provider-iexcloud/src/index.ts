@@ -1,24 +1,24 @@
-import { PriceProvider, AssetPrice } from '../price_provider'
+import { PriceProvider, AssetPrice } from '@defichain/salmon-price-functions'
 import fetch from 'node-fetch'
 import BigNumber from 'bignumber.js'
 import {
   JellyfishJSON
-} from '@defichain/jellyfish-api-core'
+} from '@defichain/jellyfish-json'
 
-const TIINGO_URL = 'https://api.tiingo.com/iex/'
+const IEX_URL = 'https://cloud.iexapis.com/stable/tops'
 
 /**
- * Fetches prices from Tiingo
- * https://api.tiingo.com
+ * Fetches prices from IEX Cloud
+ * https://cloud.iexapis.com
  */
-export class TiingoPriceProvider implements PriceProvider {
+export class IexPriceProvider implements PriceProvider {
   constructor (
     private readonly apiToken: string
   ) {
   }
 
   public async prices (symbols: string[]): Promise<AssetPrice[]> {
-    const fetchPath = `${TIINGO_URL}?tickers=${symbols.join(',')}&token=${this.apiToken}`
+    const fetchPath = `${IEX_URL}?symbols=${symbols.join(',')}&token=${this.apiToken}`
     const response = await fetch(fetchPath, {
       method: 'GET'
     })
@@ -27,10 +27,10 @@ export class TiingoPriceProvider implements PriceProvider {
     const json = JellyfishJSON.parse(text, 'bignumber')
 
     return json.map((x: any) => {
-      const timestamp = Date.parse(x.lastSaleTimestamp)
+      const timestamp = x.lastSaleTime
       return {
-        asset: x.ticker,
-        price: new BigNumber(x.last),
+        asset: x.symbol,
+        price: new BigNumber(x.lastSalePrice),
         timestamp: new BigNumber(timestamp)
       }
     })

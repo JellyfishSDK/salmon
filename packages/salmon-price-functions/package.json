@@ -38,17 +38,10 @@
     "bignumber.js": "^9.0.1"
   },
   "dependencies": {
-    "@defichain/jellyfish-crypto": "next",
-    "@defichain/jellyfish-transaction": "next",
-    "@defichain/jellyfish-transaction-builder": "next",
-    "@defichain/jellyfish-api-jsonrpc": "next",
-    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "@defichain/testcontainers": "next",
     "@defichain/testing": "next",
-    "@types/lossless-json": "^1.0.0",
-    "@types/node-fetch": "^2.5.10",
-    "nock": "^13.0.11"
+    "@types/lossless-json": "^1.0.0"
   }
 }

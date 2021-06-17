@@ -1,4 +1,5 @@
-import { PriceManager, PriceSourceConfig, TiingoPriceProvider } from '@defichain/salmon-price-functions'
+import { PriceManager, PriceSourceConfig } from '@defichain/salmon-price-functions'
+import { TiingoPriceProvider } from '@defichain/salmon-provider-tiingo'
 
 export async function handler (event?: any): Promise<any> {
   const tiingoConfig: PriceSourceConfig = {

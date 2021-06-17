@@ -61,7 +61,7 @@ describe('single price fetch', () => {
 
   it('should throw when receiving malformed data', async () => {
     nock('https://api.tiingo.com/iex')
-      .get('/?tickers=TSLA&token=API_TOKEN')
+      .get('/?tickers=AAPL&token=API_TOKEN')
       .reply(500, function (_) {
         return 'Error'
       })

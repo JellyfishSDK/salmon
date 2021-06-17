@@ -1,8 +1,8 @@
 {
   "private": false,
-  "name": "@defichain/salmon-provider-tiingo",
+  "name": "@defichain/salmon-provider-iexcloud",
   "version": "0.0.0",
-  "description": "Price provider for the tiingo api",
+  "description": "Price provider for the iexcloud api",
   "keywords": [
     "DeFiChain",
     "DeFi",
