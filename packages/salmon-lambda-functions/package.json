@@ -32,7 +32,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "pack": "ncc build ./src/index.ts --source-map"
   },
   "peerDependencies": {
     "bignumber.js": "^9.0.1"
@@ -40,11 +41,14 @@
   "dependencies": {
     "@defichain/jellyfish-crypto": "next",
     "@defichain/jellyfish-transaction": "next",
-    "@defichain/jellyfish-transaction-builder": "next"
+    "@defichain/jellyfish-transaction-builder": "next",
+    "@defichain/salmon-price-functions": "0.0.0",
+    "@defichain/salmon-oracles-functions": "0.0.0"
   },
   "devDependencies": {
     "@defichain/jellyfish-api-jsonrpc": "next",
     "@defichain/testcontainers": "next",
-    "@defichain/testing": "next"
+    "@defichain/testing": "next",    
+    "@vercel/ncc": "^0.28.6"
   }
 }

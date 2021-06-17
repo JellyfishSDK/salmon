@@ -18,7 +18,8 @@
     "standard": "ts-standard --fix",
     "test": "jest",
     "test:ci": "jest --ci --coverage --forceExit --maxWorkers=4",
-    "all": "npm run build && npm run standard && npm run test"
+    "all": "npm run build && npm run standard && npm run test",
+    "package": "npm run pack -w ./packages/salmon-lambda-functions"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
