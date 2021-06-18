@@ -33,7 +33,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "pack": "ncc build ./src/index.ts --source-map"
+    "pack": "for x in ./src/*; do ncc build $x --source-map -o dist/$(basename $x .ts); done"
   },
   "peerDependencies": {
     "bignumber.js": "^9.0.1"
