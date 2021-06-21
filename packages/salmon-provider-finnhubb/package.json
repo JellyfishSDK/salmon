@@ -38,7 +38,7 @@
     "bignumber.js": "^9.0.1"
   },
   "dependencies": {
-    "@defichain/jellyfish-json": "next",
+    "@defichain/salmon-price-functions": "0.0.0",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
