@@ -44,6 +44,7 @@
     "@defichain/jellyfish-transaction": "next",
     "@defichain/jellyfish-transaction-builder": "next",
     "@defichain/salmon-price-functions": "0.0.0",
+    "@defichain/salmon-oracles-functions": "0.0.0",
     "@defichain/salmon-provider-tiingo": "0.0.0",
     "@defichain/salmon-provider-finnhubb": "0.0.0",
     "@defichain/salmon-provider-iexcloud": "0.0.0"
