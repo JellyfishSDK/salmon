@@ -10,6 +10,9 @@
   "references": [
     {"path": "./packages/salmon-oracles-functions/tsconfig.build.json"},
     {"path": "./packages/salmon-price-functions/tsconfig.build.json"},
+    {"path": "./packages/salmon-provider-tiingo/tsconfig.build.json"},
+    {"path": "./packages/salmon-provider-iexcloud/tsconfig.build.json"},
+    {"path": "./packages/salmon-provider-finnhubb/tsconfig.build.json"},
     {"path": "./packages/salmon-lambda-functions/tsconfig.build.json"}
  ]
 }

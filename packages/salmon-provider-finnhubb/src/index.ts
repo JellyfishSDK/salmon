@@ -1,9 +1,9 @@
-import { PriceProvider, AssetPrice } from '../price_provider'
+import { PriceProvider, AssetPrice } from '@defichain/salmon-price-functions'
 import fetch from 'node-fetch'
 import BigNumber from 'bignumber.js'
 import {
   JellyfishJSON
-} from '@defichain/jellyfish-api-core'
+} from '@defichain/jellyfish-json'
 
 const FINNHUBB_URL = 'https://finnhub.io/api/v1/quote'
 

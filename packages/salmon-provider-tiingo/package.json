@@ -1,8 +1,8 @@
 {
   "private": false,
-  "name": "@defichain/salmon-price-functions",
+  "name": "@defichain/salmon-provider-tiingo",
   "version": "0.0.0",
-  "description": "A set of functions for fetching price data",
+  "description": "Price provider for the tiingo api",
   "keywords": [
     "DeFiChain",
     "DeFi",
@@ -38,10 +38,12 @@
     "bignumber.js": "^9.0.1"
   },
   "dependencies": {
+    "@defichain/salmon-price-functions": "0.0.0",
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "@defichain/testcontainers": "next",
-    "@defichain/testing": "next",
-    "@types/lossless-json": "^1.0.0"
+    "@types/lossless-json": "^1.0.0",
+    "@types/node-fetch": "^2.5.10",
+    "nock": "^13.0.11"
   }
 }
