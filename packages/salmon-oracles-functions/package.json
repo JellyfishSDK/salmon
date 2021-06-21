@@ -41,8 +41,7 @@
     "@defichain/jellyfish-wallet": "0.11.0",
     "@defichain/jellyfish-transaction": "0.11.0",
     "@defichain/jellyfish-transaction-builder": "0.11.0",
-    "bignumber.js": "^9.0.1",
-    "@nestjs/common": "7.6.18"
+    "bignumber.js": "^9.0.1"
   },
   "devDependencies": {
     "@defichain/testcontainers": "0.11.0",
