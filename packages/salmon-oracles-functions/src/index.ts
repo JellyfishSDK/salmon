@@ -6,7 +6,7 @@ import {
 import { SmartBuffer } from 'smart-buffer'
 import { EllipticPair } from '@defichain/jellyfish-crypto'
 import { CTransactionSegWit, OP_CODES, Script, TransactionSegWit } from '@defichain/jellyfish-transaction'
-import { TokenAmount } from '@defichain/jellyfish-transaction/dist/script/defi/dftx_price'
+import { TokenPrice } from '@defichain/jellyfish-transaction/dist/script/defi/dftx_price'
 import BigNumber from 'bignumber.js'
 import { HASH160 } from '@defichain/jellyfish-crypto/dist/hash'
 
@@ -29,25 +29,19 @@ export class OraclesManager {
    *
    * @param {string} oracleId
    * @param {string} token
-   * @param {TokenAmount[]} prices
+   * @param {TokenPrice[]} tokenPrices
    * @param {BigNumber} [timestamp = new BigNumber(Math.floor(Date.now() / 1000))]
    * @return {Promise<void>}
    */
   async updatePrices (
     oracleId: string,
-    token: string,
-    prices: TokenAmount[],
+    tokenPrices: TokenPrice[],
     timestamp: BigNumber = new BigNumber(Math.floor(Date.now() / 1000))
   ): Promise<void> {
     const txnData = {
       oracleId,
       timestamp,
-      tokens: [
-        {
-          token,
-          prices
-        }
-      ]
+      tokens: tokenPrices
     }
 
     const transaction: TransactionSegWit = await this.builder.oracles.setOracleData(txnData, await this.getChangeScript())

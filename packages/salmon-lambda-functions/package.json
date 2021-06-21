@@ -39,6 +39,7 @@
     "bignumber.js": "^9.0.1"
   },
   "dependencies": {
+    "@defichain/jellyfish": "next",
     "@defichain/jellyfish-crypto": "next",
     "@defichain/jellyfish-transaction": "next",
     "@defichain/jellyfish-transaction-builder": "next",

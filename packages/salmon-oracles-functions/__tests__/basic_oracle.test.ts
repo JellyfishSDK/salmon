@@ -70,7 +70,7 @@ describe('basic price oracles', () => {
     await sendTransaction(container, appointTxn)
 
     const oracleId = calculateTxid(appointTxn)
-    await oraclesManager.updatePrices(oracleId, 'TEST', [{ currency: 'USD', amount: new BigNumber(0.1) }])
+    await oraclesManager.updatePrices(oracleId, [{ token: 'TEST', prices: [{ currency: 'USD', amount: new BigNumber(0.1) }] }])
 
     // Ensure oracle is updated and has correct values
     const getOracleDataResult = await container.call('getoracledata', [oracleId])
@@ -82,7 +82,7 @@ describe('basic price oracles', () => {
     expect(getOracleDataResult.tokenPrices[0].amount).toStrictEqual(0.1)
 
     // Set with explicit timestamp
-    await oraclesManager.updatePrices(oracleId, 'TEST', [{ currency: 'USD', amount: new BigNumber(0.2) }], new BigNumber(1623225892))
+    await oraclesManager.updatePrices(oracleId, [{ token: 'TEST', prices: [{ currency: 'USD', amount: new BigNumber(0.2) }] }], new BigNumber(1623225892))
 
     const getOracleDataSecondResult = await container.call('getoracledata', [oracleId])
     expect(getOracleDataSecondResult.tokenPrices[0].amount).toStrictEqual(0.2)
