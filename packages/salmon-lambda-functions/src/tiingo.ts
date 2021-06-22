@@ -1,6 +1,6 @@
 import { PriceManager, PriceSourceConfig } from '@defichain/salmon-price-functions'
 import { TiingoPriceProvider } from '@defichain/salmon-provider-tiingo'
-import { OraclesWhaleClient } from '@defichain/salmon-oracles-functions'
+import { OraclesManager } from '@defichain/salmon-oracles-functions'
 
 export async function handler (event?: any): Promise<any> {
   // Fetch env vars at the top here so it's clearer
@@ -20,9 +20,8 @@ export async function handler (event?: any): Promise<any> {
   const priceManager = new PriceManager(config, new TiingoPriceProvider(apiToken))
   const prices = await priceManager.fetchAssetPrices()
 
-  const oraclesWhaleClient = new OraclesWhaleClient(oceanUrl, network, privateKey)
-
-  await oraclesWhaleClient.oraclesManager.updatePrices(oracleId,
+  const oraclesManager = OraclesManager.withWhaleClient(oceanUrl, network, privateKey)
+  await oraclesManager.updatePrices(oracleId,
     prices.map(assetPrice => ({
       token: assetPrice.asset,
       prices: [{ currency, amount: assetPrice.price }]

@@ -1,2 +1,2 @@
 export * from './oraclesManager'
-export * from './oraclesWhaleClient'
+export * from './salmonWalletHDNode'

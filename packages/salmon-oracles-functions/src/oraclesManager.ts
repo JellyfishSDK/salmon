@@ -4,11 +4,15 @@ import {
   PrevoutProvider
 } from '@defichain/jellyfish-transaction-builder'
 import { SmartBuffer } from 'smart-buffer'
-import { EllipticPair } from '@defichain/jellyfish-crypto'
+import { EllipticPair, WIF } from '@defichain/jellyfish-crypto'
 import { CTransactionSegWit, OP_CODES, Script, TransactionSegWit } from '@defichain/jellyfish-transaction'
 import { TokenPrice } from '@defichain/jellyfish-transaction/dist/script/defi/dftx_price'
-import BigNumber from 'bignumber.js'
 import { HASH160 } from '@defichain/jellyfish-crypto/dist/hash'
+import { WhaleApiClient } from '@defichain/whale-api-client'
+import { WhaleWalletAccount, WhalePrevoutProvider, WhaleFeeRateProvider } from '@defichain/whale-api-wallet'
+import { getNetwork, NetworkName } from '@defichain/jellyfish-network'
+import { SalmonWalletHDNode } from './salmonWalletHDNode'
+import BigNumber from 'bignumber.js'
 
 export class OraclesManager {
   private readonly builder: P2WPKHTransactionBuilder
@@ -67,5 +71,40 @@ export class OraclesManager {
         OP_CODES.OP_PUSHDATA(HASH160(await this.ellipticPair.publicKey()), 'little')
       ]
     }
+  }
+
+  /**
+   * Creates an oracles manager with a whale api client.
+   *
+   * @param {string} url
+   * @param {string} network
+   * @param {string} privKey
+   * @return {OraclesManager}
+   */
+  static withWhaleClient (
+    url: string,
+    network: string,
+    privKey: string
+  ): OraclesManager {
+    const whaleClient = new WhaleApiClient({
+      url
+    })
+
+    const ellipticPair = WIF.asEllipticPair(privKey)
+    const hdNode = new SalmonWalletHDNode(ellipticPair)
+    const walletAccount = new WhaleWalletAccount(whaleClient, hdNode,
+      getNetwork(network as NetworkName))
+
+    const prevout = new WhalePrevoutProvider(walletAccount, 10)
+    const feeRate = new WhaleFeeRateProvider(whaleClient)
+
+    return new OraclesManager(
+      async (hex: string) => {
+        return await whaleClient.transactions.send({ hex })
+      },
+      ellipticPair,
+      feeRate,
+      prevout
+    )
   }
 }
