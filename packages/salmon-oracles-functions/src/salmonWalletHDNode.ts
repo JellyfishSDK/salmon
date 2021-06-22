@@ -24,7 +24,7 @@ export class SalmonWalletHDNode implements WalletHdNode {
   }
 
   async verify (hash: Buffer, derSignature: Buffer): Promise<boolean> {
-    return await this.ellipticPair.verify(hash, derSignature)
+    throw new Error('Attempting to verify')
   }
 
   async signTx (transaction: Transaction, prevouts: Vout[]): Promise<TransactionSegWit> {
