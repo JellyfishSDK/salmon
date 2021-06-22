@@ -87,7 +87,8 @@ export class OraclesManager {
     privKey: string
   ): OraclesManager {
     const whaleClient = new WhaleApiClient({
-      url
+      url,
+      network
     })
 
     const ellipticPair = WIF.asEllipticPair(privKey)

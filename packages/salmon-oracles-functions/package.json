@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@defichain/testcontainers": ">=0.17.0",
-    "@defichain/testing": ">=0.17.0"
+    "@defichain/testing": ">=0.17.0",
+    "nock": "^13.0.11"
   }
 }
