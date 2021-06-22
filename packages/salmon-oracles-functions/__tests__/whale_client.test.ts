@@ -1,8 +1,11 @@
 import nock from 'nock'
 import { AssetPrice, PriceManager, PriceProvider, PriceSourceConfig } from '@defichain/salmon-price-functions'
-import { OraclesManager } from '@defichain/salmon-oracles-functions'
+import { OraclesManager, SalmonWalletHDNode } from '@defichain/salmon-oracles-functions'
 import { GenesisKeys } from '@defichain/testcontainers'
 import BigNumber from 'bignumber.js'
+import { SmartBuffer } from 'smart-buffer'
+import { CTransactionSegWit } from '@defichain/jellyfish-transaction'
+import { WIF } from '@defichain/jellyfish-crypto'
 
 describe('whale client', () => {
   afterEach(() => {
@@ -12,7 +15,16 @@ describe('whale client', () => {
 
   it('should set a price', async () => {
     nock('http://127.0.0.1/v0/regtest')
-      .post('/transactions', () => true)
+      .post('/transactions', body => {
+        const buffer = SmartBuffer.fromBuffer(Buffer.from(body.hex, 'hex'))
+        const composable = new CTransactionSegWit(buffer)
+        const txSegwit = composable.toObject()
+        const txnData = txSegwit.vout[0].script.stack[1].tx.data
+        expect(txnData.tokens[0].token).toStrictEqual('TSLA')
+        expect(txnData.tokens[0].prices[0].amount).toStrictEqual(new BigNumber(625.22))
+        expect(txnData.timestamp).toStrictEqual(new BigNumber(1480446908666))
+        return true
+      })
       .reply(200, function (_) {
         return {}
       })
@@ -72,6 +84,16 @@ describe('whale client', () => {
       prices.map(assetPrice => ({
         token: assetPrice.asset,
         prices: [{ currency: 'USD', amount: assetPrice.price }]
-      })))
+      })), new BigNumber(1480446908666))
+  })
+})
+
+describe('salmon wallet hd node', () => {
+  it('only returns pubkey and verifies', async () => {
+    const ellipticPair = WIF.asEllipticPair(GenesisKeys[GenesisKeys.length - 1].owner.privKey)
+    const hdNode = new SalmonWalletHDNode(ellipticPair)
+    expect(await hdNode.publicKey()).toStrictEqual(await ellipticPair.publicKey())
+    await expect(hdNode.privateKey()).rejects.toThrow('Attempting to retrieve private key')
+    await expect(hdNode.sign(Buffer.from(''))).rejects.toThrow('Attempting to sign')
   })
 })
