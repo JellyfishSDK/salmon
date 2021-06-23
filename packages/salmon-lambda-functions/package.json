@@ -33,7 +33,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "pack": "for x in ./src/*; do ncc build $x --source-map -o dist/$(basename $x .ts); done"
+    "pack": "for x in ./src/*.ts; do ncc build $x --source-map -o dist/$(basename $x .ts); done"
   },
   "peerDependencies": {
     "bignumber.js": "^9.0.1"
@@ -43,6 +43,7 @@
     "@defichain/jellyfish-transaction": ">=0.17.0",
     "@defichain/jellyfish-transaction-builder": ">=0.17.0",
     "@defichain/salmon-price-functions": "0.0.0",
+    "@defichain/salmon-oracles-functions": "0.0.0",
     "@defichain/salmon-provider-tiingo": "0.0.0",
     "@defichain/salmon-provider-finnhubb": "0.0.0",
     "@defichain/salmon-provider-iexcloud": "0.0.0"
