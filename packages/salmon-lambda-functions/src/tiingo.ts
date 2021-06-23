@@ -10,6 +10,7 @@ export async function handler (event?: any): Promise<any> {
   const oracleId = process.env.ORACLE_ID ?? ''
   const currency = process.env.CURRENCY ?? 'USD'
   const symbols = process.env.SYMBOLS ?? ''
+  const intervalSeconds = parseInt(process.env.INTERVAL_SECONDS ?? '300')
   //! TODO: Fetch some other way perhaps
   const privateKey = process.env.PRIVATE_KEY ?? ''
 
@@ -18,7 +19,8 @@ export async function handler (event?: any): Promise<any> {
   }
 
   const priceManager = new PriceManager(config, new TiingoPriceProvider(apiToken))
-  const prices = await priceManager.fetchAssetPrices()
+  const prices = PriceManager.filterTimestamps(await priceManager.fetchAssetPrices(),
+    new Date(intervalSeconds * 1000.0))
 
   const oraclesManager = OraclesManager.withWhaleClient(oceanUrl, network, privateKey)
   await oraclesManager.updatePrices(oracleId,
