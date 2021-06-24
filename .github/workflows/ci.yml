@@ -65,4 +65,4 @@ jobs:
       - run: .github/workflows/e2e/wait-for http://localhost:3002/_health/probes/liveness -t 120
       - run: .github/workflows/e2e/wait-for http://localhost:19551/ping -t 120
 
-      - run: npm run test .github/workflows/e2e/test.js
+      - run: npm run test:e2e
