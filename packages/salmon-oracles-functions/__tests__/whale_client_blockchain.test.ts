@@ -1,6 +1,6 @@
 import nock from 'nock'
 import { AssetPrice, PriceManager, PriceProvider, PriceSourceConfig } from '@defichain/salmon-price-functions'
-import { OraclesManager, SalmonWalletHDNode } from '@defichain/salmon-oracles-functions'
+import { OraclesManager } from '@defichain/salmon-oracles-functions'
 import { GenesisKeys, MasterNodeRegTestContainer } from '@defichain/testcontainers'
 import BigNumber from 'bignumber.js'
 import { SmartBuffer } from 'smart-buffer'
@@ -154,23 +154,5 @@ describe('whale client blockchain', () => {
         token: assetPrice.asset,
         prices: [{ currency: 'USD', amount: assetPrice.price }]
       })), new BigNumber(1480446908666))
-  })
-})
-
-describe('salmon wallet hd node', () => {
-  it('only returns pubkey', async () => {
-    const ellipticPair = WIF.asEllipticPair(GenesisKeys[GenesisKeys.length - 1].owner.privKey)
-    const hdNode = new SalmonWalletHDNode(ellipticPair)
-    expect(await hdNode.publicKey()).toStrictEqual(await ellipticPair.publicKey())
-    await expect(hdNode.privateKey()).rejects.toThrow('Attempting to retrieve private key')
-    await expect(hdNode.sign(Buffer.alloc(0))).rejects.toThrow('Attempting to sign')
-    await expect(hdNode.verify(Buffer.alloc(0), Buffer.alloc(0))).rejects.toThrow('Attempting to verify')
-    await expect(hdNode.signTx({
-      version: 0,
-      vin: [],
-      vout: [],
-      lockTime: 0
-    }, [])
-    ).rejects.toThrow('Attempting to signTx')
   })
 })
