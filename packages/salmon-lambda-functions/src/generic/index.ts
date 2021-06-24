@@ -1,31 +1,47 @@
-import { PriceManager, PriceSourceConfig, PriceProvider } from '@defichain/salmon-price-functions'
+import { PriceManager, PriceProvider, AssetPrice } from '@defichain/salmon-price-functions'
 import { OraclesManager } from '@defichain/salmon-oracles-functions'
 
-export async function handleGenericPriceApiProvider (provider: PriceProvider, event?: any): Promise<any> {
-  // Fetch env vars at the top here so it's clearer
-  const oceanUrl = process.env.OCEAN_URL ?? 'localhost'
-  const network = process.env.NETWORK ?? 'regtest'
-  const oracleId = process.env.ORACLE_ID ?? ''
-  const currency = process.env.CURRENCY ?? 'USD'
-  const symbols = process.env.SYMBOLS ?? ''
-  const intervalSeconds = parseInt(process.env.INTERVAL_SECONDS ?? '300')
-  //! TODO: Fetch some other way perhaps
-  const privateKey = process.env.PRIVATE_KEY ?? ''
+interface EnvironmentConfig {
+  oceanUrl: string
+  network: string
+  oracleId: string
+  currency: string
+  symbols: string[]
+  intervalSeconds: number
+  privateKey: string
+}
 
-  const config: PriceSourceConfig = {
-    symbols: symbols.split(',')
+const getEnvironmentConfig = (): EnvironmentConfig => {
+  return {
+    oceanUrl: process.env.OCEAN_URL ?? 'localhost',
+    network: process.env.NETWORK ?? 'regtest',
+    oracleId: process.env.ORACLE_ID ?? '',
+    currency: process.env.CURRENCY ?? 'USD',
+    symbols: (process.env.SYMBOLS ?? '').split(','),
+    intervalSeconds: parseInt(process.env.INTERVAL_SECONDS ?? '300'),
+    privateKey: process.env.PRIVATE_KEY ?? '' //! TODO: Fetch some other way perhaps
   }
+}
 
-  const priceManager = new PriceManager(config, provider)
-  const prices = PriceManager.filterTimestamps(await priceManager.fetchAssetPrices(),
-    new Date(intervalSeconds * 1000.0))
-
-  const oraclesManager = OraclesManager.withWhaleClient(oceanUrl, network, privateKey)
-  await oraclesManager.updatePrices(oracleId,
+const broadcastPrices = async (env: EnvironmentConfig, prices: AssetPrice[]): Promise<void> => {
+  const oraclesManager = OraclesManager.withWhaleClient(env.oceanUrl, env.network, env.privateKey)
+  await oraclesManager.updatePrices(env.oracleId,
     prices.map(assetPrice => ({
       token: assetPrice.asset,
-      prices: [{ currency, amount: assetPrice.price }]
+      prices: [{ currency: env.currency, amount: assetPrice.price }]
     })))
+}
+
+const fetchPrices = async (env: EnvironmentConfig, provider: PriceProvider): Promise<AssetPrice[]> => {
+  const priceManager = new PriceManager({ symbols: env.symbols }, provider)
+  return PriceManager.filterTimestamps(await priceManager.fetchAssetPrices(),
+    new Date(env.intervalSeconds * 1000.0))
+}
+
+export async function handleGenericPriceApiProvider (provider: PriceProvider, event?: any): Promise<any> {
+  const env = getEnvironmentConfig()
+  const prices = await fetchPrices(env, provider)
+  await broadcastPrices(env, prices)
 
   console.log(JSON.stringify({ prices, event }))
 
@@ -33,4 +49,4 @@ export async function handleGenericPriceApiProvider (provider: PriceProvider, ev
     statusCode: 200,
     body: JSON.stringify({ prices, event })
   }
-};
+}

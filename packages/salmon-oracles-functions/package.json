@@ -35,17 +35,17 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@defichain/whale-api-wallet": ">=0.3.6",
-    "@defichain/whale-api-client": ">=0.3.6",
-    "@defichain/jellyfish-wallet": ">=0.0.0",
-    "@defichain/jellyfish-crypto": ">=0.17.0",
-    "@defichain/jellyfish-transaction": ">=0.17.0",
-    "@defichain/jellyfish-transaction-builder": ">=0.17.0",
+    "@defichain/whale-api-wallet": ">=0.4.0",
+    "@defichain/whale-api-client": ">=0.4.0",
+    "@defichain/jellyfish-wallet": ">=0.18.0",
+    "@defichain/jellyfish-crypto": ">=0.18.0",
+    "@defichain/jellyfish-transaction": ">=0.18.0",
+    "@defichain/jellyfish-transaction-builder": ">=0.18.0",
     "bignumber.js": "^9.0.1"
   },
   "devDependencies": {
-    "@defichain/testcontainers": ">=0.17.0",
-    "@defichain/testing": ">=0.17.0",
+    "@defichain/testcontainers": ">=0.18.0",
+    "@defichain/testing": ">=0.18.0",
     "nock": "^13.0.11"
   }
 }
