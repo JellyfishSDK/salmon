@@ -29,7 +29,12 @@ const waitForTxConfirm = async (txid) => {
   })
 }
 
-const setupOracle = async () => {   
+const setupOracle = async (id) => {   
+  const oracleList = await client.oracle.listOracles()
+  if(oracleList.length - 1 >= id) {
+    return oracleList[id]
+  }
+
   const oracleId = await client.oracle.appointOracle(oracleOwner.address, [
     {
       token: 'TSLA',
@@ -69,7 +74,7 @@ afterAll(async () => {
 describe('e2e', () => {
   it('should run all lambda functions', async () => {
     mockFinnhubbEndpoints()
-    process.env.ORACLE_ID = await setupOracle()
+    process.env.ORACLE_ID = await setupOracle(0)
     process.env.API_TOKEN = 'API_TOKEN'
     await finnhubb.handler({})
     await waitFor(async () => {
@@ -77,7 +82,7 @@ describe('e2e', () => {
     })  
 
     mockTiingoEndpoints()
-    process.env.ORACLE_ID = await setupOracle()
+    process.env.ORACLE_ID = await setupOracle(1)
     process.env.API_TOKEN = 'API_TOKEN'
     await tiingo.handler({})
     await waitFor(async () => {
@@ -85,7 +90,7 @@ describe('e2e', () => {
     })  
 
     mockIexcloudEndpoints()
-    process.env.ORACLE_ID = await setupOracle()
+    process.env.ORACLE_ID = await setupOracle(2)
     process.env.API_TOKEN = 'API_TOKEN'
     await iexcloud.handler({})
     await waitFor(async () => {
