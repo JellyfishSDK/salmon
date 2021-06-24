@@ -14,5 +14,8 @@ module.exports = {
     '/node_modules/',
     '.*/.*.spec/.*',
     '.*/__tests__/.*'
+  ],
+  testPathIgnorePatterns: [
+    '.github'
   ]
 }
