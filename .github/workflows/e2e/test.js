@@ -12,7 +12,7 @@ const client = new JsonRpcClient('http://playground:playground@localhost:3003')
 const waitFor = (condition) => {
   return new Promise((r) => {
     const testCondition = () => {
-      if(condition()) {
+      if (condition()) {
         r()
       } else {
         setTimeout(testCondition, 500)
@@ -29,9 +29,9 @@ const waitForTxConfirm = async (txid) => {
   })
 }
 
-const setupOracle = async (id) => {   
+const setupOracle = async (id) => {
   const oracleList = await client.oracle.listOracles()
-  if(oracleList.length - 1 >= id) {
+  if (oracleList.length - 1 >= id) {
     return oracleList[id]
   }
 
@@ -39,10 +39,10 @@ const setupOracle = async (id) => {
     {
       token: 'TSLA',
       currency: 'USD'
-    },{
+    }, {
       token: 'AAPL',
       currency: 'USD'
-    },{
+    }, {
       token: 'FB',
       currency: 'USD'
     }
@@ -79,7 +79,7 @@ describe('e2e', () => {
     await finnhubb.handler({})
     await waitFor(async () => {
       return (await client.oracle.getOracleData(process.env.ORACLE_ID)).tokenPrices.length > 0
-    })  
+    })
 
     mockTiingoEndpoints()
     process.env.ORACLE_ID = await setupOracle(1)
@@ -87,7 +87,7 @@ describe('e2e', () => {
     await tiingo.handler({})
     await waitFor(async () => {
       return (await client.oracle.getOracleData(process.env.ORACLE_ID)).tokenPrices.length > 0
-    })  
+    })
 
     mockIexcloudEndpoints()
     process.env.ORACLE_ID = await setupOracle(2)
@@ -95,6 +95,6 @@ describe('e2e', () => {
     await iexcloud.handler({})
     await waitFor(async () => {
       return (await client.oracle.getOracleData(process.env.ORACLE_ID)).tokenPrices.length > 0
-    })  
+    })
   })
 })

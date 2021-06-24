@@ -1,7 +1,7 @@
 const nock = require('nock')
 
 exports.mockFinnhubbEndpoints = () => {
-	nock('https://finnhub.io/api/v1/quote')
+  nock('https://finnhub.io/api/v1/quote')
     .get('?symbol=TSLA&token=API_TOKEN')
     .reply(200, function (_) {
       return `{
@@ -38,14 +38,14 @@ exports.mockFinnhubbEndpoints = () => {
         "pc": 259.45,
         "t": ${Math.floor(Date.now() / 1000)}  
       }`
-    })   
+    })
 }
 
 exports.mockTiingoEndpoints = () => {
   nock('https://api.tiingo.com/iex')
-		.get('/?tickers=TSLA,AAPL,FB&token=API_TOKEN')
-		.reply(200, function (_) {
-		return `[
+    .get('/?tickers=TSLA,AAPL,FB&token=API_TOKEN')
+    .reply(200, function (_) {
+      return `[
 				{
 				"bidPrice":null,
 				"last":606,
@@ -104,14 +104,14 @@ exports.mockTiingoEndpoints = () => {
 				"volume":20136707
 				}
 		]`
-		})
+    })
 }
 
 exports.mockIexcloudEndpoints = () => {
-	nock('https://cloud.iexapis.com/stable/tops')
-		.get('?symbols=TSLA,AAPL,FB&token=API_TOKEN')
-		.reply(200, function (_) {
-			return `[
+  nock('https://cloud.iexapis.com/stable/tops')
+    .get('?symbols=TSLA,AAPL,FB&token=API_TOKEN')
+    .reply(200, function (_) {
+      return `[
 				{
 					"symbol":"TSLA",
 					"sector":"consumerdurables",
@@ -155,5 +155,5 @@ exports.mockIexcloudEndpoints = () => {
 					"volume":598873
 				}
 			]`
-		})
+    })
 }
