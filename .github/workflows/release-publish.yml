@@ -5,47 +5,6 @@ on:
     types: [ published, prereleased ]
 
 jobs:
-  npm:
-    name: NPM
-    runs-on: ubuntu-latest
-    environment: NPM Release Publishing
-    steps:
-      - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
-      - uses: actions/setup-node@46071b5c7a2e0c34e49c3cb8a0e792e86e18d5ea
-        with:
-          node-version: '15'
-
-      - uses: actions/github-script@a3e7071a34d7e1f219a8a4de9a5e0a34d1ee1293
-        id: version
-        with:
-          script: |
-            const semver = context.ref.replace('refs/tags/v', '')
-            if (semver.match(/^[0-9]+\.[0-9]+\.[0-9]+$/)) {
-              return semver
-            }
-
-            throw new Error('not semver')
-          result-encoding: string
-
-      - run: npm ci
-      - run: npm run build
-      - run: npm run version ${{ steps.version.outputs.result }}
-
-      - name: Publish Next
-        if: github.event.release.prerelease
-        run: |
-          npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-          npm run publish:next
-        env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-
-      - name: Publish Latest
-        if: "!github.event.release.prerelease"
-        run: |
-          npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-          npm run publish:latest
-        env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
   create-release:
     name: Create release
     runs-on: ubuntu-latest
