@@ -1,5 +1,3 @@
-const { JsonRpcClient } = require('@defichain/jellyfish-api-jsonrpc')
-const { GenesisKeys } = require('@defichain/testcontainers')
 const BigNumber = require('bignumber.js')
 const waitForExpect = require('wait-for-expect')
 const { mockFinnhubbEndpoints } = require('./mocks_finnhubb')
@@ -8,32 +6,7 @@ const { mockIexcloudEndpoints } = require('./mocks_iexcloud')
 const finnhubb = require('../../../dist/finnhubb')
 const tiingo = require('../../../dist/tiingo')
 const iexcloud = require('../../../dist/iexcloud')
-
-const oracleOwner = GenesisKeys[GenesisKeys.length - 1].operator
-const client = new JsonRpcClient('http://playground:playground@localhost:3003')
-
-async function setupOracle() {
-  const oracleId = await client.oracle.appointOracle(oracleOwner.address, [
-    {
-      token: 'TSLA',
-      currency: 'USD'
-    }, {
-      token: 'AAPL',
-      currency: 'USD'
-    }, {
-      token: 'FB',
-      currency: 'USD'
-    }
-  ], {
-    weightage: 1.0
-  })
-
-  await waitForExpect(async () => {
-    expect((await client.wallet.getTransaction(oracleId)).confirmations).toBeGreaterThanOrEqual(3)
-  }, 10000)
-
-  return oracleId
-}
+const { oracleOwner, client, setupOracle } = require('./setup')
 
 beforeAll(async () => {
   process.env.OCEAN_URL = 'http://localhost:3001'
