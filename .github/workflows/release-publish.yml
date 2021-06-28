@@ -36,5 +36,5 @@ jobs:
         with:
           upload_url: ${{ steps.get_release_by_tag.outputs.upload_url }}
           asset_path: ./bundle.zip
-          asset_name: ./bundle.zip
+          asset_name: bundle.zip
           asset_content_type: application/zip
