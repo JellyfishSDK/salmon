@@ -27,8 +27,7 @@ const broadcastPrices = async (env: EnvironmentConfig, prices: AssetPrice[]): Pr
   const oraclesManager = OraclesManager.withWhaleClient(env.oceanUrl, env.network, env.privateKey)
   await oraclesManager.updatePrices(env.oracleId,
     prices.map(assetPrice => ({
-      token: assetPrice.asset,
-      prices: [{ currency: env.currency, amount: assetPrice.price }]
+      token: assetPrice.asset, prices: [{ currency: env.currency, amount: assetPrice.price }]
     })))
 }
 

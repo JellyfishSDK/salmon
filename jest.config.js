@@ -1,6 +1,6 @@
 module.exports = {
   preset: 'ts-jest',
-  testRegex: '((\\.|/)(e2e|test|spec))\\.[jt]sx?$',
+  testRegex: '((\\.|/)(test|spec))\\.[jt]sx?$',
   moduleNameMapper: {
     '@defichain/salmon-oracles-functions': '<rootDir>/packages/salmon-oracles-functions/src',
     '@defichain/salmon-price-functions': '<rootDir>/packages/salmon-price-functions/src',
@@ -14,5 +14,8 @@ module.exports = {
     '/node_modules/',
     '.*/.*.spec/.*',
     '.*/__tests__/.*'
+  ],
+  testPathIgnorePatterns: [
+    '.github'
   ]
 }
