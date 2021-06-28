@@ -46,3 +46,36 @@ jobs:
           npm run publish:latest
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+  create-release:
+    name: Create release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+      - uses: actions/setup-node@46071b5c7a2e0c34e49c3cb8a0e792e86e18d5ea
+        with:
+          node-version: '15'
+
+      - run: |
+        npm ci
+        npm run build
+        npm run package
+        cd dist
+        zip -r ../bundle.zip .
+
+      - name: Get Release by Tag
+        id: get_release_by_tag
+        uses: jonfriesen/get-release-by-tag@77560d8bbb6096f823ca949d556a1e48c0a60cd0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.BUILD_VERSION }}
+  
+      - name: Upload release asset - windows
+        uses: actions/upload-release-asset@e8f9f06c4b078e705bd2ea027f0926603fc9b4d5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release_by_tag.outputs.upload_url }}
+          asset_path: ./bundle.zip
+          asset_name: ./bundle.zip
+          asset_content_type: application/zip
