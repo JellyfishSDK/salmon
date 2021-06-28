@@ -39,18 +39,17 @@ beforeAll(async () => {
   process.env.CURRENCY = 'USD'
   process.env.SYMBOLS = 'TSLA,AAPL,FB'
   process.env.PRIVATE_KEY = oracleOwner.privKey
-
-  for(let i = 0;i < 3;i++) {
-    await waitForExpect(async () => {
-      const txid = await client.wallet.sendToAddress(oracleOwner.address, 1)
-      expect((await client.wallet.getTransaction(txid)).confirmations).toBeGreaterThanOrEqual(3)
-    }, 10000)  
-  }
 })
 
 describe('e2e', () => {
   it('should run all lambda functions', async () => {
     try {
+      const txid = await client.wallet.sendToAddress(oracleOwner.address, 1)
+      await waitForExpect(async () => {
+        const confirms = (await client.wallet.getTransaction(txid)).confirmations
+        expect(confirms).toBeGreaterThanOrEqual(2)
+      }, 5000)
+    
       mockFinnhubbEndpoints()
       const finnhubbOracleId = await setupOracle()
       process.env.ORACLE_ID = finnhubbOracleId
@@ -88,7 +87,7 @@ describe('e2e', () => {
       expect(fbPrice).toStrictEqual(new BigNumber('340'))
 
       const tslaPrice = new BigNumber(await client.oracle.getPrice({ currency: 'USD', token: 'TSLA' }))
-      expect(tslaPrice).toStrictEqual(new BigNumber('606'))    
+      expect(tslaPrice).toStrictEqual(new BigNumber('606'))
     } catch(e) {
       console.log(e)
     }

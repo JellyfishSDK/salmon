@@ -78,8 +78,8 @@ describe('whale client blockchain', () => {
     await sendTransaction(container, appointTxn)
     const oracleId = calculateTxid(appointTxn)
 
-    nock('http://127.0.0.1/v0/regtest')
-      .post('/transactions', body => {
+    nock('http://127.0.0.1/v0')
+      .post('/regtest/transactions', body => {
         (async () => {
           await container.call('sendrawtransaction', [body.hex])
           await container.generate(1)
@@ -96,8 +96,8 @@ describe('whale client blockchain', () => {
         return {}
       })
 
-    nock('http://127.0.0.1/v0/regtest/address/bcrt1qyeuu9rvq8a67j86pzvh5897afdmdjpyankp4mu/transactions')
-      .get('/unspent?size=10')
+    nock('http://127.0.0.1/v0')
+      .get('/regtest/address/bcrt1qyeuu9rvq8a67j86pzvh5897afdmdjpyankp4mu/transactions/unspent?size=10')
       .reply(200, function (_) {
         return {
           data: [
@@ -124,8 +124,8 @@ describe('whale client blockchain', () => {
         }
       })
 
-    nock('http://127.0.0.1/v0/regtest/transactions')
-      .get('/estimate-fee?confirmationTarget=10')
+    nock('http://127.0.0.1/v0')
+      .get('/regtest/transactions/estimate-fee?confirmationTarget=10')
       .reply(200, function (_) {
         return { data: 0.00005 }
       })

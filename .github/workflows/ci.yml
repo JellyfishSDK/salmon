@@ -61,8 +61,8 @@ jobs:
       - name: Setup Playground
         run: docker-compose -f .github/workflows/e2e/docker-compose.yml up -d
 
-      - run: .github/workflows/e2e/wait-for http://localhost:3001/_actuator/probes/liveness -t 120
-      - run: .github/workflows/e2e/wait-for http://localhost:3002/_actuator/probes/liveness -t 120
+      - run: .github/workflows/e2e/wait-for http://localhost:3001/_health/probes/liveness -t 120
+      - run: .github/workflows/e2e/wait-for http://localhost:3002/_health/probes/liveness -t 120
       - run: .github/workflows/e2e/wait-for http://localhost:19551/ping -t 120
 
       - run: npm run test:e2e
