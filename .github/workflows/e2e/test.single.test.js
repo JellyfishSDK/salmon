@@ -21,7 +21,7 @@ describe('e2e single', () => {
     await waitForExpect(async () => {
       const confirms = (await client.wallet.getTransaction(txid)).confirmations
       expect(confirms).toBeGreaterThanOrEqual(2)
-    }, 5000)
+    }, 10000)
   
     mockFinnhubbEndpoints()
     const finnhubbOracleId = await setupOracle()
@@ -35,6 +35,12 @@ describe('e2e single', () => {
   })
 
   it('should run tiingo provider lambda function', async () => {
+    const txid = await client.wallet.sendToAddress(oracleOwner.address, 1)
+    await waitForExpect(async () => {
+      const confirms = (await client.wallet.getTransaction(txid)).confirmations
+      expect(confirms).toBeGreaterThanOrEqual(2)
+    }, 10000)
+
     mockTiingoEndpoints()
     const tiingoOracleId = await setupOracle()
     process.env.ORACLE_ID = tiingoOracleId
@@ -47,6 +53,12 @@ describe('e2e single', () => {
   })
 
   it('should run iexcloud provider lambda function', async () => {
+    const txid = await client.wallet.sendToAddress(oracleOwner.address, 1)
+    await waitForExpect(async () => {
+      const confirms = (await client.wallet.getTransaction(txid)).confirmations
+      expect(confirms).toBeGreaterThanOrEqual(2)
+    }, 10000)
+
     mockIexcloudEndpoints()
     const iexcloudOracleId = await setupOracle()
     process.env.ORACLE_ID = iexcloudOracleId
