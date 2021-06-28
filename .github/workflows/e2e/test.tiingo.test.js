@@ -26,5 +26,10 @@ describe('e2e single tiingo', () => {
     await waitForExpect(async () => {
       expect((await client.oracle.getOracleData(tiingoOracleId)).tokenPrices.length).toBeGreaterThanOrEqual(3)
     }, 10000)
+
+    const oracleData = await client.oracle.getOracleData(tiingoOracleId);
+    expect(oracleData.tokenPrices[0].amount).toStrictEqual(120)
+    expect(oracleData.tokenPrices[1].amount).toStrictEqual(340)
+    expect(oracleData.tokenPrices[2].amount).toStrictEqual(606)
   })
 })

@@ -26,5 +26,10 @@ describe('e2e single iexcloud', () => {
     await waitForExpect(async () => {
       expect((await client.oracle.getOracleData(iexcloudOracleId)).tokenPrices.length).toBeGreaterThanOrEqual(3)
     }, 10000)
+
+    const oracleData = await client.oracle.getOracleData(iexcloudOracleId);
+    expect(oracleData.tokenPrices[0].amount).toStrictEqual(150)
+    expect(oracleData.tokenPrices[1].amount).toStrictEqual(350)
+    expect(oracleData.tokenPrices[2].amount).toStrictEqual(607)
   })
 })
