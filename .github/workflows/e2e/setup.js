@@ -5,7 +5,7 @@ const waitForExpect = require('wait-for-expect')
 exports.oracleOwner = GenesisKeys[GenesisKeys.length - 1].operator
 exports.client = new JsonRpcClient('http://playground:playground@localhost:3003')
 
-exports.setupOracle = async function setupOracle() {
+exports.setupOracle = async function() {
   const oracleId = await exports.client.oracle.appointOracle(exports.oracleOwner.address, [
     {
       token: 'TSLA',

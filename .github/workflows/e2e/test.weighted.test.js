@@ -13,6 +13,7 @@ beforeAll(async () => {
   process.env.NETWORK = 'regtest'
   process.env.CURRENCY = 'USD'
   process.env.SYMBOLS = 'TSLA,AAPL,FB'
+  process.env.API_TOKEN = 'API_TOKEN'
   process.env.PRIVATE_KEY = oracleOwner.privKey
 })
 
@@ -22,37 +23,34 @@ describe('e2e weighted', () => {
     await waitForExpect(async () => {
       const confirms = (await client.wallet.getTransaction(txid)).confirmations
       expect(confirms).toBeGreaterThanOrEqual(2)
-    }, 5000)
+    }, 20000)
   
     mockFinnhubbEndpoints()
     const finnhubbOracleId = await setupOracle()
     process.env.ORACLE_ID = finnhubbOracleId
-    process.env.API_TOKEN = 'API_TOKEN'
     await finnhubb.handler({})
 
     await waitForExpect(async () => {
       expect((await client.oracle.getOracleData(finnhubbOracleId)).tokenPrices.length).toBeGreaterThanOrEqual(3)
-    }, 10000)
+    }, 20000)
 
     mockTiingoEndpoints()
     const tiingoOracleId = await setupOracle()
     process.env.ORACLE_ID = tiingoOracleId
-    process.env.API_TOKEN = 'API_TOKEN'
     await tiingo.handler({})
 
     await waitForExpect(async () => {
       expect((await client.oracle.getOracleData(tiingoOracleId)).tokenPrices.length).toBeGreaterThanOrEqual(3)
-    }, 10000)
+    }, 20000)
 
     mockIexcloudEndpoints()
     const iexcloudOracleId = await setupOracle()
     process.env.ORACLE_ID = iexcloudOracleId
-    process.env.API_TOKEN = 'API_TOKEN'
     await iexcloud.handler({})
 
     await waitForExpect(async () => {
       expect((await client.oracle.getOracleData(iexcloudOracleId)).tokenPrices.length).toBeGreaterThanOrEqual(3)
-    }, 10000)
+    }, 20000)
 
     const aaplPrice = new BigNumber(await client.oracle.getPrice({ currency: 'USD', token: 'AAPL' }))
     expect(aaplPrice).toStrictEqual(new BigNumber('130'))
