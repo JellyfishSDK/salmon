@@ -3,10 +3,7 @@ const { mockIexcloudEndpoints } = require('./mocks_iexcloud')
 const iexcloud = require('../../../dist/iexcloud')
 const { oracleOwner, client, setupOracle } = require('./setup')
 
-beforeAll(async () => {
-})
-
-describe('e2e single', () => {
+describe('e2e single iexcloud', () => {
   it('should run iexcloud provider lambda function', async () => {
     process.env.OCEAN_URL = 'http://localhost:3001'
     process.env.NETWORK = 'regtest'

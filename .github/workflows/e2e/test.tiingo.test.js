@@ -3,7 +3,7 @@ const { mockTiingoEndpoints } = require('./mocks_tiingo')
 const tiingo = require('../../../dist/tiingo')
 const { oracleOwner, client, setupOracle } = require('./setup')
 
-describe('e2e single', () => {
+describe('e2e single tiingo', () => {
   it('should run tiingo provider lambda function', async () => {
     process.env.OCEAN_URL = 'http://localhost:3001'
     process.env.NETWORK = 'regtest'

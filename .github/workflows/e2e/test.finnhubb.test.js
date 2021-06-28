@@ -3,10 +3,7 @@ const { mockFinnhubbEndpoints } = require('./mocks_finnhubb')
 const finnhubb = require('../../../dist/finnhubb')
 const { oracleOwner, client, setupOracle } = require('./setup')
 
-beforeAll(async () => {
-})
-
-describe('e2e single', () => {
+describe('e2e single finnhubb', () => {
   it('should run finnhubb provider lambda function', async () => {
     process.env.OCEAN_URL = 'http://localhost:3001'
     process.env.NETWORK = 'regtest'
