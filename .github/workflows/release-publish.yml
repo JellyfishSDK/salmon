@@ -48,4 +48,4 @@ jobs:
       
       - name: Push to s3
         run: |
-          aws s3 cp ./bundle.zip s3://salmon-releases/bundle-${github.ref##*/}.zip
+          aws s3 cp ./bundle.zip s3://salmon-releases/bundle-${GITHUB_REF##*/}.zip
