@@ -15,6 +15,10 @@ functions for the Price Oracle service.
 On release `types: [ published, prereleased ]`, GitHub Action will automatically build all packages in this repo and
 publish a build artifact.
 
+### Usage
+
+Salmon is designed with AWS Lambda in mind, although the individual packages can be used to fetch prices or push prices to oracles. See the configuration section below for more information.
+
 ### Configuration
 
 `salmon-lambda-functions` is configurable via the following environment variables:
