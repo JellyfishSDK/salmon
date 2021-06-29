@@ -7,6 +7,7 @@ checks:
       threshold: 75
 
 exclude_patterns:
+  - ".github/"
   - "dist/"
   - "**/node_modules/"
   - "**/*.spec/"
