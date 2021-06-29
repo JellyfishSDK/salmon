@@ -18,12 +18,12 @@ publish a build artifact.
 ### Configuration
 
 `salmon-lambda-functions` is configurable via the following environment variables:
-- OCEAN_URL: url of local or remote whale instance
-- NETWORK: regtest|testnet|mainnet
-- CURRENCY: USD, etc
-- SYMBOLS: a comma separated list of symbols to fetch from the providers
-- ORACLE_ID: the id of the oracle to push prices to on DeFiChain
-- API_TOKEN: (optional) API token for certain providers e.g. Tiingo, Finnhubb, IEXCloud
+- `OCEAN_URL`: url of local or remote whale instance
+- `NETWORK`: regtest|testnet|mainnet
+- `CURRENCY`: USD, etc
+- `SYMBOLS`: a comma separated list of symbols to fetch from the providers
+- `ORACLE_ID`: the id of the oracle to push prices to on DeFiChain
+- `API_TOKEN`: (optional) API token for certain providers e.g. Tiingo, Finnhubb, IEXCloud
 
 ### IntelliJ IDEA
 
