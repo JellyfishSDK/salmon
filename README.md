@@ -12,13 +12,18 @@ functions for the Price Oracle service.
 
 ### Publishing
 
-`"version": "0.0.0"` is used because publishing will be done automatically
-by [GitHub releases](https://github.com/DeFiCh/salmon/releases) with connected workflows. On
-release `types: [ published, prereleased ]`, GitHub Action will automatically build all packages in this repo and
-publish it into npm.
+On release `types: [ published, prereleased ]`, GitHub Action will automatically build all packages in this repo and
+publish a build artifact.
 
-* release are tagged as `@latest`
-* prerelease are tagged as `@next` (please use this cautiously)
+### Configuration
+
+`salmon-lambda-functions` is configurable via the following environment variables:
+- OCEAN_URL: url of local or remote whale instance
+- NETWORK: regtest|testnet|mainnet
+- CURRENCY: USD, etc
+- SYMBOLS: a comma separated list of symbols to fetch from the providers
+- ORACLE_ID: the id of the oracle to push prices to on DeFiChain
+- API_TOKEN: (optional) API token for certain providers e.g. Tiingo, Finnhubb, IEXCloud
 
 ### IntelliJ IDEA
 
