@@ -27,6 +27,7 @@ Salmon is designed with AWS Lambda in mind, although the individual packages can
 - `CURRENCY`: USD, etc
 - `SYMBOLS`: a comma separated list of symbols to fetch from the providers
 - `ORACLE_ID`: the id of the oracle to push prices to on DeFiChain
+- `PRIVATE_KEY_SSM_KEY`: SSM key in AWS for the private key
 - `API_TOKEN`: (optional) API token for certain providers e.g. Tiingo, Finnhubb, IEXCloud
 
 ### IntelliJ IDEA

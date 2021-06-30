@@ -1,5 +1,6 @@
 import { PriceManager, PriceProvider, AssetPrice } from '@defichain/salmon-price-functions'
 import { OraclesManager } from '@defichain/salmon-oracles-functions'
+import aws from 'aws-sdk'
 
 interface EnvironmentConfig {
   oceanUrl: string
@@ -11,7 +12,20 @@ interface EnvironmentConfig {
   privateKey: string
 }
 
-const getEnvironmentConfig = (): EnvironmentConfig => {
+const getEnvironmentConfig = async (): Promise<EnvironmentConfig> => {
+  let privateKey = process.env.PRIVATE_KEY ?? ''
+
+  if (process.env.PRIVATE_KEY_SSM_KEY !== undefined) {
+    const paramConfig = {
+      Name: process.env.PRIVATE_KEY_SSM_KEY,
+      WithDecryption: true
+    }
+
+    const parameterStore = new aws.SSM()
+    const param = await parameterStore.getParameter(paramConfig).promise()
+    privateKey = param.Parameter?.Value ?? ''
+  }
+
   return {
     oceanUrl: process.env.OCEAN_URL ?? 'localhost',
     network: process.env.NETWORK ?? 'regtest',
@@ -19,7 +33,7 @@ const getEnvironmentConfig = (): EnvironmentConfig => {
     currency: process.env.CURRENCY ?? 'USD',
     symbols: (process.env.SYMBOLS ?? '').split(','),
     intervalSeconds: parseInt(process.env.INTERVAL_SECONDS ?? '300'),
-    privateKey: process.env.PRIVATE_KEY ?? '' //! TODO: Fetch some other way perhaps
+    privateKey
   }
 }
 
@@ -38,7 +52,7 @@ const fetchPrices = async (env: EnvironmentConfig, provider: PriceProvider): Pro
 }
 
 export async function handleGenericPriceApiProvider (provider: PriceProvider, event?: any): Promise<any> {
-  const env = getEnvironmentConfig()
+  const env = await getEnvironmentConfig()
   const prices = await fetchPrices(env, provider)
   await broadcastPrices(env, prices)
 
