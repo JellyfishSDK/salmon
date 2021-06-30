@@ -33,7 +33,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "pack": "for x in ./src/*.ts; do ncc build $x --source-map -o ../../dist/$(basename $x .ts); done"
+    "pack": "for x in ./src/*.ts; do ncc build $x -e aws-sdk --source-map -o ../../dist/$(basename $x .ts); done"
   },
   "peerDependencies": {
     "bignumber.js": "^9.0.1"
@@ -52,6 +52,7 @@
     "@defichain/jellyfish-api-jsonrpc": ">=0.18.0",
     "@defichain/testcontainers": ">=0.18.0",
     "@defichain/testing": ">=0.18.0",
-    "@vercel/ncc": "^0.28.6"
+    "@vercel/ncc": "^0.28.6",
+    "aws-sdk": "^2.936.0"
   }
 }

@@ -1,4 +1,3 @@
-import nock from 'nock'
 import { OraclesManager, SalmonWalletHDNode } from '@defichain/salmon-oracles-functions'
 import { GenesisKeys } from '@defichain/testcontainers'
 import { WIF } from '@defichain/jellyfish-crypto'
@@ -6,7 +5,6 @@ import { WIF } from '@defichain/jellyfish-crypto'
 describe('whale client', () => {
   afterEach(() => {
     jest.clearAllMocks()
-    nock.cleanAll()
   })
 
   it('should create oracles manager with whale client', async () => {
