@@ -21,6 +21,15 @@ jobs:
           cd dist
           zip -r ../bundle.zip .
       
+      - name: Upload zip file to release
+        uses: svenstaro/upload-release-action@2f88c7710e85b1f8b5f6c3a2fcadaa7f865af713
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./bundle.zip
+          asset_name: bundle.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+      
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
