@@ -35,13 +35,17 @@ export class OraclesManager {
    * @param {string} token
    * @param {TokenPrice[]} tokenPrices
    * @param {BigNumber} [timestamp = new BigNumber(Math.floor(Date.now() / 1000))]
-   * @return {Promise<void>}
+   * @return {Promise<string|undefined>}
    */
   async updatePrices (
     oracleId: string,
     tokenPrices: TokenPrice[],
     timestamp: BigNumber = new BigNumber(Math.floor(Date.now() / 1000))
-  ): Promise<void> {
+  ): Promise<string | undefined> {
+    if (tokenPrices.length === 0) {
+      return
+    }
+
     const txnData = {
       oracleId,
       timestamp,
@@ -49,7 +53,7 @@ export class OraclesManager {
     }
 
     const transaction: TransactionSegWit = await this.builder.oracles.setOracleData(txnData, await this.getChangeScript())
-    await this.broadcast(transaction)
+    return await this.broadcast(transaction)
   }
 
   private async broadcast (transaction: TransactionSegWit): Promise<string> {

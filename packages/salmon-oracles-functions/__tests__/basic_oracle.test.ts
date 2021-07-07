@@ -88,4 +88,25 @@ describe('basic price oracles', () => {
     expect(getOracleDataSecondResult.tokenPrices[0].amount).toStrictEqual(0.2)
     expect(getOracleDataSecondResult.tokenPrices[0].timestamp).toStrictEqual(1623225892)
   })
+
+  it('should do nothing', async () => {
+    const broadcast = async (hex: string): Promise<string> => {
+      const txid = await container.call('sendrawtransaction', [hex])
+      await container.generate(1)
+      return txid
+    }
+
+    const broadcastMock = jest.fn(broadcast)
+
+    const oraclesManager = new OraclesManager(
+      broadcastMock,
+      providers.ellipticPair,
+      providers.fee,
+      providers.prevout
+    )
+
+    await oraclesManager.updatePrices('', [])
+
+    expect(broadcastMock).not.toHaveBeenCalled()
+  })
 })
