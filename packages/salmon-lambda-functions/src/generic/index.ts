@@ -37,9 +37,9 @@ const getEnvironmentConfig = async (): Promise<EnvironmentConfig> => {
   }
 }
 
-const broadcastPrices = async (env: EnvironmentConfig, prices: AssetPrice[]): Promise<void> => {
+const broadcastPrices = async (env: EnvironmentConfig, prices: AssetPrice[]): Promise<string | undefined> => {
   const oraclesManager = OraclesManager.withWhaleClient(env.oceanUrl, env.network, env.privateKey)
-  await oraclesManager.updatePrices(env.oracleId,
+  return await oraclesManager.updatePrices(env.oracleId,
     prices.map(assetPrice => ({
       token: assetPrice.asset, prices: [{ currency: env.currency, amount: assetPrice.price }]
     })))
@@ -54,9 +54,12 @@ const fetchPrices = async (env: EnvironmentConfig, provider: PriceProvider): Pro
 export async function handleGenericPriceApiProvider (provider: PriceProvider, event?: any): Promise<any> {
   const env = await getEnvironmentConfig()
   const prices = await fetchPrices(env, provider)
-  await broadcastPrices(env, prices)
-
   console.log(JSON.stringify({ prices, event }))
+
+  const txid = await broadcastPrices(env, prices)
+  if (txid !== undefined) {
+    console.log(`Sent with txid: ${txid}`)
+  }
 
   return {
     statusCode: 200,
