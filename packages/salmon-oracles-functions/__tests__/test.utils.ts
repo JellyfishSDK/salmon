@@ -1,6 +1,6 @@
-import { Bech32, Elliptic, EllipticPair, dSHA256, HASH160 } from '@defichain/jellyfish-crypto'
+import { Bech32, Elliptic, EllipticPair, dSHA256 } from '@defichain/jellyfish-crypto'
 import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
-import { CTransaction, CTransactionSegWit, OP_CODES, Script, Transaction, TransactionSegWit } from '@defichain/jellyfish-transaction'
+import { CTransaction, CTransactionSegWit, Transaction, TransactionSegWit } from '@defichain/jellyfish-transaction'
 import { SmartBuffer } from 'smart-buffer'
 
 /**
@@ -19,15 +19,6 @@ export async function fundEllipticPair (container: MasterNodeRegTestContainer, e
 
   await container.fundAddress(address, amount)
   await container.generate(1)
-}
-
-export async function getChangeScript (ellipticPair: EllipticPair): Promise<Script> {
-  return {
-    stack: [
-      OP_CODES.OP_0,
-      OP_CODES.OP_PUSHDATA(HASH160(await ellipticPair.publicKey()), 'little')
-    ]
-  }
 }
 
 export async function sendTransaction (container: MasterNodeRegTestContainer, transaction: TransactionSegWit): Promise<TxOut[]> {

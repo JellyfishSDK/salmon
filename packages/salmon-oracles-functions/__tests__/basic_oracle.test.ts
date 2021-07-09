@@ -1,5 +1,5 @@
 import { MasterNodeRegTestContainer, GenesisKeys } from '@defichain/testcontainers'
-import { fundEllipticPair, sendTransaction, getChangeScript } from './test.utils'
+import { fundEllipticPair, sendTransaction } from './test.utils'
 import { getProviders, MockProviders } from './provider.mock'
 import { OraclesManager } from '../src'
 import { dSHA256, WIF } from '@defichain/jellyfish-crypto'
@@ -55,7 +55,7 @@ describe('basic price oracles', () => {
     )
 
     // Appoint Oracle
-    const script = await getChangeScript(providers.ellipticPair)
+    const script = await oraclesManager.getChangeScript()
     const appointTxn = await builder.oracles.appointOracle({
       script: script,
       weightage: 1,

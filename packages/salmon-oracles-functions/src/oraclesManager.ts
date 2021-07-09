@@ -1,7 +1,7 @@
 import { P2WPKHTransactionBuilder } from '@defichain/jellyfish-transaction-builder'
 import { SmartBuffer } from 'smart-buffer'
-import { WIF } from '@defichain/jellyfish-crypto'
-import { CTransactionSegWit, TokenPrice, TransactionSegWit } from '@defichain/jellyfish-transaction'
+import { HASH160, WIF } from '@defichain/jellyfish-crypto'
+import { CTransactionSegWit, OP_CODES, Script, TokenPrice, TransactionSegWit } from '@defichain/jellyfish-transaction'
 import { WhaleApiClient } from '@defichain/whale-api-client'
 import { WhaleWalletAccount } from '@defichain/whale-api-wallet'
 import { getNetwork, NetworkName } from '@defichain/jellyfish-network'
@@ -20,6 +20,29 @@ export class OraclesManager {
     new CTransactionSegWit(transaction).toBuffer(buffer)
     const hex = buffer.toString('hex')
     return await this.broadcastHex(hex)
+  }
+
+  /**
+   * Returns the script for the price oracle owner.
+   *
+   * @return {Promise<Script>}
+   */
+  public async getChangeScript (): Promise<Script> {
+    const ellipticPair =
+      this.builder.ellipticPairProvider.get({
+        txid: '',
+        vout: 0,
+        tokenId: 0,
+        script: { stack: [] },
+        value: new BigNumber(0)
+      })
+
+    return {
+      stack: [
+        OP_CODES.OP_0,
+        OP_CODES.OP_PUSHDATA(HASH160(await ellipticPair.publicKey()), 'little')
+      ]
+    }
   }
 
   /**
