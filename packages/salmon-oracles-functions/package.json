@@ -42,6 +42,7 @@
     "@defichain/jellyfish-transaction": ">=0.22.0",
     "@defichain/jellyfish-transaction-builder": ">=0.22.0",
     "@defichain/jellyfish-transaction-signature": ">=0.22.0",
+    "@defichain/jellyfish-network": ">=0.22.0",
     "bignumber.js": "^9.0.1"
   },
   "devDependencies": {

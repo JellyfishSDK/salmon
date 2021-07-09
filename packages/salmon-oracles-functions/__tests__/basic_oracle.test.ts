@@ -1,7 +1,7 @@
 import { MasterNodeRegTestContainer, GenesisKeys } from '@defichain/testcontainers'
 import { fundEllipticPair, sendTransaction } from './test.utils'
-import { getProviders, MockProviders } from './provider.mock'
-import { OraclesManager } from '../src'
+import { getProviders, MockProviders, MockWalletAccount } from './provider.mock'
+import { OraclesManager, SalmonWalletHDNode } from '../src'
 import { dSHA256, WIF } from '@defichain/jellyfish-crypto'
 import { P2WPKHTransactionBuilder } from '@defichain/jellyfish-transaction-builder/dist'
 import { SmartBuffer } from 'smart-buffer'
@@ -51,7 +51,8 @@ describe('basic price oracles', () => {
       },
       new P2WPKHTransactionBuilder(providers.fee, providers.prevout, {
         get: (_) => providers.ellipticPair
-      })
+      }),
+      new MockWalletAccount(new SalmonWalletHDNode(providers.ellipticPair))
     )
 
     // Appoint Oracle
@@ -102,7 +103,8 @@ describe('basic price oracles', () => {
       broadcastMock,
       new P2WPKHTransactionBuilder(providers.fee, providers.prevout, {
         get: (_) => providers.ellipticPair
-      })
+      }),
+      new MockWalletAccount(new SalmonWalletHDNode(providers.ellipticPair))
     )
 
     await oraclesManager.updatePrices('', [])

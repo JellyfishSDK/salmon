@@ -1,17 +1,19 @@
 import { P2WPKHTransactionBuilder } from '@defichain/jellyfish-transaction-builder'
 import { SmartBuffer } from 'smart-buffer'
-import { HASH160, WIF } from '@defichain/jellyfish-crypto'
-import { CTransactionSegWit, OP_CODES, Script, TokenPrice, TransactionSegWit } from '@defichain/jellyfish-transaction'
+import { WIF } from '@defichain/jellyfish-crypto'
+import { CTransactionSegWit, Script, TokenPrice, TransactionSegWit } from '@defichain/jellyfish-transaction'
 import { WhaleApiClient } from '@defichain/whale-api-client'
 import { WhaleWalletAccount } from '@defichain/whale-api-wallet'
 import { getNetwork, NetworkName } from '@defichain/jellyfish-network'
 import { SalmonWalletHDNode } from './salmonWalletHDNode'
 import BigNumber from 'bignumber.js'
+import { WalletAccount } from '@defichain/jellyfish-wallet'
 
 export class OraclesManager {
   constructor (
     private readonly broadcastHex: (hex: string) => Promise<string>,
-    private readonly builder: P2WPKHTransactionBuilder
+    private readonly builder: P2WPKHTransactionBuilder,
+    private readonly walletAccount: WalletAccount
   ) {
   }
 
@@ -28,21 +30,7 @@ export class OraclesManager {
    * @return {Promise<Script>}
    */
   public async getChangeScript (): Promise<Script> {
-    const ellipticPair =
-      this.builder.ellipticPairProvider.get({
-        txid: '',
-        vout: 0,
-        tokenId: 0,
-        script: { stack: [] },
-        value: new BigNumber(0)
-      })
-
-    return {
-      stack: [
-        OP_CODES.OP_0,
-        OP_CODES.OP_PUSHDATA(HASH160(await ellipticPair.publicKey()), 'little')
-      ]
-    }
+    return await this.walletAccount.getScript()
   }
 
   /**
@@ -100,7 +88,8 @@ export class OraclesManager {
       async (hex: string) => {
         return await whaleClient.transactions.send({ hex })
       },
-      walletAccount.withTransactionBuilder()
+      walletAccount.withTransactionBuilder(),
+      walletAccount
     )
   }
 }
