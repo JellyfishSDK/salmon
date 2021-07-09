@@ -18,15 +18,5 @@ describe('salmon wallet hd node', () => {
     const ellipticPair = WIF.asEllipticPair(GenesisKeys[GenesisKeys.length - 1].owner.privKey)
     const hdNode = new SalmonWalletHDNode(ellipticPair)
     expect(await hdNode.publicKey()).toStrictEqual(await ellipticPair.publicKey())
-    await expect(hdNode.privateKey()).rejects.toThrow('Attempting to retrieve private key')
-    await expect(hdNode.sign(Buffer.alloc(0))).rejects.toThrow('Attempting to sign')
-    await expect(hdNode.verify(Buffer.alloc(0), Buffer.alloc(0))).rejects.toThrow('Attempting to verify')
-    await expect(hdNode.signTx({
-      version: 0,
-      vin: [],
-      vout: [],
-      lockTime: 0
-    }, [])
-    ).rejects.toThrow('Attempting to signTx')
   })
 })
