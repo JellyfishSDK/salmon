@@ -1,6 +1,7 @@
 import { EllipticPair } from '@defichain/jellyfish-crypto'
-import { Transaction, TransactionSegWit, Vout } from '@defichain/jellyfish-transaction'
+import { SIGHASH, Transaction, TransactionSegWit, Vout } from '@defichain/jellyfish-transaction'
 import { WalletHdNode } from '@defichain/jellyfish-wallet'
+import { SignInputOption, TransactionSigner } from '@defichain/jellyfish-transaction-signature'
 
 /**
  * Single elliptic pair wallet HD node.
@@ -16,18 +17,23 @@ export class SalmonWalletHDNode implements WalletHdNode {
   }
 
   async privateKey (): Promise<Buffer> {
-    throw new Error('Attempting to retrieve private key')
+    return await this.ellipticPair.privateKey()
   }
 
   async sign (hash: Buffer): Promise<Buffer> {
-    throw new Error('Attempting to sign')
+    return await this.ellipticPair.sign(hash)
   }
 
   async verify (hash: Buffer, derSignature: Buffer): Promise<boolean> {
-    throw new Error('Attempting to verify')
+    return await this.ellipticPair.verify(hash, derSignature)
   }
 
   async signTx (transaction: Transaction, prevouts: Vout[]): Promise<TransactionSegWit> {
-    throw new Error('Attempting to signTx')
+    const inputs: SignInputOption[] = prevouts.map(prevout => {
+      return { prevout: prevout, ellipticPair: this }
+    })
+    return TransactionSigner.sign(transaction, inputs, {
+      sigHashType: SIGHASH.ALL
+    })
   }
 }

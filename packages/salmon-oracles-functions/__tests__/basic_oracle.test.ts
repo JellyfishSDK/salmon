@@ -1,5 +1,5 @@
 import { MasterNodeRegTestContainer, GenesisKeys } from '@defichain/testcontainers'
-import { fundEllipticPair, sendTransaction } from './test.utils'
+import { fundEllipticPair, sendTransaction, getChangeScript } from './test.utils'
 import { getProviders, MockProviders } from './provider.mock'
 import { OraclesManager } from '../src'
 import { dSHA256, WIF } from '@defichain/jellyfish-crypto'
@@ -49,13 +49,13 @@ describe('basic price oracles', () => {
         await container.generate(1)
         return txid
       },
-      providers.ellipticPair,
-      providers.fee,
-      providers.prevout
+      new P2WPKHTransactionBuilder(providers.fee, providers.prevout, {
+        get: (_) => providers.ellipticPair
+      })
     )
 
     // Appoint Oracle
-    const script = await oraclesManager.getChangeScript()
+    const script = await getChangeScript(providers.ellipticPair)
     const appointTxn = await builder.oracles.appointOracle({
       script: script,
       weightage: 1,
@@ -100,9 +100,9 @@ describe('basic price oracles', () => {
 
     const oraclesManager = new OraclesManager(
       broadcastMock,
-      providers.ellipticPair,
-      providers.fee,
-      providers.prevout
+      new P2WPKHTransactionBuilder(providers.fee, providers.prevout, {
+        get: (_) => providers.ellipticPair
+      })
     )
 
     await oraclesManager.updatePrices('', [])
