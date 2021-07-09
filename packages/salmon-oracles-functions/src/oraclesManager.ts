@@ -1,15 +1,10 @@
-import {
-  FeeRateProvider,
-  P2WPKHTransactionBuilder,
-  PrevoutProvider
-} from '@defichain/jellyfish-transaction-builder'
+import { FeeRateProvider, P2WPKHTransactionBuilder, PrevoutProvider } from '@defichain/jellyfish-transaction-builder'
 import { SmartBuffer } from 'smart-buffer'
 import { EllipticPair, WIF } from '@defichain/jellyfish-crypto'
-import { CTransactionSegWit, OP_CODES, Script, TransactionSegWit } from '@defichain/jellyfish-transaction'
-import { TokenPrice } from '@defichain/jellyfish-transaction/dist/script/defi/dftx_price'
+import { CTransactionSegWit, OP_CODES, Script, TokenPrice, TransactionSegWit } from '@defichain/jellyfish-transaction'
 import { HASH160 } from '@defichain/jellyfish-crypto/dist/hash'
 import { WhaleApiClient } from '@defichain/whale-api-client'
-import { WhaleWalletAccount, WhalePrevoutProvider, WhaleFeeRateProvider } from '@defichain/whale-api-wallet'
+import { WhaleFeeRateProvider, WhalePrevoutProvider, WhaleWalletAccount } from '@defichain/whale-api-wallet'
 import { getNetwork, NetworkName } from '@defichain/jellyfish-network'
 import { SalmonWalletHDNode } from './salmonWalletHDNode'
 import BigNumber from 'bignumber.js'
@@ -97,8 +92,7 @@ export class OraclesManager {
 
     const ellipticPair = WIF.asEllipticPair(privKey)
     const hdNode = new SalmonWalletHDNode(ellipticPair)
-    const walletAccount = new WhaleWalletAccount(whaleClient, hdNode,
-      getNetwork(network as NetworkName))
+    const walletAccount = new WhaleWalletAccount(whaleClient, hdNode, getNetwork(network as NetworkName))
 
     const prevout = new WhalePrevoutProvider(walletAccount, 10)
     const feeRate = new WhaleFeeRateProvider(whaleClient)
