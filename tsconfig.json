@@ -7,7 +7,8 @@
       "@defichain/salmon-price-functions": ["salmon-price-functions/src"],
       "@defichain/salmon-provider-tiingo": ["salmon-provider-tiingo/src"],
       "@defichain/salmon-provider-iexcloud": ["salmon-provider-iexcloud/src"],
-      "@defichain/salmon-provider-finnhubb": ["salmon-provider-finnhubb/src"]
+      "@defichain/salmon-provider-finnhubb": ["salmon-provider-finnhubb/src"],
+      "@defichain/salmon-provider-finnhubb-forex": ["salmon-provider-finnhubb-forex/src"]
     }
   }
 }
