@@ -1,5 +1,4 @@
 import { P2WPKHTransactionBuilder } from '@defichain/jellyfish-transaction-builder'
-import { SmartBuffer } from 'smart-buffer'
 import { WIF } from '@defichain/jellyfish-crypto'
 import { CTransactionSegWit, Script, TokenPrice, TransactionSegWit } from '@defichain/jellyfish-transaction'
 import { WhaleApiClient } from '@defichain/whale-api-client'
@@ -15,11 +14,6 @@ export class OraclesManager {
     private readonly builder: P2WPKHTransactionBuilder,
     private readonly walletAccount: WalletAccount
   ) {
-  }
-
-  private async broadcast (transaction: TransactionSegWit): Promise<string> {
-    const hex = new CTransactionSegWit(transaction).toHex()
-    return await this.broadcastHex(hex)
   }
 
   /**
@@ -55,8 +49,9 @@ export class OraclesManager {
       tokens: tokenPrices
     }
 
-    const transaction: TransactionSegWit = await this.builder.oracles.setOracleData(txnData, await this.getChangeScript())
-    return await this.broadcast(transaction)
+    const setOracleDataTxn: TransactionSegWit = await this.builder.oracles.setOracleData(txnData, await this.getChangeScript())
+    const transactionSegWit: CTransactionSegWit = new CTransactionSegWit(setOracleDataTxn)
+    return await this.broadcastHex(transactionSegWit.toHex())
   }
 
   /**
