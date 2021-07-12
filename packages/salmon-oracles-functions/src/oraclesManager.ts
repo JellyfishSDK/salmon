@@ -1,26 +1,28 @@
-import { FeeRateProvider, P2WPKHTransactionBuilder, PrevoutProvider } from '@defichain/jellyfish-transaction-builder'
-import { SmartBuffer } from 'smart-buffer'
-import { EllipticPair, WIF } from '@defichain/jellyfish-crypto'
-import { CTransactionSegWit, OP_CODES, Script, TokenPrice, TransactionSegWit } from '@defichain/jellyfish-transaction'
-import { HASH160 } from '@defichain/jellyfish-crypto/dist/hash'
+import { P2WPKHTransactionBuilder } from '@defichain/jellyfish-transaction-builder'
+import { WIF } from '@defichain/jellyfish-crypto'
+import { CTransactionSegWit, Script, TokenPrice, TransactionSegWit } from '@defichain/jellyfish-transaction'
 import { WhaleApiClient } from '@defichain/whale-api-client'
-import { WhaleFeeRateProvider, WhalePrevoutProvider, WhaleWalletAccount } from '@defichain/whale-api-wallet'
+import { WhaleWalletAccount } from '@defichain/whale-api-wallet'
 import { getNetwork, NetworkName } from '@defichain/jellyfish-network'
-import { SalmonWalletHDNode } from './salmonWalletHDNode'
 import BigNumber from 'bignumber.js'
+import { WalletAccount } from '@defichain/jellyfish-wallet'
+import { WalletClassic } from '@defichain/jellyfish-wallet-classic'
 
 export class OraclesManager {
-  private readonly builder: P2WPKHTransactionBuilder
-
   constructor (
     private readonly broadcastHex: (hex: string) => Promise<string>,
-    private readonly ellipticPair: EllipticPair,
-    feeRate: FeeRateProvider,
-    prevout: PrevoutProvider
+    private readonly builder: P2WPKHTransactionBuilder,
+    private readonly walletAccount: WalletAccount
   ) {
-    this.builder = new P2WPKHTransactionBuilder(feeRate, prevout, {
-      get: (_) => ellipticPair
-    })
+  }
+
+  /**
+   * Returns the script for the price oracle owner.
+   *
+   * @return {Promise<Script>}
+   */
+  public async getChangeScript (): Promise<Script> {
+    return await this.walletAccount.getScript()
   }
 
   /**
@@ -47,29 +49,9 @@ export class OraclesManager {
       tokens: tokenPrices
     }
 
-    const transaction: TransactionSegWit = await this.builder.oracles.setOracleData(txnData, await this.getChangeScript())
-    return await this.broadcast(transaction)
-  }
-
-  private async broadcast (transaction: TransactionSegWit): Promise<string> {
-    const buffer = new SmartBuffer()
-    new CTransactionSegWit(transaction).toBuffer(buffer)
-    const hex = buffer.toString('hex')
-    return await this.broadcastHex(hex)
-  }
-
-  /**
-   * Returns the script for the price oracle owner.
-   *
-   * @return {Promise<Script>}
-   */
-  public async getChangeScript (): Promise<Script> {
-    return {
-      stack: [
-        OP_CODES.OP_0,
-        OP_CODES.OP_PUSHDATA(HASH160(await this.ellipticPair.publicKey()), 'little')
-      ]
-    }
+    const setOracleDataTxn: TransactionSegWit = await this.builder.oracles.setOracleData(txnData, await this.getChangeScript())
+    const transactionSegWit: CTransactionSegWit = new CTransactionSegWit(setOracleDataTxn)
+    return await this.broadcastHex(transactionSegWit.toHex())
   }
 
   /**
@@ -91,19 +73,16 @@ export class OraclesManager {
     })
 
     const ellipticPair = WIF.asEllipticPair(privKey)
-    const hdNode = new SalmonWalletHDNode(ellipticPair)
-    const walletAccount = new WhaleWalletAccount(whaleClient, hdNode, getNetwork(network as NetworkName))
-
-    const prevout = new WhalePrevoutProvider(walletAccount, 10)
-    const feeRate = new WhaleFeeRateProvider(whaleClient)
+    const hdNode = new WalletClassic(ellipticPair)
+    const walletAccount = new WhaleWalletAccount(whaleClient, hdNode,
+      getNetwork(network as NetworkName))
 
     return new OraclesManager(
       async (hex: string) => {
         return await whaleClient.transactions.send({ hex })
       },
-      ellipticPair,
-      feeRate,
-      prevout
+      walletAccount.withTransactionBuilder(),
+      walletAccount
     )
   }
 }

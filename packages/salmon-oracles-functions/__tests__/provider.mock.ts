@@ -3,6 +3,8 @@ import { FeeRateProvider, Prevout, PrevoutProvider } from '@defichain/jellyfish-
 import { OP_CODES } from '@defichain/jellyfish-transaction'
 import { MasterNodeRegTestContainer } from '@defichain/testcontainers'
 import BigNumber from 'bignumber.js'
+import { WalletAccount, WalletHdNode } from '@defichain/jellyfish-wallet'
+import { RegTest } from '@defichain/jellyfish-network'
 
 // TODO(fuxingloh): All these mock can be replaced with whale.
 //  But whale is harder to setup than @defichain/testcontainers.
@@ -120,5 +122,17 @@ export class MockProviders {
     // full nodes need importprivkey or else it can't list unspent
     const wif = WIF.encode(0xef, await this.ellipticPair.privateKey())
     await this.container.call('importprivkey', [wif])
+  }
+}
+
+export class MockWalletAccount extends WalletAccount {
+  constructor (
+    hdNode: WalletHdNode
+  ) {
+    super(hdNode, RegTest)
+  }
+
+  async isActive (): Promise<boolean> {
+    return true
   }
 }
