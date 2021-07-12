@@ -18,9 +18,7 @@ export class OraclesManager {
   }
 
   private async broadcast (transaction: TransactionSegWit): Promise<string> {
-    const buffer = new SmartBuffer()
-    new CTransactionSegWit(transaction).toBuffer(buffer)
-    const hex = buffer.toString('hex')
+    const hex = new CTransactionSegWit(transaction).toHex()
     return await this.broadcastHex(hex)
   }
 
