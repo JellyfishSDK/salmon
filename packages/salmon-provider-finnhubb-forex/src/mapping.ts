@@ -12,6 +12,10 @@ export const FINNHUBB_OANDA_SYMBOL_MAPPING: Record<string, OandaSymbolMapping> =
     symbol: 'OANDA:GBP_USD',
     inverse: false
   },
+  EUR: {
+    symbol: 'OANDA:EUR_USD',
+    inverse: false
+  },
   SGD: {
     symbol: 'OANDA:USD_SGD',
     inverse: true

@@ -11,9 +11,12 @@ describe('multi price fetch', () => {
   })
 
   it('should fetch price from finnhubb using config', async () => {
-    nock('https://finnhub.io/api/v1/quote')
-      .get('?symbol=AAPL&token=API_TOKEN')
-      .reply(200, function (_) {
+    nock('https://finnhub.io/')
+      .filteringPath(() => {
+        return '/'
+      })
+      .get('/')
+      .reply(200, (_) => {
         return `{
           "c": [
             1802.56,
@@ -43,9 +46,12 @@ describe('multi price fetch', () => {
         }`
       })
 
-    nock('https://finnhub.io/api/v1/quote')
-      .get('?symbol=FB&token=API_TOKEN')
-      .reply(200, function (_) {
+    nock('https://finnhub.io/')
+      .filteringPath(() => {
+        return '/'
+      })
+      .get('/')
+      .reply(200, (_) => {
         return `{
           "c": [
             1.3542,
@@ -75,9 +81,12 @@ describe('multi price fetch', () => {
         }`
       })
 
-    nock('https://finnhub.io/api/v1/quote')
-      .get('?symbol=TSLA&token=API_TOKEN')
-      .reply(200, function (_) {
+    nock('https://finnhub.io/')
+      .filteringPath(() => {
+        return '/'
+      })
+      .get('/')
+      .reply(200, (_) => {
         return `{
           "c": [
             1.37725,
@@ -108,16 +117,49 @@ describe('multi price fetch', () => {
       })
 
     const finnhubbConfig: PriceSourceConfig = {
-      symbols: ['GOLD', 'GBP', 'SGD']
+      symbols: ['GOLD', 'EUR', 'SGD']
     }
 
     const priceManager = new PriceManager(finnhubbConfig, new FinnhubbForexPriceProvider('API_TOKEN'))
     const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('GOLD')
-    expect(prices[0].price).toStrictEqual(new BigNumber(605.14))
-    expect(prices[1].asset).toStrictEqual('GBP')
-    expect(prices[1].price).toStrictEqual(new BigNumber(126))
+    expect(prices[0].price).toStrictEqual(new BigNumber(1802.532))
+    expect(prices[1].asset).toStrictEqual('EUR')
+    expect(prices[1].price).toStrictEqual(new BigNumber(1.35424))
     expect(prices[2].asset).toStrictEqual('SGD')
-    expect(prices[2].price).toStrictEqual(new BigNumber(336.59))
+    expect(prices[2].price).toStrictEqual(new BigNumber(1.0).div(new BigNumber(1.37748)))
+  })
+
+  it('should handle empty price', async () => {
+    nock('https://finnhub.io/')
+      .filteringPath(() => {
+        return '/'
+      })
+      .get('/')
+      .reply(200, (_) => {
+        return `{
+          "c": [
+          ],
+          "h": [
+          ],
+          "l": [
+          ],
+          "o": [
+          ],
+          "s": "ok",
+          "t": [
+          ],
+          "v": [
+          ]
+        }`
+      })
+
+    const finnhubbConfig: PriceSourceConfig = {
+      symbols: ['SGD']
+    }
+
+    const priceManager = new PriceManager(finnhubbConfig, new FinnhubbForexPriceProvider('API_TOKEN'))
+    const prices = await priceManager.fetchAssetPrices()
+    expect(prices.length).toStrictEqual(0)
   })
 })

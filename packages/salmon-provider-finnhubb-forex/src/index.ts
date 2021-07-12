@@ -7,6 +7,7 @@ import {
 import { FINNHUBB_OANDA_SYMBOL_MAPPING } from './mapping'
 
 const FINNHUBB_URL = 'https://finnhub.io/api/v1/forex/candle'
+const CANDLE_RES = 5
 
 /**
  * Fetches forex prices from Finnhubb
@@ -24,7 +25,7 @@ export class FinnhubbForexPriceProvider implements PriceProvider {
     const tPrev = tNow - interval
     const oandaSymbol = FINNHUBB_OANDA_SYMBOL_MAPPING[symbol].symbol
 
-    const fetchPath = `${FINNHUBB_URL}?symbol=${oandaSymbol}&resolution=5&from=${tPrev}&to=${tNow}&token=${this.apiToken}`
+    const fetchPath = `${FINNHUBB_URL}?symbol=${oandaSymbol}&resolution=${CANDLE_RES}&token=${this.apiToken}&from=${tPrev}&to=${tNow}`
     const response = await fetch(fetchPath, {
       method: 'GET'
     })
