@@ -1,12 +1,13 @@
 import { MasterNodeRegTestContainer, GenesisKeys } from '@defichain/testcontainers'
 import { fundEllipticPair, sendTransaction } from './test.utils'
 import { getProviders, MockProviders, MockWalletAccount } from './provider.mock'
-import { OraclesManager, SalmonWalletHDNode } from '../src'
+import { OraclesManager } from '../src'
 import { dSHA256, WIF } from '@defichain/jellyfish-crypto'
 import { P2WPKHTransactionBuilder } from '@defichain/jellyfish-transaction-builder/dist'
 import { SmartBuffer } from 'smart-buffer'
 import { BigNumber } from 'bignumber.js'
 import { CTransaction, Transaction } from '@defichain/jellyfish-transaction'
+import { WalletClassic } from '@defichain/jellyfish-wallet-classic'
 
 export function calculateTxid (transaction: Transaction): string {
   const buffer = new SmartBuffer()
@@ -52,7 +53,7 @@ describe('basic price oracles', () => {
       new P2WPKHTransactionBuilder(providers.fee, providers.prevout, {
         get: (_) => providers.ellipticPair
       }),
-      new MockWalletAccount(new SalmonWalletHDNode(providers.ellipticPair))
+      new MockWalletAccount(new WalletClassic(providers.ellipticPair))
     )
 
     // Appoint Oracle
@@ -104,7 +105,7 @@ describe('basic price oracles', () => {
       new P2WPKHTransactionBuilder(providers.fee, providers.prevout, {
         get: (_) => providers.ellipticPair
       }),
-      new MockWalletAccount(new SalmonWalletHDNode(providers.ellipticPair))
+      new MockWalletAccount(new WalletClassic(providers.ellipticPair))
     )
 
     await oraclesManager.updatePrices('', [])

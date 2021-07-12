@@ -5,9 +5,9 @@ import { CTransactionSegWit, Script, TokenPrice, TransactionSegWit } from '@defi
 import { WhaleApiClient } from '@defichain/whale-api-client'
 import { WhaleWalletAccount } from '@defichain/whale-api-wallet'
 import { getNetwork, NetworkName } from '@defichain/jellyfish-network'
-import { SalmonWalletHDNode } from './salmonWalletHDNode'
 import BigNumber from 'bignumber.js'
 import { WalletAccount } from '@defichain/jellyfish-wallet'
+import { WalletClassic } from '@defichain/jellyfish-wallet-classic'
 
 export class OraclesManager {
   constructor (
@@ -80,7 +80,7 @@ export class OraclesManager {
     })
 
     const ellipticPair = WIF.asEllipticPair(privKey)
-    const hdNode = new SalmonWalletHDNode(ellipticPair)
+    const hdNode = new WalletClassic(ellipticPair)
     const walletAccount = new WhaleWalletAccount(whaleClient, hdNode,
       getNetwork(network as NetworkName))
 
