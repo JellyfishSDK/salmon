@@ -5,3 +5,33 @@ labels:
     sync: true
     matcher:
       files: ".github/**"
+
+  - label: area/salmon-lambda-functions
+    sync: true
+    matcher:
+      files: "packages/salmon-lambda-functions/**"
+
+  - label: area/salmon-oracles-functions
+    sync: true
+    matcher:
+      files: "packages/salmon-oracles-functions/**"
+
+  - label: area/salmon-price-functions
+    sync: true
+    matcher:
+      files: "packages/salmon-price-functions/**"
+
+  - label: area/salmon-provider-finnhubb
+    sync: true
+    matcher:
+      files: "packages/salmon-provider-finnhubb/**"
+
+  - label: area/salmon-provider-iexcloud
+    sync: true
+    matcher:
+      files: "packages/salmon-provider-iexcloud/**"
+
+  - label: area/salmon-provider-tiingo
+    sync: true
+    matcher:
+      files: "packages/salmon-provider-tiingo/**"

@@ -54,6 +54,18 @@
   name: area/core
 - color: fbca04
   name: area/workflow
+- color: fbca04
+  name: area/salmon-lambda-functions
+- color: fbca04
+  name: area/salmon-oracles-functions
+- color: fbca04
+  name: area/salmon-price-functions
+- color: fbca04
+  name: area/salmon-provider-finnhubb
+- color: fbca04
+  name: area/salmon-provider-iexcloud
+- color: fbca04
+  name: area/salmon-provider-tiingo
 
 # Priority
 - color: d93f0b
