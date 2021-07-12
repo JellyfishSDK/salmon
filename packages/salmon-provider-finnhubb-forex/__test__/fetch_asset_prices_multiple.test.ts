@@ -127,7 +127,7 @@ describe('multi price fetch', () => {
     expect(prices[1].asset).toStrictEqual('EUR')
     expect(prices[1].price).toStrictEqual(new BigNumber(1.35424))
     expect(prices[2].asset).toStrictEqual('SGD')
-    expect(prices[2].price).toStrictEqual(new BigNumber(1.0).div(new BigNumber(1.37748)))
+    expect(prices[2].price).toStrictEqual(new BigNumber(1).div(new BigNumber(1.37748)))
   })
 
   it('should handle empty price', async () => {

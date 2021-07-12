@@ -21,7 +21,7 @@ export class FinnhubbForexPriceProvider implements PriceProvider {
 
   private async fetchAsset (symbol: string): Promise<AssetPrice> {
     const interval = parseInt(process.env.INTERVAL_SECONDS ?? '300')
-    const tNow = Math.floor(Date.now() / 1000.0)
+    const tNow = Math.floor(Date.now() / 1000)
     const tPrev = tNow - interval
     const oandaSymbol = FINNHUBB_OANDA_SYMBOL_MAPPING[symbol].symbol
 
@@ -35,13 +35,13 @@ export class FinnhubbForexPriceProvider implements PriceProvider {
 
     let price = new BigNumber(json.c.slice(-1))
     if (FINNHUBB_OANDA_SYMBOL_MAPPING[symbol].inverse) {
-      price = new BigNumber(1.0).div(price)
+      price = new BigNumber(1).div(price)
     }
 
     return {
       asset: symbol,
       price,
-      timestamp: new BigNumber(json.t.slice(-1) * 1000)
+      timestamp: (new BigNumber(json.t.slice(-1))).multipliedBy(1000)
     }
   }
 

@@ -29,7 +29,7 @@ export class FinnhubbPriceProvider implements PriceProvider {
     return {
       asset: symbol,
       price: new BigNumber(json.c),
-      timestamp: new BigNumber(json.t * 1000)
+      timestamp: (new BigNumber(json.t)).multipliedBy(1000)
     }
   }
 
