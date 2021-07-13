@@ -23,7 +23,7 @@ export class FinnhubbForexPriceProvider implements PriceProvider {
     const interval = parseInt(process.env.INTERVAL_SECONDS ?? '300')
     const tNow = Math.floor(Date.now() / 1000)
     const tPrev = tNow - interval
-    const oandaSymbol = FINNHUBB_OANDA_SYMBOL_MAPPING[symbol].symbol
+    const oandaSymbol = FINNHUBB_OANDA_SYMBOL_MAPPING[symbol].ticker
 
     const fetchPath = `${FINNHUBB_URL}?symbol=${oandaSymbol}&resolution=${CANDLE_RES}&token=${this.apiToken}&from=${tPrev}&to=${tNow}`
     const response = await fetch(fetchPath, {
