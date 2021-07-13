@@ -26,11 +26,10 @@ export class FinnhubbPriceProvider implements PriceProvider {
     const text = await response.text()
     const json = JellyfishJSON.parse(text, 'bignumber')
 
-    const timestamp = json.t * 1000
     return {
       asset: symbol,
       price: new BigNumber(json.c),
-      timestamp: new BigNumber(timestamp)
+      timestamp: (new BigNumber(json.t)).multipliedBy(1000)
     }
   }
 
