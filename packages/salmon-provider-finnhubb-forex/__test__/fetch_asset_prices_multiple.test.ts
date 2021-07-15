@@ -117,12 +117,12 @@ describe('multi price fetch', () => {
       })
 
     const finnhubbConfig: PriceSourceConfig = {
-      symbols: ['GOLD', 'EUR', 'SGD']
+      symbols: ['XAU', 'EUR', 'SGD']
     }
 
     const priceManager = new PriceManager(finnhubbConfig, new FinnhubbForexPriceProvider('API_TOKEN'))
     const prices = await priceManager.fetchAssetPrices()
-    expect(prices[0].asset).toStrictEqual('GOLD')
+    expect(prices[0].asset).toStrictEqual('XAU')
     expect(prices[0].price).toStrictEqual(new BigNumber(1802.532))
     expect(prices[1].asset).toStrictEqual('EUR')
     expect(prices[1].price).toStrictEqual(new BigNumber(1.35424))
