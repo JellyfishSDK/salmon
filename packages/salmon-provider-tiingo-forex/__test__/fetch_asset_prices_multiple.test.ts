@@ -46,12 +46,12 @@ describe('multi price fetch', () => {
       })
 
     const tiingoConfig: PriceSourceConfig = {
-      symbols: ['GOLD', 'EUR', 'SGD']
+      symbols: ['XAU', 'EUR', 'SGD']
     }
 
     const priceManager = new PriceManager(tiingoConfig, new TiingoForexPriceProvider('API_TOKEN'))
     const prices = await priceManager.fetchAssetPrices()
-    expect(prices[0].asset).toStrictEqual('GOLD')
+    expect(prices[0].asset).toStrictEqual('XAU')
     expect(prices[0].price).toStrictEqual(new BigNumber(1810.94))
     expect(prices[0].timestamp).toStrictEqual(new BigNumber(1626159855484))
     expect(prices[1].asset).toStrictEqual('EUR')

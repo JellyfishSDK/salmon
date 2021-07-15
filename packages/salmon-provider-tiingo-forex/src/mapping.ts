@@ -4,12 +4,16 @@ interface TiingoSymbolMapping {
 }
 
 export const TIINGO_SYMBOL_MAPPING: Record<string, TiingoSymbolMapping> = {
-  GOLD: {
+  XAU: {
     ticker: 'xauusd',
     inverse: false
   },
+  XAG: {
+    ticker: 'xagusd',
+    inverse: false
+  },
   GBP: {
-    ticker: 'xauusd',
+    ticker: 'gbpusd',
     inverse: false
   },
   EUR: {
