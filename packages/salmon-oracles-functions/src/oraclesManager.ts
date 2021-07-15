@@ -32,7 +32,7 @@ export class OraclesManager {
    */
   public async getAddress (): Promise<string> {
     const pubKey = await this.walletAccount.publicKey()
-    return Bech32.fromPubKey(pubKey, 'bcrt')
+    return Bech32.fromPubKey(pubKey, 'df')
   }
 
   /**
