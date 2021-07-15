@@ -1,5 +1,5 @@
 import { P2WPKHTransactionBuilder } from '@defichain/jellyfish-transaction-builder'
-import { WIF } from '@defichain/jellyfish-crypto'
+import { Bech32, WIF } from '@defichain/jellyfish-crypto'
 import { CTransactionSegWit, Script, TokenPrice, TransactionSegWit } from '@defichain/jellyfish-transaction'
 import { WhaleApiClient } from '@defichain/whale-api-client'
 import { WhaleWalletAccount } from '@defichain/whale-api-wallet'
@@ -23,6 +23,32 @@ export class OraclesManager {
    */
   public async getChangeScript (): Promise<Script> {
     return await this.walletAccount.getScript()
+  }
+
+  /**
+   * Returns the address for the price oracle owner.
+   *
+   * @return {Promise<string>}
+   */
+  public async getAddress (): Promise<string> {
+    const pubKey = await this.walletAccount.publicKey()
+    return Bech32.fromPubKey(pubKey, 'bcrt')
+  }
+
+  /**
+   * Returns the balance for the address for the price oracle owner.
+   *
+   * @param {string} url
+   * @param {string} network
+   * @return {Promise<string>}
+   */
+  public async getBalance (url: string, network: string): Promise<BigNumber> {
+    const whaleClient = new WhaleApiClient({
+      url,
+      network
+    })
+
+    return new BigNumber(await whaleClient.address.getBalance(await this.getAddress()))
   }
 
   /**
