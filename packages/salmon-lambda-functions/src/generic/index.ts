@@ -29,7 +29,7 @@ export async function handleGenericPriceApiProvider (provider: PriceProvider, ev
 
   // Do this at the end, let critical flow run first
   try {
-    await checkBalanceAndNotify(oraclesManager, env)
+    await checkBalanceAndNotify(oraclesManager.walletAccount, env)
   } catch (e) {
     console.log(e)
   }
