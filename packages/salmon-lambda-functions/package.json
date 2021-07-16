@@ -48,7 +48,7 @@
     "@defichain/salmon-provider-tiingo": "0.0.0",
     "@defichain/salmon-provider-finnhubb": "0.0.0",
     "@defichain/salmon-provider-iexcloud": "0.0.0",
-    "@defichain/whale-api-client": ">=0.5.8"
+    "@defichain/whale-api-client": ">=0.5.9"
   },
   "devDependencies": {
     "@defichain/jellyfish-api-jsonrpc": ">=0.27.0",
