@@ -77,7 +77,8 @@ export class OraclesManager {
       getNetwork(network as NetworkName))
 
     return new OraclesManager(
-      whaleClient.transactions.send,
+      async (rawTx: { hex: string }): Promise<string> =>
+        await whaleClient.transactions.send(rawTx),
       walletAccount.withTransactionBuilder(),
       walletAccount
     )
