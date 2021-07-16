@@ -41,12 +41,14 @@
   "dependencies": {
     "@defichain/jellyfish-crypto": ">=0.27.0",
     "@defichain/jellyfish-transaction": ">=0.27.0",
+    "@defichain/jellyfish-wallet": ">=0.27.0",
     "@defichain/jellyfish-transaction-builder": ">=0.27.0",
     "@defichain/salmon-price-functions": "0.0.0",
     "@defichain/salmon-oracles-functions": "0.0.0",
     "@defichain/salmon-provider-tiingo": "0.0.0",
     "@defichain/salmon-provider-finnhubb": "0.0.0",
-    "@defichain/salmon-provider-iexcloud": "0.0.0"
+    "@defichain/salmon-provider-iexcloud": "0.0.0",
+    "@defichain/whale-api-client": ">=0.5.8"
   },
   "devDependencies": {
     "@defichain/jellyfish-api-jsonrpc": ">=0.27.0",

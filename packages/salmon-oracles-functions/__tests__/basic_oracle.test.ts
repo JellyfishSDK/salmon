@@ -45,8 +45,8 @@ describe('basic price oracles', () => {
 
   it('should set a price', async () => {
     const oraclesManager = new OraclesManager(
-      async hex => {
-        const txid = await container.call('sendrawtransaction', [hex])
+      async rawTx => {
+        const txid = await container.call('sendrawtransaction', [rawTx.hex])
         await container.generate(1)
         return txid
       },
@@ -92,8 +92,8 @@ describe('basic price oracles', () => {
   })
 
   it('should do nothing', async () => {
-    const broadcast = async (hex: string): Promise<string> => {
-      const txid = await container.call('sendrawtransaction', [hex])
+    const broadcast = async (rawTx: { hex: string }): Promise<string> => {
+      const txid = await container.call('sendrawtransaction', [rawTx.hex])
       await container.generate(1)
       return txid
     }
@@ -111,17 +111,5 @@ describe('basic price oracles', () => {
     await oraclesManager.updatePrices('', [])
 
     expect(broadcastMock).not.toHaveBeenCalled()
-  })
-
-  it('should get address', async () => {
-    const oraclesManager = new OraclesManager(
-      async (hex: string): Promise<string> => '',
-      new P2WPKHTransactionBuilder(providers.fee, providers.prevout, {
-        get: (_) => providers.ellipticPair
-      }),
-      new MockWalletAccount(new WalletClassic(providers.ellipticPair))
-    )
-
-    expect(await oraclesManager.getAddress()).toStrictEqual(GenesisKeys[GenesisKeys.length - 1].owner.address)
   })
 })
