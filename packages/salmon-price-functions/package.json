@@ -40,8 +40,8 @@
   "dependencies": {
   },
   "devDependencies": {
-    "@defichain/testcontainers": ">=0.26.0",
-    "@defichain/testing": ">=0.26.0",
+    "@defichain/testcontainers": ">=0.27.0",
+    "@defichain/testing": ">=0.27.0",
     "@types/lossless-json": "^1.0.0"
   }
 }
