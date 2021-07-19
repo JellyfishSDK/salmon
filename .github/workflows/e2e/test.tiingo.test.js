@@ -1,6 +1,6 @@
 const waitForExpect = require('wait-for-expect')
 const { mockTiingoEndpoints } = require('./mocks_tiingo')
-const tiingo = require('../../../dist/tiingo')
+const tiingo = require('../../../dist').tiingo
 const { oracleOwner, client, setupOracle } = require('./setup')
 
 describe('e2e single tiingo', () => {
@@ -21,7 +21,7 @@ describe('e2e single tiingo', () => {
     const tiingoOracleId = await setupOracle()
     process.env.ORACLE_ID = tiingoOracleId
     process.env.API_TOKEN = 'API_TOKEN'
-    await tiingo.handler({})
+    await tiingo({})
 
     await waitForExpect(async () => {
       expect((await client.oracle.getOracleData(tiingoOracleId)).tokenPrices.length).toBeGreaterThanOrEqual(3)
