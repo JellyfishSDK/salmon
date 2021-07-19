@@ -28,7 +28,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "pack": "ncc build ./src/index.ts -e aws-sdk --source-map -o ../../dist/index.ts"
+    "pack": "ncc build ./src/index.ts -e aws-sdk --source-map -o ../../dist"
   },
   "peerDependencies": {
     "bignumber.js": "^9.0.1"
