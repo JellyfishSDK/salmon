@@ -16,7 +16,7 @@ export async function checkBalanceAndNotify (walletAccount: WalletAccount, env: 
     const message = {
       channel: 'oracle-balance',
       username: 'Price Oracle',
-      text: `Oracle Address ${address} is running low on funds! Only ${balance} DFI left`,
+      text: `Oracle Address *${address}* is running low on funds! Only *${balance}* DFI left`,
       icon_emoji: ':dollar:',
       attachments: []
     }

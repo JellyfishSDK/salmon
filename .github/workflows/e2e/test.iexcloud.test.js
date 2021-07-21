@@ -1,6 +1,6 @@
 const waitForExpect = require('wait-for-expect')
 const { mockIexcloudEndpoints } = require('./mocks_iexcloud')
-const iexcloud = require('../../../dist/iexcloud')
+const iex = require('../../../dist').iex
 const { oracleOwner, client, setupOracle } = require('./setup')
 
 describe('e2e single iexcloud', () => {
@@ -21,7 +21,7 @@ describe('e2e single iexcloud', () => {
     const iexcloudOracleId = await setupOracle()
     process.env.ORACLE_ID = iexcloudOracleId
     process.env.API_TOKEN = 'API_TOKEN'
-    await iexcloud.handler({})
+    await iex({})
 
     await waitForExpect(async () => {
       expect((await client.oracle.getOracleData(iexcloudOracleId)).tokenPrices.length).toBeGreaterThanOrEqual(3)

@@ -1,6 +1,6 @@
 const waitForExpect = require("wait-for-expect");
 const { mockFinnhubbEndpoints } = require("./mocks_finnhubb");
-const finnhubb = require("../../../dist/finnhubb");
+const finnhubb = require("../../../dist").finnhubb;
 const { oracleOwner, client, setupOracle } = require("./setup");
 
 describe("e2e single finnhubb", () => {
@@ -21,7 +21,7 @@ describe("e2e single finnhubb", () => {
     const finnhubbOracleId = await setupOracle();
     process.env.ORACLE_ID = finnhubbOracleId;
     process.env.API_TOKEN = "API_TOKEN";
-    await finnhubb.handler({});
+    await finnhubb({});
 
     await waitForExpect(async () => {
       expect(

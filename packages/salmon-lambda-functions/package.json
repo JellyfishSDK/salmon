@@ -26,14 +26,9 @@
       "name": "DeFi Salmon Contributors"
     }
   ],
-  "main": "dist",
-  "types": "dist",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "tsc",
-    "pack": "for x in ./src/*.ts; do ncc build $x -e aws-sdk --source-map -o ../../dist/$(basename $x .ts); done"
+    "pack": "ncc build ./src/index.ts -e aws-sdk --source-map -o ../../dist"
   },
   "peerDependencies": {
     "bignumber.js": "^9.0.1"

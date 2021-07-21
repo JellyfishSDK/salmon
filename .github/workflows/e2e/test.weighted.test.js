@@ -3,9 +3,9 @@ const waitForExpect = require('wait-for-expect')
 const { mockFinnhubbEndpoints } = require('./mocks_finnhubb')
 const { mockTiingoEndpoints } = require('./mocks_tiingo')
 const { mockIexcloudEndpoints } = require('./mocks_iexcloud')
-const finnhubb = require('../../../dist/finnhubb')
-const tiingo = require('../../../dist/tiingo')
-const iexcloud = require('../../../dist/iexcloud')
+const finnhubb = require('../../../dist').finnhubb
+const tiingo = require('../../../dist').tiingo
+const iex = require('../../../dist').iex
 const { oracleOwner, client, setupOracle } = require('./setup')
 
 beforeAll(async () => {
@@ -28,7 +28,7 @@ describe('e2e weighted', () => {
     mockFinnhubbEndpoints()
     const finnhubbOracleId = await setupOracle()
     process.env.ORACLE_ID = finnhubbOracleId
-    await finnhubb.handler({})
+    await finnhubb({})
 
     await waitForExpect(async () => {
       expect((await client.oracle.getOracleData(finnhubbOracleId)).tokenPrices.length).toBeGreaterThanOrEqual(3)
@@ -37,7 +37,7 @@ describe('e2e weighted', () => {
     mockTiingoEndpoints()
     const tiingoOracleId = await setupOracle()
     process.env.ORACLE_ID = tiingoOracleId
-    await tiingo.handler({})
+    await tiingo({})
 
     await waitForExpect(async () => {
       expect((await client.oracle.getOracleData(tiingoOracleId)).tokenPrices.length).toBeGreaterThanOrEqual(3)
@@ -46,7 +46,7 @@ describe('e2e weighted', () => {
     mockIexcloudEndpoints()
     const iexcloudOracleId = await setupOracle()
     process.env.ORACLE_ID = iexcloudOracleId
-    await iexcloud.handler({})
+    await iex({})
 
     await waitForExpect(async () => {
       expect((await client.oracle.getOracleData(iexcloudOracleId)).tokenPrices.length).toBeGreaterThanOrEqual(3)
