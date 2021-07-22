@@ -22,16 +22,18 @@ export async function handleGenericPriceApiProvider (provider: PriceProvider, ev
   console.log(JSON.stringify({ prices, event }))
 
   const oraclesManager = OraclesManager.withWhaleClient(env.oceanUrl, env.network, env.privateKey)
-  const txid = await broadcastPrices(oraclesManager, env, prices)
-  if (txid !== undefined) {
-    console.log(`Sent with txid: ${txid}`)
-  }
 
-  // Do this at the end, let critical flow run first
   try {
-    await checkBalanceAndNotify(oraclesManager.walletAccount, env)
-  } catch (e) {
-    console.log(e)
+    const txid = await broadcastPrices(oraclesManager, env, prices)
+    if (txid !== undefined) {
+      console.log(`Sent with txid: ${txid}`)
+    }
+  } finally {
+    // This gets called even if we escalate the exception, as
+    // it may be caused by low balance
+    if (env.slackWebhookUrl !== '') {
+      await checkBalanceAndNotify(oraclesManager.walletAccount, env)
+    }
   }
 
   return {
