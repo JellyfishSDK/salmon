@@ -6,7 +6,7 @@ import {
 } from '@defichain/jellyfish-json'
 import { symbolFromTicker, TIINGO_SYMBOL_MAPPING } from './mapping'
 
-const TIINGO_URL = 'https://api.tiingo.com/fx/top'
+const TIINGO_URL = 'https://api.tiingo.com/tiingo/fx/top'
 
 /**
  * Fetches forex prices from Tiingo
