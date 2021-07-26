@@ -25,8 +25,8 @@ describe('multi price fetch', () => {
         }`
       })
 
-    nock('https://ocean.defichain.com')
-      .get('/v0/mainnet/poolpairs')
+    nock('https://localhost')
+      .get('/v0/regtest/poolpairs?size=1000')
       .reply(200, function (_) {
         return `{
           "data":[
