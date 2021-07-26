@@ -1,0 +1,49 @@
+{
+  "private": false,
+  "name": "@defichain/salmon-provider-dex",
+  "version": "0.0.0",
+  "description": "Price provider for the defichain dex",
+  "keywords": [
+    "DeFiChain",
+    "DeFi",
+    "Blockchain",
+    "API",
+    "Bitcoin"
+  ],
+  "repository": "DeFiCh/salmon",
+  "bugs": "https://github.com/DeFiCh/salmon/issues",
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "DeFiChain Foundation",
+      "email": "engineering@defichain.com",
+      "url": "https://defichain.com/"
+    },
+    {
+      "name": "DeFi Blockchain Contributors"
+    },
+    {
+      "name": "DeFi Salmon Contributors"
+    }
+  ],
+  "main": "dist",
+  "types": "dist",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "bignumber.js": "^9.0.1"
+  },
+  "dependencies": {
+    "@defichain/salmon-price-functions": "0.0.0",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/lossless-json": "^1.0.0",
+    "@types/node-fetch": "^2.5.10",
+    "nock": "^13.0.11"
+  }
+}
