@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { PriceProvider, AssetPrice } from '@defichain/salmon-price-functions'
-import { WhaleApiClient } from '@defichain/whale-api-client'
+import { WhaleApiClient, ApiPagedResponse } from '@defichain/whale-api-client'
 import { DEFICHAIN_DEX_SYMBOL_MAPPING } from './mapping'
 
 export interface EnvironmentConfig {
@@ -45,7 +45,15 @@ export class DexPriceProvider implements PriceProvider {
       network: env.network
     })
 
-    const json = await whaleClient.poolpair.list(1000)
+    let json: any[] = []
+    let whaleResponse: ApiPagedResponse<any> = await whaleClient.poolpair.list(50)
+    json = json.concat(whaleResponse)
+    while (whaleResponse.hasNext) {
+      whaleResponse = await whaleClient.paginate(whaleResponse)
+      json = json.concat(whaleResponse)
+    }
+
+    json.concat()
     return await Promise.all(symbols.map(async symbol => {
       return await this.fetchAsset(symbol, json)
     }))
