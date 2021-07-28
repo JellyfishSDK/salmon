@@ -12,15 +12,21 @@ describe('multi price fetch', () => {
 
   it('should fetch price from defichain dex using config', async () => {
     const dexConfig: PriceSourceConfig = {
-      symbols: ['BTC']
+      symbols: ['BTC', 'ETH', 'DOGE']
     }
 
     nock('https://api.coingecko.com')
-      .get('/api/v3/simple/price?ids=bitcoin&vs_currencies=usd')
+      .get('/api/v3/simple/price?ids=bitcoin,ethereum,dogecoin&vs_currencies=usd')
       .reply(200, function (_) {
         return `{
-          "bitcoin": {
-            "usd": 32436
+          "dogecoin":{
+             "usd":0.208377
+          },
+          "ethereum":{
+             "usd":2299.23
+          },
+          "bitcoin":{
+             "usd":39877
           }
         }`
       })
@@ -28,9 +34,13 @@ describe('multi price fetch', () => {
     const priceManager = new PriceManager(dexConfig, new CoingeckoPriceProvider())
     const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('BTC')
-    expect(prices[0].price).toStrictEqual(new BigNumber('32436'))
+    expect(prices[0].price).toStrictEqual(new BigNumber('39877'))
+    expect(prices[1].asset).toStrictEqual('ETH')
+    expect(prices[1].price).toStrictEqual(new BigNumber('2299.23'))
+    expect(prices[2].asset).toStrictEqual('DOGE')
+    expect(prices[2].price).toStrictEqual(new BigNumber('0.208377'))
 
     const filteredPrices = PriceManager.filterTimestamps(prices, new Date(300000))
-    expect(filteredPrices.length).toStrictEqual(1)
+    expect(filteredPrices.length).toStrictEqual(3)
   })
 })
