@@ -11,7 +11,8 @@
       "@defichain/salmon-provider-finnhubb-forex": ["salmon-provider-finnhubb-forex/src"],
       "@defichain/salmon-provider-tiingo-forex": ["salmon-provider-tiingo-forex/src"],
       "@defichain/salmon-provider-iexcloud-forex": ["salmon-provider-iexcloud-forex/src"],
-      "@defichain/salmon-provider-coingecko": ["salmon-provider-coingecko/src"]
+      "@defichain/salmon-provider-coingecko": ["salmon-provider-coingecko/src"],
+      "@defichain/salmon-provider-dex": ["salmon-provider-dex/src"]
     }
   }
 }
