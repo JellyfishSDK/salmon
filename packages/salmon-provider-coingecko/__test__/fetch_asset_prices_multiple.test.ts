@@ -11,10 +11,6 @@ describe('multi price fetch', () => {
   })
 
   it('should fetch price from defichain dex using config', async () => {
-    const dexConfig: PriceSourceConfig = {
-      symbols: ['BTC', 'ETH', 'DOGE']
-    }
-
     nock('https://api.coingecko.com')
       .get('/api/v3/simple/price?ids=bitcoin,ethereum,dogecoin&vs_currencies=usd')
       .reply(200, function (_) {
@@ -31,7 +27,11 @@ describe('multi price fetch', () => {
         }`
       })
 
-    const priceManager = new PriceManager(dexConfig, new CoingeckoPriceProvider())
+    const config: PriceSourceConfig = {
+      symbols: ['BTC', 'ETH', 'DOGE']
+    }
+
+    const priceManager = new PriceManager(config, new CoingeckoPriceProvider())
     const prices = await priceManager.fetchAssetPrices()
     expect(prices[0].asset).toStrictEqual('BTC')
     expect(prices[0].price).toStrictEqual(new BigNumber('39877'))
