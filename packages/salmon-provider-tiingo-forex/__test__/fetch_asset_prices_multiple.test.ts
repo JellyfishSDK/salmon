@@ -11,7 +11,7 @@ describe('multi price fetch', () => {
   })
 
   it('should fetch price from tiingo using config', async () => {
-    nock('https://api.tiingo.com/fx/top')
+    nock('https://api.tiingo.com/tiingo/fx/top')
       .get('?tickers=xauusd,eurusd,usdsgd&token=API_TOKEN')
       .reply(200, function (_) {
         return `[

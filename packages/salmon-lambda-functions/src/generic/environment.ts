@@ -26,7 +26,7 @@ export const getEnvironmentConfig = async (): Promise<EnvironmentConfig> => {
   }
 
   return {
-    oceanUrl: process.env.OCEAN_URL ?? 'localhost',
+    oceanUrl: process.env.OCEAN_URL ?? 'https://localhost',
     network: process.env.NETWORK ?? 'regtest',
     oracleId: process.env.ORACLE_ID ?? '',
     currency: process.env.CURRENCY ?? 'USD',

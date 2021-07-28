@@ -15,6 +15,7 @@
     {"path": "./packages/salmon-provider-finnhubb/tsconfig.build.json"},
     {"path": "./packages/salmon-provider-finnhubb-forex/tsconfig.build.json"},
     {"path": "./packages/salmon-provider-tiingo-forex/tsconfig.build.json"},
-    {"path": "./packages/salmon-provider-iexcloud-forex/tsconfig.build.json"}
+    {"path": "./packages/salmon-provider-iexcloud-forex/tsconfig.build.json"},
+    {"path": "./packages/salmon-provider-dex/tsconfig.build.json"}
  ]
 }
