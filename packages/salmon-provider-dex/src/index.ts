@@ -46,7 +46,7 @@ export class DexPriceProvider implements PriceProvider {
     })
 
     let json: any[] = []
-    let whaleResponse: ApiPagedResponse<any> = await whaleClient.poolpair.list(50)
+    let whaleResponse: ApiPagedResponse<any> = await whaleClient.poolpairs.list(50)
     json = json.concat(whaleResponse)
     while (whaleResponse.hasNext) {
       whaleResponse = await whaleClient.paginate(whaleResponse)
