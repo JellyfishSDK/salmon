@@ -21,9 +21,12 @@ export const getEnvironmentConfig = async (): Promise<EnvironmentConfig> => {
  * Fetches prices from Defichain DEX
  */
 export class DexPriceProvider implements PriceProvider {
-  private async fetchAsset (asset: string, pairs: PoolPairData[]): Promise<AssetPrice> {
+  private async fetchAsset (asset: string, pairs: PoolPairData[]): Promise<AssetPrice | undefined> {
     const symbolMapping = DEFICHAIN_DEX_SYMBOL_MAPPING[asset]
     const data = pairs.find((y: PoolPairData) => y.symbol === symbolMapping.ticker)
+    if (data === undefined) {
+      return undefined
+    }
 
     const tokenA = new BigNumber(symbolMapping.inverse ? data.tokenB.reserve : data.tokenA.reserve)
     const tokenB = new BigNumber(symbolMapping.inverse ? data.tokenA.reserve : data.tokenB.reserve)
@@ -38,10 +41,11 @@ export class DexPriceProvider implements PriceProvider {
 
   public async prices (symbols: string[]): Promise<AssetPrice[]> {
     const pairs = await this.getAllPairs()
-
-    return await Promise.all(symbols.map(async symbol => {
+    const unfilteredData = (await Promise.all(symbols.map(async symbol => {
       return await this.fetchAsset(symbol, pairs)
-    }))
+    })))
+    const assets: AssetPrice[] = unfilteredData.filter(x => (x !== undefined)) as AssetPrice[]
+    return assets
   }
 
   private async getAllPairs (): Promise<PoolPairData[]> {
@@ -53,7 +57,7 @@ export class DexPriceProvider implements PriceProvider {
 
     const pairs: poolpairs.PoolPairData[] = []
 
-    let response = await client.poolpairs.list()
+    let response = await client.poolpairs.list(50)
     pairs.push(...response)
 
     while (response.hasNext) {
