@@ -40,6 +40,8 @@ services:
       -dakotacrescentheight=5
       -eunosheight=6
       -eunospayaheight=7
+    ports:
+      - "3003:19554"
 
   defi-playground:
     image: ghcr.io/defich/playground:0.7.0
