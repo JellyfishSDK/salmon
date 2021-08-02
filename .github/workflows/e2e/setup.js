@@ -1,10 +1,11 @@
-const { JsonRpcClient } = require('@defichain/jellyfish-api-jsonrpc')
+const { PlaygroundRpcClient, PlaygroundApiClient } = require('@defichain/playground-api-client')
 const { GenesisKeys } = require('@defichain/testcontainers')
 const waitForExpect = require('wait-for-expect')
 
 exports.oracleOwner = GenesisKeys[GenesisKeys.length - 1].operator
-exports.client = new JsonRpcClient('http://playground:playground@localhost:3003')
-
+exports.client = new PlaygroundRpcClient(
+  new PlaygroundApiClient({ url: 'http://localhost:3002' }))
+  
 exports.setupOracle = async function() {
   const oracleId = await exports.client.oracle.appointOracle(exports.oracleOwner.address, [
     {
