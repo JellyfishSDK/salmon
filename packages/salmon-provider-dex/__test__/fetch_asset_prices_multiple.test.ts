@@ -26,7 +26,10 @@ describe('multi price fetch', () => {
       })
 
     nock('https://localhost')
-      .get('/v0.6/regtest/poolpairs?size=30')
+      .filteringPath(() => {
+        return '/'
+      })
+      .get('/')
       .reply(200, function (_) {
         return `{
           "data":[
