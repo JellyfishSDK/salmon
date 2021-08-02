@@ -57,7 +57,7 @@ export class DexPriceProvider implements PriceProvider {
 
     const pairs: poolpairs.PoolPairData[] = []
 
-    let response = await client.poolpairs.list(50)
+    let response = await client.poolpairs.list()
     pairs.push(...response)
 
     while (response.hasNext) {
