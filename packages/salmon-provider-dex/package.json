@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@defichain/salmon-price-functions": "0.0.0",
-    "@defichain/whale-api-client": ">=0.7.0",
+    "@defichain/whale-api-client": ">=0.8.2",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
