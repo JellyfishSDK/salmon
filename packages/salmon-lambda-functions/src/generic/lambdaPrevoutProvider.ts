@@ -41,8 +41,8 @@ async function resolvePrevoutsFromCloudWatchLogs (cloudwatchlogs: AWS.CloudWatch
   return await new Promise<Prevout[]>((resolve, reject) => {
     cloudwatchlogs.describeLogStreams(groupParams, (_, groupData) => {
       const logStreams = groupData.logStreams
-      if (logStreams === undefined) {
-        reject(new Error('Log stream undefined'))
+      if (logStreams === undefined || logStreams.length === 0) {
+        reject(new Error('Log streams empty or undefined'))
         return
       }
 
