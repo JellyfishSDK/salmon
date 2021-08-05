@@ -1,9 +1,9 @@
 import { MasterNodeRegTestContainer, GenesisKeys } from '@defichain/testcontainers'
 import { fundEllipticPair, sendTransaction } from './test.utils'
-import { getProviders, MockProviders, MockWalletAccount } from './provider.mock'
-import { OraclesManager } from '../src'
+import { getProviders, MockPrevoutListProvider, MockProviders, MockWalletAccount } from './provider.mock'
+import { FallbackPrevoutProvider, OraclesManager } from '../src'
 import { dSHA256, WIF } from '@defichain/jellyfish-crypto'
-import { P2WPKHTransactionBuilder } from '@defichain/jellyfish-transaction-builder/dist'
+import { P2WPKHTransactionBuilder, Prevout } from '@defichain/jellyfish-transaction-builder/dist'
 import { SmartBuffer } from 'smart-buffer'
 import { BigNumber } from 'bignumber.js'
 import { CTransaction, Transaction } from '@defichain/jellyfish-transaction'
@@ -111,5 +111,56 @@ describe('basic price oracles', () => {
     await oraclesManager.updatePrices('', [])
 
     expect(broadcastMock).not.toHaveBeenCalled()
+  })
+
+  it('should chain prevouts using fallback provider', async () => {
+    const prevoutListProvider = new MockPrevoutListProvider()
+
+    const oraclesManager = new OraclesManager(
+      async rawTx => {
+        const txid = await container.call('sendrawtransaction', [rawTx.hex])
+        await container.generate(1)
+        return txid
+      },
+      new P2WPKHTransactionBuilder(providers.fee, new FallbackPrevoutProvider(providers.prevout, prevoutListProvider), {
+        get: (_) => providers.ellipticPair
+      }),
+      new MockWalletAccount(new WalletClassic(providers.ellipticPair))
+    )
+
+    // Appoint Oracle
+    const script = await oraclesManager.getChangeScript()
+    const appointTxn = await builder.oracles.appointOracle({
+      script: script,
+      weightage: 1,
+      priceFeeds: [
+        {
+          token: 'TEST',
+          currency: 'USD'
+        }
+      ]
+    }, script)
+
+    await sendTransaction(container, appointTxn)
+
+    const oracleId = calculateTxid(appointTxn)
+    const prevout: Prevout | undefined = await oraclesManager.updatePrices(oracleId, [{ token: 'TEST', prices: [{ currency: 'USD', amount: new BigNumber(0.1) }] }])
+    expect(prevout).not.toBe(undefined)
+
+    // Ensure oracle is updated and has correct values
+    const getOracleDataResult = await container.call('getoracledata', [oracleId])
+    expect(getOracleDataResult.priceFeeds.length).toStrictEqual(1)
+    expect(getOracleDataResult.priceFeeds[0].token).toStrictEqual('TEST')
+    expect(getOracleDataResult.priceFeeds[0].currency).toStrictEqual('USD')
+    expect(getOracleDataResult.tokenPrices[0].token).toStrictEqual('TEST')
+    expect(getOracleDataResult.tokenPrices[0].currency).toStrictEqual('USD')
+    expect(getOracleDataResult.tokenPrices[0].amount).toStrictEqual(0.1)
+
+    // Send with prevout added to list
+    prevoutListProvider.prevoutList = prevout !== undefined ? [prevout] : []
+    expect(prevoutListProvider.prevoutList.length).toStrictEqual(1)
+    await oraclesManager.updatePrices(oracleId, [{ token: 'TEST', prices: [{ currency: 'USD', amount: new BigNumber(0.2) }] }])
+    const getOracleDataResult2 = await container.call('getoracledata', [oracleId])
+    expect(getOracleDataResult2.tokenPrices[0].amount).toStrictEqual(0.2)
   })
 })
