@@ -4,11 +4,16 @@ import BigNumber from 'bignumber.js'
 
 const SEEK_MINUTES = 10
 const VOUT_LOG_START = '\tINFO\t'
+const isLambda = process.env.LAMBDA_TASK_ROOT !== undefined
 const functionName = process.env.AWS_LAMBDA_FUNCTION_NAME ?? ''
 const logGroupPrefix = '/aws/lambda/'
 
 export class LambdaPrevoutProvider implements PrevoutProvider {
   async all (): Promise<Prevout[]> {
+    if (!isLambda) {
+      return []
+    }
+
     const logGroupName = `${logGroupPrefix}${functionName}`
     const cloudwatchlogs = new AWS.CloudWatchLogs({ apiVersion: '2014-03-28' })
     return await new Promise<Prevout[]>((resolve, reject) => {
