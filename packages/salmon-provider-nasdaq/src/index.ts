@@ -10,8 +10,8 @@ const BASE_URL = `https://restapi.clouddataservice.nasdaq.com/${API_VERSION}/nas
 const AUTH_URL = 'https://restapi.clouddataservice.nasdaq.com/auth/token'
 
 /**
- * Fetches prices from Finnhubb
- * https://finnhub.io
+ * Fetches prices from Nasdaq
+ * https://nasdaq.com
  */
 export class NasdaqPriceProvider implements PriceProvider {
   constructor (
