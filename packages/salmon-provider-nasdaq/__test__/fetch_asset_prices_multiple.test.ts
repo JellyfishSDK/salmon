@@ -11,7 +11,7 @@ describe('multi price fetch', () => {
   })
 
   it('should fetch price from nasdaq using config', async () => {
-    nock('https://restapi.clouddataservice.nasdaq.com/auth')
+    nock('https://restapi.clouddataservice.nasdaq.com/v1/auth')
       .post('/token')
       .reply(200, function (_) {
         return `{
