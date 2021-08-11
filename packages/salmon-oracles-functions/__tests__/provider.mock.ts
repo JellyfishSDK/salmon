@@ -136,3 +136,16 @@ export class MockWalletAccount extends WalletAccount {
     return true
   }
 }
+
+export class MockPrevoutListProvider implements PrevoutProvider {
+  public prevoutList: Prevout[] = []
+
+  async all (): Promise<Prevout[]> {
+    return this.prevoutList
+  }
+
+  async collect (_: BigNumber): Promise<Prevout[]> {
+    // TODO(fuxingloh): min balance filtering
+    return await this.all()
+  }
+}
