@@ -18,6 +18,7 @@
     {"path": "./packages/salmon-provider-iexcloud-forex/tsconfig.build.json"},
     {"path": "./packages/salmon-provider-coingecko/tsconfig.build.json"},
     {"path": "./packages/salmon-provider-coinmarketcap/tsconfig.build.json"},
-    {"path": "./packages/salmon-provider-dex/tsconfig.build.json"}
+    {"path": "./packages/salmon-provider-dex/tsconfig.build.json"},
+    {"path": "./packages/salmon-provider-nasdaq/tsconfig.build.json"}
  ]
 }
