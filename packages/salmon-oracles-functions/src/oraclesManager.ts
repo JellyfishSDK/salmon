@@ -78,7 +78,7 @@ export class OraclesManager {
 
     return new OraclesManager(
       async (rawTx: { hex: string }): Promise<string> =>
-        await whaleClient.transactions.send(rawTx),
+        await whaleClient.rawtx.send(rawTx),
       walletAccount.withTransactionBuilder(),
       walletAccount
     )
