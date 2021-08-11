@@ -7,7 +7,7 @@ import {
 
 const API_VERSION = 'v1'
 const BASE_URL = `https://restapi.clouddataservice.nasdaq.com/${API_VERSION}/nasdaq/realtime/equities/lastsale`
-const AUTH_URL = 'https://restapi.clouddataservice.nasdaq.com/auth/token'
+const AUTH_URL = `https://restapi.clouddataservice.nasdaq.com/${API_VERSION}/auth/token`
 
 /**
  * Fetches prices from Nasdaq
