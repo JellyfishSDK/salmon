@@ -19,22 +19,9 @@ export class NasdaqPriceProvider implements PriceProvider {
   ) {
   }
 
-  // This is slightly complex due to the fact that Eastern Time
-  // undergoes daylight saving
   processTimestamp (timestamp: string): number {
-    const priceDate = new Date(timestamp + 'Z')
-    const dateNow = new Date()
-    const paddMs = String(dateNow.getUTCMilliseconds()).padStart(3, '0')
-
-    // en-CA instead of en-US is needed here ('-' vs '/')
-    const dateNowEt = new Date(dateNow.toLocaleString('en-CA',
-      {
-        timeZone: 'America/New_York',
-        hour12: false
-      }).replace(', ', 'T') + `.${paddMs}Z`)
-
-    const timezoneOffset = dateNow.getTime() - dateNowEt.getTime()
-    return priceDate.getTime() + timezoneOffset
+    const timezoneOffset = 5 * 60 * 60 * 1000 // 5 hours
+    return new Date(timestamp + 'Z').getTime() + timezoneOffset
   }
 
   private async fetchAsset (symbol: string, authToken: string): Promise<AssetPrice> {
