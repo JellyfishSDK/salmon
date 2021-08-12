@@ -19,6 +19,7 @@ export class NasdaqPriceProvider implements PriceProvider {
   ) {
   }
 
+  // This converts from EST (Eastern Standard Time) to UTC
   processTimestamp (timestamp: string): number {
     const timezoneOffset = 5 * 60 * 60 * 1000 // 5 hours
     return new Date(timestamp + 'Z').getTime() + timezoneOffset
