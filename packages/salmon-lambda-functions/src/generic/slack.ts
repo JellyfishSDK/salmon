@@ -4,13 +4,9 @@ import BigNumber from 'bignumber.js'
 import fetch from 'node-fetch'
 import { EnvironmentConfig } from './environment'
 
-export async function checkBalanceAndNotify (walletAccount: WalletAccount, env: EnvironmentConfig): Promise<void> {
+export async function checkBalanceAndNotify (walletAccount: WalletAccount, whaleClient: WhaleApiClient,
+  env: EnvironmentConfig): Promise<void> {
   const address = await walletAccount.getAddress()
-  const whaleClient = new WhaleApiClient({
-    url: env.oceanUrl,
-    network: env.network
-  })
-
   const balance = await whaleClient.address.getBalance(address)
   if (new BigNumber(balance).lt(2.0)) {
     const message = {
