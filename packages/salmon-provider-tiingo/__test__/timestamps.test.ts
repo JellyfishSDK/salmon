@@ -45,7 +45,7 @@ describe('single price fetch', () => {
 
     const priceManager = new PriceManager(tiingoConfig, new TiingoPriceProvider('API_TOKEN'))
     const prices = PriceManager.filterTimestamps(await priceManager.fetchAssetPrices(),
-      new Date(300000), new Date(tiingoResponse[0].lastSaleTimestamp))
+      300000, new Date(tiingoResponse[0].lastSaleTimestamp))
     expect(prices[0].asset).toStrictEqual('TSLA')
     expect(prices[0].price).toStrictEqual(new BigNumber(625.22))
     expect(prices[0].timestamp)
@@ -65,7 +65,7 @@ describe('single price fetch', () => {
       })
 
     const pricesOld = PriceManager.filterTimestamps(await priceManager.fetchAssetPrices(),
-      new Date(300000), new Date(tiingoResponse[0].lastSaleTimestamp))
+      300000, new Date(tiingoResponse[0].lastSaleTimestamp))
     expect(pricesOld.length).toStrictEqual(0)
   })
 })
