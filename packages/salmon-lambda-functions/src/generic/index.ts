@@ -1,27 +1,33 @@
 import { PriceManager, PriceProvider, AssetPrice } from '@defichain/salmon-price-functions'
-import { OraclesManager } from '@defichain/salmon-oracles-functions'
+import { WhaleOraclesManager } from '@defichain/salmon-oracles-functions'
 import { getEnvironmentConfig, EnvironmentConfig } from './environment'
 import { checkBalanceAndNotify } from './slack'
 
-const broadcastPrices = async (oraclesManager: OraclesManager, env: EnvironmentConfig, prices: AssetPrice[]): Promise<string | undefined> => {
-  return await oraclesManager.updatePrices(env.oracleId,
-    prices.map(assetPrice => ({
-      token: assetPrice.asset, prices: [{ currency: env.currency, amount: assetPrice.price }]
-    })))
+// Maximum price age in minutes
+const MAX_PRICE_AGE = 30
+
+export async function broadcastPrices (oraclesManager: WhaleOraclesManager, env: EnvironmentConfig, prices: AssetPrice[]): Promise<string | undefined> {
+  const tokenPrices = prices.map(assetPrice => ({
+    token: assetPrice.asset, prices: [{ currency: env.currency, amount: assetPrice.price }]
+  }))
+
+  const filteredTokenPrices = await oraclesManager.filterAgainstExistingPrices(tokenPrices, env.oracleId)
+  return await oraclesManager.updatePrices(env.oracleId, filteredTokenPrices)
 }
 
-const fetchPrices = async (env: EnvironmentConfig, provider: PriceProvider): Promise<AssetPrice[]> => {
+export async function fetchPrices (env: EnvironmentConfig, provider: PriceProvider): Promise<AssetPrice[]> {
   const priceManager = new PriceManager({ symbols: env.symbols }, provider)
   return PriceManager.filterTimestamps(await priceManager.fetchAssetPrices(),
-    new Date(env.intervalSeconds * 1000.0))
+    MAX_PRICE_AGE * 60 * 1000)
 }
 
 export async function handleGenericPriceApiProvider (provider: PriceProvider, event?: any): Promise<any> {
   const env = await getEnvironmentConfig()
+
   const prices = await fetchPrices(env, provider)
   console.log(JSON.stringify({ prices, event }))
 
-  const oraclesManager = OraclesManager.withWhaleClient(env.oceanUrl, env.network, env.privateKey)
+  const oraclesManager = WhaleOraclesManager.withWhaleClient(env.oceanUrl, env.network, env.privateKey)
 
   try {
     const txid = await broadcastPrices(oraclesManager, env, prices)
@@ -32,7 +38,7 @@ export async function handleGenericPriceApiProvider (provider: PriceProvider, ev
     // This gets called even if we escalate the exception, as
     // it may be caused by low balance
     if (env.slackWebhookUrl !== '') {
-      await checkBalanceAndNotify(oraclesManager.walletAccount, env)
+      await checkBalanceAndNotify(oraclesManager.walletAccount, oraclesManager.whaleClient, env)
     }
   }
 

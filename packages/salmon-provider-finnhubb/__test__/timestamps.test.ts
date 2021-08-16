@@ -32,7 +32,7 @@ describe('single price fetch', () => {
 
     const priceManager = new PriceManager(finnhubbConfig, new FinnhubbPriceProvider('API_TOKEN'))
     const prices = PriceManager.filterTimestamps(await priceManager.fetchAssetPrices(),
-      new Date(300000))
+      300000)
     expect(prices[0].asset).toStrictEqual('AAPL')
     expect(prices[0].price).toStrictEqual(new BigNumber(261.74))
     expect(prices[0].timestamp).toStrictEqual(new BigNumber(finnhubbResponse.t * 1000))
@@ -49,7 +49,7 @@ describe('single price fetch', () => {
       })
 
     const pricesOld = PriceManager.filterTimestamps(await priceManager.fetchAssetPrices(),
-      new Date(300000))
+      300000)
     expect(pricesOld.length).toStrictEqual(0)
   })
 })

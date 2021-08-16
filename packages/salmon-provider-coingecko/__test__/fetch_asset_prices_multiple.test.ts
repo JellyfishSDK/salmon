@@ -40,7 +40,7 @@ describe('multi price fetch', () => {
     expect(prices[2].asset).toStrictEqual('DOGE')
     expect(prices[2].price).toStrictEqual(new BigNumber('0.208377'))
 
-    const filteredPrices = PriceManager.filterTimestamps(prices, new Date(300000))
+    const filteredPrices = PriceManager.filterTimestamps(prices, 300000)
     expect(filteredPrices.length).toStrictEqual(3)
   })
 })

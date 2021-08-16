@@ -192,7 +192,7 @@ describe('multi price fetch', () => {
     expect(prices[0].asset).toStrictEqual('DFI')
     expect(prices[0].price).toStrictEqual(new BigNumber('2.020557796237096083'))
 
-    const filteredPrices = PriceManager.filterTimestamps(prices, new Date(300000))
+    const filteredPrices = PriceManager.filterTimestamps(prices, 300000)
     expect(filteredPrices.length).toStrictEqual(1)
   })
 })

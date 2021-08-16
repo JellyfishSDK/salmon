@@ -43,17 +43,17 @@ export class PriceManager {
    * Filters asset prices according to timestamps
    *
    * @param {AssetPrice[]} assets assets to be filtered
-   * @param {Date} timespan the timestan at which we filter for
+   * @param {number} timespan the timestan at which we filter for
    * @param {Date} [dateNow] default = new Date()
    * @return {AssetPrice[]}
    */
-  public static filterTimestamps (assets: AssetPrice[], timespan: Date,
+  public static filterTimestamps (assets: AssetPrice[], timespan: number,
     dateNow: Date = new Date()): AssetPrice[] {
     return assets.filter((asset: AssetPrice): boolean => {
       const dateMilliseconds = new BigNumber(dateNow.getTime())
       const dateSubtracted = dateMilliseconds.minus(asset.timestamp)
       const absoluteDate = dateSubtracted.abs()
-      return absoluteDate.lte(new BigNumber(timespan.getTime()))
+      return absoluteDate.lte(new BigNumber(timespan))
     })
   }
 

@@ -40,7 +40,7 @@ describe('single price fetch', () => {
 
     const priceManager = new PriceManager(iexConfig, new IexPriceProvider('API_TOKEN'))
     const prices = PriceManager.filterTimestamps(await priceManager.fetchAssetPrices(),
-      new Date(300000))
+      300000)
     expect(prices[0].asset).toStrictEqual('FB')
     expect(prices[0].price).toStrictEqual(new BigNumber(121.41))
     expect(prices[0].timestamp).toStrictEqual(new BigNumber(iexResponse[0].lastSaleTime))
@@ -57,7 +57,7 @@ describe('single price fetch', () => {
       })
 
     const pricesOld = PriceManager.filterTimestamps(await priceManager.fetchAssetPrices(),
-      new Date(300000))
+      300000)
     expect(pricesOld.length).toStrictEqual(0)
   })
 })
