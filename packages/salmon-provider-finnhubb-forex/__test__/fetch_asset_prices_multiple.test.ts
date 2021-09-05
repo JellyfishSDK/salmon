@@ -162,4 +162,31 @@ describe('multi price fetch', () => {
     const prices = await priceManager.fetchAssetPrices()
     expect(prices.length).toStrictEqual(0)
   })
+
+  it('should handle null price', async () => {
+    nock('https://finnhub.io/')
+      .filteringPath(() => {
+        return '/'
+      })
+      .get('/')
+      .reply(200, (_) => {
+        return `{
+          "c": null,
+          "h": null,
+          "l": null,
+          "o": null,
+          "s": "ok",
+          "t": null,
+          "v": null
+        }`
+      })
+
+    const finnhubbConfig: PriceSourceConfig = {
+      symbols: ['SGD']
+    }
+
+    const priceManager = new PriceManager(finnhubbConfig, new FinnhubbForexPriceProvider('API_TOKEN'))
+    const prices = await priceManager.fetchAssetPrices()
+    expect(prices.length).toStrictEqual(0)
+  })
 })

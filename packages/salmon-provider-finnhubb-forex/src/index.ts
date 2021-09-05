@@ -33,6 +33,15 @@ export class FinnhubbForexPriceProvider implements PriceProvider {
     const text = await response.text()
     const json = JellyfishJSON.parse(text, 'bignumber')
 
+    // Out of market will return an object with null values
+    if (json.c === null) {
+      return {
+        asset: symbol,
+        price: new BigNumber(NaN),
+        timestamp: new BigNumber(NaN)
+      }
+    }
+
     let price = new BigNumber(json.c.slice(-1))
     if (FINNHUBB_OANDA_SYMBOL_MAPPING[symbol].inverse) {
       price = new BigNumber(1).div(price)
