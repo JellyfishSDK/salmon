@@ -34,6 +34,12 @@ export async function handleGenericPriceApiProvider (provider: PriceProvider, ev
     if (txid !== undefined) {
       console.log(`Sent with txid: ${txid}`)
     }
+  } catch (e) {
+    if (e.message.indexOf('txn-mempool-conflict') !== -1) {
+      console.log('txn-mempool-conflict (code 18)')
+    } else {
+      throw e
+    }
   } finally {
     // This gets called even if we escalate the exception, as
     // it may be caused by low balance
