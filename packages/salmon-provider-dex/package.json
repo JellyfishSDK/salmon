@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@types/lossless-json": "^1.0.0",
-    "@types/node-fetch": "^2.5.10",
+    "@types/node-fetch": "^3.0.3",
     "nock": "^13.0.11"
   }
 }
