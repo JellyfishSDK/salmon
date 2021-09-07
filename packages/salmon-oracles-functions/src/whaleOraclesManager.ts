@@ -62,7 +62,8 @@ export class WhaleOraclesManager extends OraclesManager {
   ): WhaleOraclesManager {
     const whaleClient = new WhaleApiClient({
       url,
-      network
+      network,
+      version: 'v0'
     })
 
     const hdNode = new WalletClassic(WIF.asEllipticPair(privKey))
