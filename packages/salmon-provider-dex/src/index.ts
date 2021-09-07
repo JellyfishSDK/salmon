@@ -52,7 +52,8 @@ export class DexPriceProvider implements PriceProvider {
     const env: EnvironmentConfig = await getEnvironmentConfig()
     const client = new WhaleApiClient({
       url: env.oceanUrl,
-      network: env.network
+      network: env.network,
+      version: 'v0'
     })
 
     const pairs: poolpairs.PoolPairData[] = []
