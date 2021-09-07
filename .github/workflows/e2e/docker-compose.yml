@@ -65,6 +65,7 @@ services:
       WHALE_DATABASE_PROVIDER: level
       WHALE_DATABASE_LEVEL_LOCATION: .level/index
       WHALE_NETWORK: regtest
+      WHALE_VERSION: v0
     labels:
       - "traefik.http.services.whale.loadbalancer.server.port=3000"
       - "traefik.http.routers.whale.rule=PathPrefix(`/v{[0-9]+}/regtest/`)"
