@@ -3,25 +3,29 @@ import { WhaleOraclesManager } from '@defichain/salmon-oracles-functions'
 import { getEnvironmentConfig, EnvironmentConfig } from './environment'
 import { checkBalanceAndNotify } from './slack'
 
+// Maximum price age in milliseconds
+const MAX_PRICE_AGE = 180 * 60 * 1000
+
 export async function broadcastPrices (oraclesManager: WhaleOraclesManager, env: EnvironmentConfig, prices: AssetPrice[]): Promise<string | undefined> {
   const tokenPrices = prices.map(assetPrice => ({
     token: assetPrice.asset, prices: [{ currency: env.currency, amount: assetPrice.price }]
   }))
 
   const filteredTokenPrices = await oraclesManager.filterAgainstExistingPrices(tokenPrices, env.oracleId)
+  console.log(JSON.stringify({ filteredTokenPrices }))
   return await oraclesManager.updatePrices(env.oracleId, filteredTokenPrices)
 }
 
 export async function fetchPrices (env: EnvironmentConfig, provider: PriceProvider): Promise<AssetPrice[]> {
   const priceManager = new PriceManager({ symbols: env.symbols }, provider)
-  return await priceManager.fetchAssetPrices()
+  return PriceManager.filterTimestamps(await priceManager.fetchAssetPrices(), MAX_PRICE_AGE)
 }
 
 export async function handleGenericPriceApiProvider (provider: PriceProvider, event?: any): Promise<any> {
   const env = await getEnvironmentConfig()
 
   const prices = await fetchPrices(env, provider)
-  console.log(JSON.stringify({ prices, event }))
+  console.log(JSON.stringify({ event }))
 
   const oraclesManager = WhaleOraclesManager.withWhaleClient(env.oceanUrl, env.network, env.privateKey)
 
