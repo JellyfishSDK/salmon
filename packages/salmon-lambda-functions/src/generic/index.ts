@@ -1,7 +1,7 @@
 import { PriceManager, PriceProvider, AssetPrice } from '@defichain/salmon-price-functions'
 import { WhaleOraclesManager } from '@defichain/salmon-oracles-functions'
 import { getEnvironmentConfig, EnvironmentConfig } from './environment'
-import { checkBalanceAndNotify } from './slack'
+import { checkBalanceAndNotify, sendSlackMessage } from './slack'
 
 // Maximum price age in milliseconds
 const MAX_PRICE_AGE = 180 * 60 * 1000
@@ -11,7 +11,13 @@ export async function broadcastPrices (oraclesManager: WhaleOraclesManager, env:
     token: assetPrice.asset, prices: [{ currency: env.currency, amount: assetPrice.price }]
   }))
 
-  const filteredTokenPrices = await oraclesManager.filterAgainstExistingPrices(tokenPrices, env.oracleId)
+  const existingPrices = await oraclesManager.listExistingOraclePrices(tokenPrices, env.oracleId)
+  const filteredTokenPrices = await oraclesManager.filterAgainstExistingPrices(tokenPrices, existingPrices,
+    async (tokenPrice, existing) => {
+      await sendSlackMessage(`Price had sudden movement, not submitting. ${tokenPrice.token} jumped from ${existing.amount} to ${tokenPrice.prices[0].amount.toFixed(8)}`,
+        ':exclamation:', env)
+    }, env.closeThreshold, env.farThreshold)
+
   console.log(JSON.stringify({ filteredTokenPrices }))
   return await oraclesManager.updatePrices(env.oracleId, filteredTokenPrices)
 }

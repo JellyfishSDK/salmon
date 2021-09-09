@@ -9,6 +9,8 @@ export interface EnvironmentConfig {
   symbols: string[]
   intervalSeconds: number
   privateKey: string
+  closeThreshold: number
+  farThreshold: number
 }
 
 export const getEnvironmentConfig = async (): Promise<EnvironmentConfig> => {
@@ -33,6 +35,8 @@ export const getEnvironmentConfig = async (): Promise<EnvironmentConfig> => {
     symbols: (process.env.SYMBOLS ?? '').split(','),
     intervalSeconds: parseInt(process.env.INTERVAL_SECONDS ?? '300'),
     privateKey,
-    slackWebhookUrl: process.env.SLACK_WEBHOOK_URL ?? ''
+    slackWebhookUrl: process.env.SLACK_WEBHOOK_URL ?? '',
+    closeThreshold: parseFloat(process.env.CLOSE_THRESHOLD ?? '0.2'),
+    farThreshold: parseFloat(process.env.FAR_THRESHOLD ?? '0.5')
   }
 }
