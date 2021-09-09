@@ -36,6 +36,10 @@ export class PriceManager {
       return false
     }
 
+    if (asset.price.eq(0) || asset.timestamp.eq(0)) {
+      return false
+    }
+
     return true
   }
 
