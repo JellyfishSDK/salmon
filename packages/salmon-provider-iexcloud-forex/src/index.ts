@@ -6,7 +6,7 @@ import {
 } from '@defichain/jellyfish-json'
 import { IEX_SYMBOL_MAPPING, symbolFromTicker } from './mapping'
 
-const IEX_URL = 'https://cloud.iexapis.com/fx/latest'
+const IEX_URL = 'https://cloud.iexapis.com/stable/fx/latest'
 
 /**
  * Fetches prices from IEX Cloud for forex

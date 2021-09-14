@@ -15,7 +15,7 @@ describe('multi price fetch', () => {
       symbols: ['CAD', 'GBP', 'JPY']
     }
 
-    nock('https://cloud.iexapis.com/fx/latest')
+    nock('https://cloud.iexapis.com/stable/fx/latest')
       .get('?symbols=USDCAD,USDGBP,USDJPY&token=API_TOKEN')
       .reply(200, function (_) {
         return `[ 
