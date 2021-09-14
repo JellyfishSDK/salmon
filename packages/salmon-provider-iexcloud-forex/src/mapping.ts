@@ -15,6 +15,14 @@ export const IEX_SYMBOL_MAPPING: Record<string, IexSymbolMapping> = {
   JPY: {
     ticker: 'USDJPY',
     inverse: true
+  },
+  SGD: {
+    ticker: 'USDSGD',
+    inverse: true
+  },
+  EUR: {
+    ticker: 'USDEUR',
+    inverse: true
   }
 }
 
