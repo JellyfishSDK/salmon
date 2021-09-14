@@ -36,7 +36,7 @@ export const getEnvironmentConfig = async (): Promise<EnvironmentConfig> => {
     intervalSeconds: parseInt(process.env.INTERVAL_SECONDS ?? '300'),
     privateKey,
     slackWebhookUrl: process.env.SLACK_WEBHOOK_URL ?? '',
-    closeThreshold: parseFloat(process.env.CLOSE_THRESHOLD ?? '0.2'),
-    farThreshold: parseFloat(process.env.FAR_THRESHOLD ?? '0.5')
+    closeThreshold: parseFloat(process.env.CLOSE_THRESHOLD ?? '0.3'),
+    farThreshold: parseFloat(process.env.FAR_THRESHOLD ?? '0.3')
   }
 }
