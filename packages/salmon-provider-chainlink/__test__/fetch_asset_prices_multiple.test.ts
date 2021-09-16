@@ -40,3 +40,37 @@ describe('single price fetch', () => {
     expect(prices[0].timestamp).toStrictEqual(new BigNumber(1631609928000))
   })
 })
+
+describe('throw on invalid data', () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+    nock.cleanAll()
+  })
+
+  it('should throw on corrupt data', async () => {
+    nock('https://mainnet.infura.io/v3')
+      .post('/API_TOKEN')
+      .reply(200, (_) => {
+        return '{}'
+      })
+
+    nock('https://mainnet.infura.io/v3')
+      .post('/API_TOKEN')
+      .reply(200, (_) => {
+        return '{}'
+      })
+
+    nock('https://mainnet.infura.io/v3')
+      .post('/API_TOKEN')
+      .reply(200, (_) => {
+        return '{}'
+      })
+
+    const config: PriceSourceConfig = {
+      symbols: ['BTC']
+    }
+
+    const priceManager = new PriceManager(config, new ChainlinkPriceProvider('API_TOKEN'))
+    await expect(priceManager.fetchAssetPrices()).rejects.toThrow()
+  })
+})
