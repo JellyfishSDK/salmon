@@ -23,5 +23,9 @@ export const CHAINLINK_SYMBOL_MAPPING: Record<string, ChainlinkSymbolMapping> = 
   BCH: {
     ticker: '0x9f0f69428f923d6c95b781f89e165c9b2df9789d',
     inverse: false
+  },
+  BTC_TEST_INVERSE: {
+    ticker: '0xf4030086522a5beea4988f8ca5b36dbc97bee88c',
+    inverse: true
   }
 }
