@@ -1,4 +1,4 @@
-const nock = require('nock')
+import nock from 'nock'
 
 const finnhubbResponse1 = `{
   "c": 605,
@@ -36,7 +36,7 @@ const finnhubbResponse4 = `{
   "t": ${Math.floor(Date.now() / 1000)}  
 }`
 
-exports.mockFinnhubbEndpoints = () => {
+export const mockFinnhubbEndpoints = (): void => {
   nock('https://finnhub.io/api/v1/quote')
     .get('?symbol=TSLA&token=API_TOKEN')
     .reply(200, function (_) {

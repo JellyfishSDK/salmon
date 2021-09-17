@@ -1,12 +1,12 @@
-const { PlaygroundRpcClient, PlaygroundApiClient } = require('@defichain/playground-api-client')
-const { GenesisKeys } = require('@defichain/testcontainers')
-const waitForExpect = require('wait-for-expect')
+import waitForExpect from 'wait-for-expect'
+import { PlaygroundRpcClient, PlaygroundApiClient } from '@defichain/playground-api-client'
+import { GenesisKeys } from '@defichain/testcontainers'
 
-exports.oracleOwner = GenesisKeys[GenesisKeys.length - 1].operator
-exports.client = new PlaygroundRpcClient(
+export const oracleOwner = GenesisKeys[GenesisKeys.length - 1].operator
+export const client = new PlaygroundRpcClient(
   new PlaygroundApiClient({ url: 'http://localhost:3002' }))
-  
-exports.setupOracle = async function() {
+
+export const setupOracle = async function (): Promise<string> {
   const oracleId = await exports.client.oracle.appointOracle(exports.oracleOwner.address, [
     {
       token: 'TSLA',

@@ -1,4 +1,4 @@
-const nock = require('nock')
+import nock from 'nock'
 
 const iexResponse = `[
   {
@@ -45,7 +45,7 @@ const iexResponse = `[
   }
 ]`
 
-exports.mockIexcloudEndpoints = () => {
+export const mockIexcloudEndpoints = (): void => {
   nock('https://cloud.iexapis.com/stable/tops')
     .get('?symbols=TSLA,AAPL,FB&token=API_TOKEN')
     .reply(200, function (_) {

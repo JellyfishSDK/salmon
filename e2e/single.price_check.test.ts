@@ -1,17 +1,19 @@
-const waitForExpect = require("wait-for-expect");
-const { mockFinnhubbEndpoints } = require("./mocks_finnhubb");
-const { finnhubb, getEnvironmentConfig, fetchPrices } = require("../../../dist");
-const { oracleOwner, client, setupOracle } = require("./setup");
-const { FinnhubbPriceProvider } = require('@defichain/salmon-provider-finnhubb')
-const { WhaleOraclesManager } = require('@defichain/salmon-oracles-functions')
-const BigNumber = require('bignumber.js')
+/* eslint-disable  @typescript-eslint/no-var-requires */
+import waitForExpect from 'wait-for-expect'
+import { mockFinnhubbEndpoints } from './mocks_finnhubb'
+import { oracleOwner, client, setupOracle } from './setup'
+import { FinnhubbPriceProvider } from '@defichain/salmon-provider-finnhubb'
+import { WhaleOraclesManager } from '@defichain/salmon-oracles-functions'
+import BigNumber from 'bignumber.js'
+import { AssetPrice } from '@defichain/salmon-price-functions'
+const { finnhubb, getEnvironmentConfig, fetchPrices } = require('../dist')
 
-describe("e2e single finnhubb", () => {
-  it("should run finnhubb provider lambda function", async () => {
-    process.env.OCEAN_URL = "http://localhost:3001"
-    process.env.NETWORK = "regtest"
-    process.env.CURRENCY = "USD"
-    process.env.SYMBOLS = "TSLA,AAPL,FB"
+describe('e2e single finnhubb', () => {
+  it('should run finnhubb provider lambda function', async () => {
+    process.env.OCEAN_URL = 'http://localhost:3001'
+    process.env.NETWORK = 'regtest'
+    process.env.CURRENCY = 'USD'
+    process.env.SYMBOLS = 'TSLA,AAPL,FB'
     process.env.PRIVATE_KEY = oracleOwner.privKey
 
     const txid = await client.wallet.sendToAddress(oracleOwner.address, 1)
@@ -20,12 +22,12 @@ describe("e2e single finnhubb", () => {
       expect(confirms).toBeGreaterThanOrEqual(2)
     }, 10000)
 
-    mockFinnhubbEndpoints();
+    mockFinnhubbEndpoints()
     const finnhubbOracleId = await setupOracle()
     process.env.ORACLE_ID = finnhubbOracleId
-    process.env.API_TOKEN = "API_TOKEN"
+    process.env.API_TOKEN = 'API_TOKEN'
 
-    await finnhubb({});    
+    await finnhubb({})
 
     await waitForExpect(async () => {
       expect(
@@ -33,7 +35,7 @@ describe("e2e single finnhubb", () => {
       ).toBeGreaterThanOrEqual(3)
     }, 10000)
 
-    // Check that we don't submit the prices again        
+    // Check that we don't submit the prices again
     const apiToken = process.env.API_TOKEN ?? ''
     const finnhubbProvider = new FinnhubbPriceProvider(apiToken)
 
@@ -42,26 +44,26 @@ describe("e2e single finnhubb", () => {
     expect(prices.length).toStrictEqual(3)
 
     const oraclesManager = WhaleOraclesManager.withWhaleClient(env.oceanUrl, env.network, env.privateKey)
-    const tokenPrices = prices.map(assetPrice => ({
+    const tokenPrices = prices.map((assetPrice: AssetPrice) => ({
       token: assetPrice.asset, prices: [{ currency: env.currency, amount: assetPrice.price }]
     }))
- 
+
     await waitForExpect(async () => {
       const filteredTokenPrices = []
-      for(const tokenPrice of tokenPrices) {
+      for (const tokenPrice of tokenPrices) {
         const existing = await oraclesManager.whaleClient.oracles.getPriceFeed(env.oracleId, tokenPrice.token,
           tokenPrice.prices[0].currency, 1)
-  
+
         if (existing.length === 0) {
           filteredTokenPrices.push(tokenPrice)
         } else {
           const isEqual = new BigNumber(existing[0].amount).eq(tokenPrice.prices[0].amount)
-          if(!isEqual) {
+          if (!isEqual) {
             filteredTokenPrices.push(tokenPrice)
           }
         }
       }
-  
+
       expect(filteredTokenPrices.length).toStrictEqual(1)
     }, 10000)
 
@@ -69,5 +71,5 @@ describe("e2e single finnhubb", () => {
     expect(oracleData.tokenPrices[0].amount).toStrictEqual(120)
     expect(oracleData.tokenPrices[1].amount).toStrictEqual(330)
     expect(oracleData.tokenPrices[2].amount).toStrictEqual(605)
-  });
-});
+  })
+})

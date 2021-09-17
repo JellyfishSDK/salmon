@@ -8,6 +8,7 @@ import BigNumber from 'bignumber.js'
 import { WalletAccount } from '@defichain/jellyfish-wallet'
 import { WalletClassic } from '@defichain/jellyfish-wallet-classic'
 import { OraclesManager } from './oraclesManager'
+import { OraclePriceFeed } from '@defichain/whale-api-client/dist/api/oracles'
 
 export class WhaleOraclesManager extends OraclesManager {
   constructor (
@@ -24,27 +25,62 @@ export class WhaleOraclesManager extends OraclesManager {
    * the existing price
    *
    * @param {TokenPrice[]} tokenPrices
+   * @param {Record<string, OraclePriceFeed>} existing
+   * @param {(tokenPrice: TokenPrice) => Promise<void>} onCircuitBreak
+   * @param {number} closeThreshold
+   * @param {number} farThreshold
+   * @returns {TokenPrice[]}
+   */
+  async filterAgainstExistingPrices (tokenPrices: TokenPrice[], existing: Record<string, OraclePriceFeed>,
+    onCircuitBreak: (tokenPrice: TokenPrice, existing: OraclePriceFeed) => Promise<void>, closeThreshold: number,
+    farThreshold: number): Promise<TokenPrice[]> {
+    const filteredTokenPrices = []
+    for (const tokenPrice of tokenPrices) {
+      const existingPrice = existing[`${tokenPrice.token}-${tokenPrice.prices[0].currency}`]
+
+      if (existingPrice !== undefined) {
+        const existingAmount = new BigNumber(existingPrice.amount)
+        const newAmount = new BigNumber(tokenPrice.prices[0].amount)
+        const isEqual = existingAmount.eq(newAmount)
+        if (isEqual) {
+          continue
+        }
+
+        const ONE_HOUR = 60 * 60
+        const timeNow = Date.now() / 1000
+        const threshold = (timeNow - existingPrice.block.medianTime) < ONE_HOUR ? closeThreshold : farThreshold
+        if (newAmount.minus(existingAmount).abs().gt(existingAmount.times(threshold))) {
+          await onCircuitBreak(tokenPrice, existingPrice)
+          continue
+        }
+      }
+
+      filteredTokenPrices.push(tokenPrice)
+    }
+
+    return filteredTokenPrices
+  }
+
+  /**
+   * Fetches the existing price oracle prices
+   *
+   * @param {OraclePriceFeed[]} oraclePrices
    * @param {WhaleApiClient} whaleClient
    * @param {string} oracleId
-   * @returns {Promise<TokenPrice[]>}
+   * @returns {Promise<Record<string, TokenPrice>>}
    */
-  async filterAgainstExistingPrices (tokenPrices: TokenPrice[], oracleId: string): Promise<TokenPrice[]> {
-    const filteredTokenPrices = []
+  async listExistingOraclePrices (tokenPrices: TokenPrice[], oracleId: string): Promise<Record<string, OraclePriceFeed>> {
+    const existingTokenPrices: Record<string, OraclePriceFeed> = {}
     for (const tokenPrice of tokenPrices) {
       const existing = await this.whaleClient.oracles.getPriceFeed(oracleId, tokenPrice.token,
         tokenPrice.prices[0].currency, 1)
 
-      if (existing.length === 0) {
-        filteredTokenPrices.push(tokenPrice)
-      } else {
-        const isEqual = new BigNumber(existing[0].amount).eq(tokenPrice.prices[0].amount)
-        if (!isEqual) {
-          filteredTokenPrices.push(tokenPrice)
-        }
+      if (existing.length !== 0) {
+        existingTokenPrices[`${tokenPrice.token}-${tokenPrice.prices[0].currency}`] = existing[0]
       }
     }
 
-    return filteredTokenPrices
+    return existingTokenPrices
   }
 
   /**
