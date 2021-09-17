@@ -18,7 +18,7 @@ const finnhubbResponse2 = `{
   "t": ${Math.floor(Date.now() / 1000)}  
 }`
 
-exports.mockFinnhubbEndpoints = () => {
+export const mockFinnhubbEndpoints = (): void => {
   nock('https://finnhub.io/api/v1/quote')
     .get('?symbol=TSLA&token=API_TOKEN')
     .reply(200, function (_) {
@@ -30,4 +30,9 @@ exports.mockFinnhubbEndpoints = () => {
     .reply(200, function (_) {
       return finnhubbResponse2
     }).persist()
+
+  nock('http://MOCK_SLACK')
+    .post('/post')
+    .reply(200)
+    .persist()
 }

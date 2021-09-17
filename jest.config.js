@@ -16,6 +16,6 @@ module.exports = {
     '.*/__tests__/.*'
   ],
   testPathIgnorePatterns: [
-    '.github'
+    '/e2e/'
   ]
 }

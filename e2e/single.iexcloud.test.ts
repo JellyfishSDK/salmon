@@ -1,7 +1,8 @@
-const waitForExpect = require('wait-for-expect')
-const { mockIexcloudEndpoints } = require('./mocks_iexcloud')
-const iex = require('../../../dist').iex
-const { oracleOwner, client, setupOracle } = require('./setup')
+/* eslint-disable  @typescript-eslint/no-var-requires */
+import waitForExpect from 'wait-for-expect'
+import { mockIexcloudEndpoints } from './mocks_iexcloud'
+import { oracleOwner, client, setupOracle } from './setup'
+const { iex } = require('../dist')
 
 describe('e2e single iexcloud', () => {
   it('should run iexcloud provider lambda function', async () => {
@@ -27,7 +28,7 @@ describe('e2e single iexcloud', () => {
       expect((await client.oracle.getOracleData(iexcloudOracleId)).tokenPrices.length).toBeGreaterThanOrEqual(3)
     }, 10000)
 
-    const oracleData = await client.oracle.getOracleData(iexcloudOracleId);
+    const oracleData = await client.oracle.getOracleData(iexcloudOracleId)
     expect(oracleData.tokenPrices[0].amount).toStrictEqual(150)
     expect(oracleData.tokenPrices[1].amount).toStrictEqual(350)
     expect(oracleData.tokenPrices[2].amount).toStrictEqual(607)

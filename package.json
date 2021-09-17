@@ -18,9 +18,9 @@
     "standard": "ts-standard --fix",
     "test": "jest",
     "test:ci": "jest --ci --coverage --forceExit --maxWorkers=4",
-    "test:e2e": "jest --runInBand --config ./jest.config.e2e.js .github/workflows/e2e/test.single.*.test.js",
-    "test:e2e:weighted": "jest --config ./jest.config.e2e.js .github/workflows/e2e/test.weighted.test.js",
-    "test:e2e:protection": "jest --config ./jest.config.e2e.js .github/workflows/e2e/test.price.protection.test.ts",
+    "test:e2e": "jest --runInBand --config ./jest.config.e2e.js ./e2e/single.*.test.js",
+    "test:e2e:weighted": "jest --config ./jest.config.e2e.js ./e2e/weighted.test.js",
+    "test:e2e:protection": "jest --config ./jest.config.e2e.js ./e2e/single.price.protection.test.ts",
     "all": "npm run build && npm run standard && npm run test",
     "package": "npm run pack -w ./packages/salmon-lambda-functions"
   },

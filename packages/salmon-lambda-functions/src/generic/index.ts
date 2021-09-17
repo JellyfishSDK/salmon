@@ -2,11 +2,12 @@ import { PriceManager, PriceProvider, AssetPrice } from '@defichain/salmon-price
 import { WhaleOraclesManager } from '@defichain/salmon-oracles-functions'
 import { getEnvironmentConfig, EnvironmentConfig } from './environment'
 import { checkBalanceAndNotify, sendSlackMessage } from './slack'
+import { TokenPrice } from '@defichain/jellyfish-transaction'
 
 // Maximum price age in milliseconds
 const MAX_PRICE_AGE = 180 * 60 * 1000
 
-export async function broadcastPrices (oraclesManager: WhaleOraclesManager, env: EnvironmentConfig, prices: AssetPrice[]): Promise<string | undefined> {
+export async function filterPrices (oraclesManager: WhaleOraclesManager, env: EnvironmentConfig, prices: AssetPrice[]): Promise<TokenPrice[]> {
   const tokenPrices = prices.map(assetPrice => ({
     token: assetPrice.asset, prices: [{ currency: env.currency, amount: assetPrice.price }]
   }))
@@ -16,12 +17,8 @@ export async function broadcastPrices (oraclesManager: WhaleOraclesManager, env:
     async (tokenPrice, existing) => {
       const errMsg = `Price had sudden movement, not submitting. ${tokenPrice.token} jumped from ${existing.amount} to ${tokenPrice.prices[0].amount.toFixed(8)}`
       await sendSlackMessage(errMsg, ':exclamation:', env)
-
-      throw new Error(errMsg)
     }, env.closeThreshold, env.farThreshold)
-
-  console.log(JSON.stringify({ filteredTokenPrices }))
-  return await oraclesManager.updatePrices(env.oracleId, filteredTokenPrices)
+  return filteredTokenPrices
 }
 
 export async function fetchPrices (env: EnvironmentConfig, provider: PriceProvider): Promise<AssetPrice[]> {
@@ -36,14 +33,15 @@ export async function handleGenericPriceApiProvider (provider: PriceProvider, ev
   console.log(JSON.stringify({ event }))
 
   const oraclesManager = WhaleOraclesManager.withWhaleClient(env.oceanUrl, env.network, env.privateKey)
+  const filteredPrices = await filterPrices(oraclesManager, env, prices)
 
   try {
-    const txid = await broadcastPrices(oraclesManager, env, prices)
+    const txid = await oraclesManager.updatePrices(env.oracleId, filteredPrices)
     if (txid !== undefined) {
       console.log(`Sent with txid: ${txid}`)
     }
   } catch (e) {
-    if (e.message.indexOf('txn-mempool-conflict') !== -1) {
+    if ((e as Error).message.includes('txn-mempool-conflict')) {
       console.log('txn-mempool-conflict (code 18)')
     } else {
       throw e
@@ -58,6 +56,6 @@ export async function handleGenericPriceApiProvider (provider: PriceProvider, ev
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ prices, event })
+    body: JSON.stringify({ prices: filteredPrices, event })
   }
 }

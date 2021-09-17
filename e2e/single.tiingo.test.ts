@@ -1,7 +1,8 @@
-const waitForExpect = require('wait-for-expect')
-const { mockTiingoEndpoints } = require('./mocks_tiingo')
-const tiingo = require('../../../dist').tiingo
-const { oracleOwner, client, setupOracle } = require('./setup')
+/* eslint-disable  @typescript-eslint/no-var-requires */
+import waitForExpect from 'wait-for-expect'
+import { mockTiingoEndpoints } from './mocks_tiingo'
+import { oracleOwner, client, setupOracle } from './setup'
+const { tiingo } = require('../dist')
 
 describe('e2e single tiingo', () => {
   it('should run tiingo provider lambda function', async () => {
@@ -27,7 +28,7 @@ describe('e2e single tiingo', () => {
       expect((await client.oracle.getOracleData(tiingoOracleId)).tokenPrices.length).toBeGreaterThanOrEqual(3)
     }, 10000)
 
-    const oracleData = await client.oracle.getOracleData(tiingoOracleId);
+    const oracleData = await client.oracle.getOracleData(tiingoOracleId)
     expect(oracleData.tokenPrices[0].amount).toStrictEqual(120)
     expect(oracleData.tokenPrices[1].amount).toStrictEqual(340)
     expect(oracleData.tokenPrices[2].amount).toStrictEqual(606)

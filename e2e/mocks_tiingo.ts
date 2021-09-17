@@ -1,4 +1,4 @@
-const nock = require('nock')
+import nock from 'nock'
 
 const tiingoResponse = `[
   {
@@ -60,7 +60,7 @@ const tiingoResponse = `[
   }
 ]`
 
-exports.mockTiingoEndpoints = () => {
+export const mockTiingoEndpoints = (): void => {
   nock('https://api.tiingo.com/iex')
     .get('/?tickers=TSLA,AAPL,FB&token=API_TOKEN')
     .reply(200, function (_) {

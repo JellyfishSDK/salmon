@@ -1,12 +1,11 @@
-const BigNumber = require('bignumber.js')
-const waitForExpect = require('wait-for-expect')
-const { mockFinnhubbEndpoints } = require('./mocks_finnhubb')
-const { mockTiingoEndpoints } = require('./mocks_tiingo')
-const { mockIexcloudEndpoints } = require('./mocks_iexcloud')
-const finnhubb = require('../../../dist').finnhubb
-const tiingo = require('../../../dist').tiingo
-const iex = require('../../../dist').iex
-const { oracleOwner, client, setupOracle } = require('./setup')
+/* eslint-disable  @typescript-eslint/no-var-requires */
+import BigNumber from 'bignumber.js'
+import waitForExpect from 'wait-for-expect'
+import { mockFinnhubbEndpoints } from './mocks_finnhubb'
+import { mockTiingoEndpoints } from './mocks_tiingo'
+import { mockIexcloudEndpoints } from './mocks_iexcloud'
+import { oracleOwner, client, setupOracle } from './setup'
+const { tiingo, iex, finnhubb } = require('../dist')
 
 beforeAll(async () => {
   process.env.OCEAN_URL = 'http://localhost:3001'
@@ -24,7 +23,7 @@ describe('e2e weighted', () => {
       const confirms = (await client.wallet.getTransaction(txid)).confirmations
       expect(confirms).toBeGreaterThanOrEqual(2)
     }, 20000)
-  
+
     mockFinnhubbEndpoints()
     const finnhubbOracleId = await setupOracle()
     process.env.ORACLE_ID = finnhubbOracleId
