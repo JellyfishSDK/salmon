@@ -2,7 +2,7 @@
 import waitForExpect from 'wait-for-expect'
 import { mockFinnhubbEndpoints } from './mocks_finnhubb'
 import { oracleOwner, client, setupOracle } from './setup'
-import { finnhubb } from '../dist/salmon-lambda-functions/src'
+const { finnhubb } = require('../dist')
 
 describe('e2e single finnhubb', () => {
   it('should run finnhubb provider lambda function', async () => {
