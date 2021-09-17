@@ -14,8 +14,10 @@ export async function broadcastPrices (oraclesManager: WhaleOraclesManager, env:
   const existingPrices = await oraclesManager.listExistingOraclePrices(tokenPrices, env.oracleId)
   const filteredTokenPrices = await oraclesManager.filterAgainstExistingPrices(tokenPrices, existingPrices,
     async (tokenPrice, existing) => {
-      await sendSlackMessage(`Price had sudden movement, not submitting. ${tokenPrice.token} jumped from ${existing.amount} to ${tokenPrice.prices[0].amount.toFixed(8)}`,
-        ':exclamation:', env)
+      const errMsg = `Price had sudden movement, not submitting. ${tokenPrice.token} jumped from ${existing.amount} to ${tokenPrice.prices[0].amount.toFixed(8)}`
+      await sendSlackMessage(errMsg, ':exclamation:', env)
+
+      throw new Error(errMsg)
     }, env.closeThreshold, env.farThreshold)
 
   console.log(JSON.stringify({ filteredTokenPrices }))
