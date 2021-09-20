@@ -19,6 +19,7 @@
     {"path": "./packages/salmon-provider-coingecko/tsconfig.build.json"},
     {"path": "./packages/salmon-provider-coinmarketcap/tsconfig.build.json"},
     {"path": "./packages/salmon-provider-dex/tsconfig.build.json"},
+    {"path": "./packages/salmon-provider-chainlink/tsconfig.build.json"},
     {"path": "./packages/salmon-provider-nasdaq/tsconfig.build.json"}
  ]
 }
