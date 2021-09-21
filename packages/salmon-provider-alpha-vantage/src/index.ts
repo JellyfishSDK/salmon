@@ -30,7 +30,7 @@ export class AlphaVantagePriceProvider implements PriceProvider {
     return {
       asset: symbol,
       price: new BigNumber(priceObject['05. price']),
-      timestamp: (new BigNumber(json.t)).multipliedBy(1000)
+      timestamp: new BigNumber(Date.now())
     }
   }
 
