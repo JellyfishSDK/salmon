@@ -49,12 +49,12 @@ export class NasdaqPriceProvider implements PriceProvider {
 
     const text = await response.text()
     const json = JellyfishJSON.parse(text, 'bignumber')
-
-    const timestamp = new BigNumber(this.processTimestamp(json.timestamp))
+    const priceObject = Array.isArray(json) ? json[0] : json
+    const timestamp = new BigNumber(this.processTimestamp(priceObject.timestamp))
 
     return {
       asset: symbol,
-      price: new BigNumber(json.price),
+      price: new BigNumber(priceObject.price),
       timestamp
     }
   }
