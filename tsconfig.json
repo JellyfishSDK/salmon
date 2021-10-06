@@ -14,6 +14,8 @@
       "@defichain/salmon-provider-coingecko": ["salmon-provider-coingecko/src"],
       "@defichain/salmon-provider-coinmarketcap": ["salmon-provider-coinmarketcap/src"],
       "@defichain/salmon-provider-dex": ["salmon-provider-dex/src"],
+      "@defichain/salmon-provider-alpha-vantage": ["salmon-provider-alpha-vantage/src"],
+      "@defichain/salmon-provider-alpha-vantage-forex": ["salmon-provider-alpha-vantage-forex/src"],
       "@defichain/salmon-provider-chainlink": ["salmon-provider-chainlink/src"],
       "@defichain/salmon-provider-nasdaq": ["salmon-provider-nasdaq/src"]
     }
