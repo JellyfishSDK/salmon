@@ -26,12 +26,14 @@ export class NasdaqPriceProvider implements PriceProvider {
     const dateNow = new Date()
     const paddMs = String(dateNow.getUTCMilliseconds()).padStart(3, '0')
 
-    // en-CA instead of en-US is needed here ('-' vs '/')
-    const dateNowEt = new Date(dateNow.toLocaleString('en-CA',
+    const localeDate = dateNow.toLocaleString('en-CA',
       {
         timeZone: 'America/New_York',
         hour12: false
-      }).replace(', ', 'T') + `.${paddMs}Z`)
+      }).replace(', 24', ', 00')
+
+    // en-CA instead of en-US is needed here ('-' vs '/')
+    const dateNowEt = new Date(localeDate.replace(', ', 'T') + `.${paddMs}Z`)
 
     const timezoneOffset = dateNow.getTime() - dateNowEt.getTime()
     return priceDate.getTime() + timezoneOffset
