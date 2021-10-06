@@ -12,6 +12,7 @@
     {"path": "./packages/salmon-price-functions/tsconfig.build.json"},
     {"path": "./packages/salmon-provider-tiingo/tsconfig.build.json"},
     {"path": "./packages/salmon-provider-alpha-vantage/tsconfig.build.json"},
+    {"path": "./packages/salmon-provider-alpha-vantage-forex/tsconfig.build.json"},
     {"path": "./packages/salmon-provider-iexcloud/tsconfig.build.json"},
     {"path": "./packages/salmon-provider-finnhubb/tsconfig.build.json"},
     {"path": "./packages/salmon-provider-finnhubb-forex/tsconfig.build.json"},
