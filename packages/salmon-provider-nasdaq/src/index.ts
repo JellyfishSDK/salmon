@@ -6,7 +6,7 @@ import {
 } from '@defichain/jellyfish-json'
 
 const API_VERSION = 'v1'
-const BASE_URL = `https://restapi.clouddataservice.nasdaq.com/${API_VERSION}/nasdaq/realtime/equities/lastsale`
+const BASE_URL = `https://restapi.clouddataservice.nasdaq.com/${API_VERSION}/nasdaq/delayed/equities/lastsale`
 const AUTH_URL = `https://restapi.clouddataservice.nasdaq.com/${API_VERSION}/auth/token`
 
 /**
