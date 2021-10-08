@@ -19,7 +19,7 @@ describe('multi price fetch (old api)', () => {
         }`
       })
 
-    nock('https://restapi.clouddataservice.nasdaq.com/v1/nasdaq/realtime/equities/lastsale')
+    nock('https://restapi.clouddataservice.nasdaq.com/v1/nasdaq/delayed/equities/lastsale')
       .get('/TSLA')
       .reply(200, function (_) {
         return `{
@@ -34,7 +34,7 @@ describe('multi price fetch (old api)', () => {
         }`
       })
 
-    nock('https://restapi.clouddataservice.nasdaq.com/v1/nasdaq/realtime/equities/lastsale')
+    nock('https://restapi.clouddataservice.nasdaq.com/v1/nasdaq/delayed/equities/lastsale')
       .get('/AAPL')
       .reply(200, function (_) {
         return `{
@@ -49,7 +49,7 @@ describe('multi price fetch (old api)', () => {
         }`
       })
 
-    nock('https://restapi.clouddataservice.nasdaq.com/v1/nasdaq/realtime/equities/lastsale')
+    nock('https://restapi.clouddataservice.nasdaq.com/v1/nasdaq/delayed/equities/lastsale')
       .get('/FB')
       .reply(200, function (_) {
         return `{
@@ -97,7 +97,7 @@ describe('multi price fetch (new api)', () => {
         }`
       })
 
-    nock('https://restapi.clouddataservice.nasdaq.com/v1/nasdaq/realtime/equities/lastsale')
+    nock('https://restapi.clouddataservice.nasdaq.com/v1/nasdaq/delayed/equities/lastsale')
       .get('/TSLA')
       .reply(200, function (_) {
         return `[{
@@ -112,7 +112,7 @@ describe('multi price fetch (new api)', () => {
         }]`
       })
 
-    nock('https://restapi.clouddataservice.nasdaq.com/v1/nasdaq/realtime/equities/lastsale')
+    nock('https://restapi.clouddataservice.nasdaq.com/v1/nasdaq/delayed/equities/lastsale')
       .get('/AAPL')
       .reply(200, function (_) {
         return `[{
@@ -127,7 +127,7 @@ describe('multi price fetch (new api)', () => {
         }]`
       })
 
-    nock('https://restapi.clouddataservice.nasdaq.com/v1/nasdaq/realtime/equities/lastsale')
+    nock('https://restapi.clouddataservice.nasdaq.com/v1/nasdaq/delayed/equities/lastsale')
       .get('/FB')
       .reply(200, function (_) {
         return `[{
